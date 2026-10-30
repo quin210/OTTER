@@ -1,0 +1,284 @@
+{
+ "db": "data/ontology/ontology.sqlite3 (v1, frozen)",
+ "build_id": "onto-20261026T023553-main",
+ "counts": {
+  "concepts": 5939,
+  "relations": 2929,
+  "facts": 3830,
+  "rules": 787,
+  "rules_strict_executable": 650,
+  "objectives": 720,
+  "evidence_links": 18111,
+  "rejected": 1371,
+  "pedagogical_links": 936,
+  "spans_in_parsed_books": 16716,
+  "books": 18
+ },
+ "support": {
+  "concepts": {
+   "partially_supported": 51,
+   "supported": 5245,
+   "unsupported": 643
+  },
+  "semantic_relations": {
+   "partially_supported": 79,
+   "supported": 2643,
+   "unsupported": 207
+  },
+  "facts": {
+   "partially_supported": 51,
+   "supported": 3612,
+   "unsupported": 167
+  },
+  "rules": {
+   "partially_supported": 68,
+   "supported": 678,
+   "unsupported": 41
+  }
+ },
+ "rules_by_type": [
+  {
+   "rule_type": "definitional",
+   "n": 355,
+   "strict_executable": 323
+  },
+  {
+   "rule_type": "conditional",
+   "n": 251,
+   "strict_executable": 217
+  },
+  {
+   "rule_type": "formula",
+   "n": 106,
+   "strict_executable": 54
+  },
+  {
+   "rule_type": "classification",
+   "n": 53,
+   "strict_executable": 40
+  },
+  {
+   "rule_type": "causal",
+   "n": 22,
+   "strict_executable": 16
+  }
+ ],
+ "strict_executable_support": {
+  "supported": 650
+ },
+ "evidence_by_kind": {
+  "concept": 8510,
+  "fact": 3949,
+  "link": 940,
+  "objective": 723,
+  "relation": 3106,
+  "rule": 883
+ },
+ "rejected_by_kind": {
+  "chunk": 5,
+  "concept": 1,
+  "objective": 2,
+  "relation": 996,
+  "rule": 367
+ },
+ "rejected_by_reason": {
+  "dangling_concept": 932,
+  "circular_rule": 248,
+  "converted_to_fact_no_premises": 92,
+  "domain_range_violation": 52,
+  "schema_invalid": 29,
+  "self_loop": 9,
+  "output_truncated_salvaged": 5,
+  "over_cap_dropped": 4
+ },
+ "by_subject": {
+  "physics": {
+   "concepts": 500,
+   "facts": 308,
+   "rules": 214,
+   "objectives": 2
+  },
+  "chemistry": {
+   "concepts": 682,
+   "facts": 416,
+   "rules": 217,
+   "objectives": 141
+  },
+  "biology": {
+   "concepts": 1347,
+   "facts": 757,
+   "rules": 254,
+   "objectives": 240
+  },
+  "history": {
+   "concepts": 1079,
+   "facts": 686,
+   "rules": 0,
+   "objectives": 108
+  },
+  "geography": {
+   "concepts": 814,
+   "facts": 484,
+   "rules": 66,
+   "objectives": 54
+  },
+  "literature": {
+   "concepts": 1517,
+   "facts": 1179,
+   "rules": 36,
+   "objectives": 175
+  }
+ },
+ "relation_types_supported": {
+  "involves": 831,
+  "has_property": 824,
+  "is_a": 216,
+  "affects": 160,
+  "related_to": 158,
+  "has_part": 150,
+  "located_in": 113,
+  "example_of": 47,
+  "causes": 39,
+  "occurs_in": 29,
+  "authored_by": 23,
+  "part_of": 19,
+  "measured_in": 10,
+  "defined_as": 9,
+  "caused_by": 7,
+  "contrasts_with": 6,
+  "synonym_of": 2
+ },
+ "paper": {
+  "concepts": 5939,
+  "relations": 2929,
+  "facts": 3830,
+  "rules": 787,
+  "rules_strict_executable": 650,
+  "objectives": 720,
+  "evidence_links": 18111,
+  "rejected": 1371
+ },
+ "comparison": [
+  {
+   "item": "concepts",
+   "paper": 5939,
+   "db": 5939,
+   "equal": true
+  },
+  {
+   "item": "relations",
+   "paper": 2929,
+   "db": 2929,
+   "equal": true
+  },
+  {
+   "item": "facts",
+   "paper": 3830,
+   "db": 3830,
+   "equal": true
+  },
+  {
+   "item": "rules",
+   "paper": 787,
+   "db": 787,
+   "equal": true
+  },
+  {
+   "item": "rules_strict_executable",
+   "paper": 650,
+   "db": 650,
+   "equal": true
+  },
+  {
+   "item": "objectives",
+   "paper": 720,
+   "db": 720,
+   "equal": true
+  },
+  {
+   "item": "evidence_links",
+   "paper": 18111,
+   "db": 18111,
+   "equal": true
+  },
+  {
+   "item": "rejected",
+   "paper": 1371,
+   "db": 1371,
+   "equal": true
+  }
+ ],
+ "verbatim_check_whole_supported": {
+  "fact": {
+   "passed": 678,
+   "failed": 2934
+  },
+  "rule": {
+   "passed": 130,
+   "failed": 548
+  },
+  "objective": {
+   "passed": 28,
+   "failed": 692
+  }
+ },
+ "verbatim_check_rule": {
+  "max_words": 25,
+  "max_shared_run": 7,
+  "statement": "fails if > 25 words or shares a run of >= 8 consecutive words with any evidence span"
+ },
+ "verbatim_check_shipped": {
+  "concept_label": {
+   "passed": 348,
+   "failed": 13
+  },
+  "fact": {
+   "passed": 31,
+   "failed": 148
+  },
+  "objective": {
+   "passed": 1,
+   "failed": 20
+  },
+  "rule": {
+   "passed": 14,
+   "failed": 14
+  },
+  "rule_arg": {
+   "passed": 3,
+   "failed": 0
+  },
+  "rule_atom": {
+   "passed": 41,
+   "failed": 17
+  }
+ },
+ "verbatim_fail_reasons_shipped": {
+  "fact:verbatim_run": 72,
+  "fact:too_long": 76,
+  "concept_label:verbatim_run": 13,
+  "objective:verbatim_run": 16,
+  "rule:too_long": 8,
+  "rule_atom:verbatim_run": 17,
+  "rule:verbatim_run": 6,
+  "objective:too_long": 4
+ },
+ "verbatim_check_gallery": {
+  "gallery_atom": {
+   "passed": 18,
+   "failed": 10
+  },
+  "gallery_formula": {
+   "passed": 5,
+   "failed": 1
+  },
+  "gallery_variable": {
+   "passed": 5,
+   "failed": 0
+  },
+  "gallery_arg": {
+   "passed": 4,
+   "failed": 1
+  }
+ }
+}

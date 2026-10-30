@@ -1,0 +1,11 @@
+# Core requirements (versions as used for the paper; Python >= 3.10).
+# vLLM serving (Qwen3-32B-FP8, Qwen3-8B, bge-m3) is separate: see scripts/serve/.
+openai==3.37.0
+numpy==2.5.4
+pydantic==2.14.1
+PyYAML==6.0.3
+rank-bm25==0.2.2
+networkx==3.7
+pillow==13.0.0
+pypdf==6.21.2
+pytest==9.1.1

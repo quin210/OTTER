@@ -1,0 +1,221 @@
+{
+ "rule": "per subject: among lessons whose largest connected component of the supported subgraph has <= 150 nodes, take the lesson with the largest such component (ties: smaller lesson_id). Only that component is drawn. One extra 'demo' lesson is added: the gold lesson of VIEDUHOP-C2-PHY-017 (used in the video).",
+ "subjects": {
+  "physics": {
+   "chosen": "nxbgd_g11_physics_ce4cc7d0:ch02:l08",
+   "lessons_with_items": 44,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g11_physics_ce4cc7d0:ch02:l08",
+     "nodes_in_lesson": 55,
+     "largest_component": 44,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_physics_853c72bd:ch01:l03",
+     "nodes_in_lesson": 36,
+     "largest_component": 29,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_physics_853c72bd:ch02:l13",
+     "nodes_in_lesson": 35,
+     "largest_component": 26,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_physics_d0daa774:ch03:l14",
+     "nodes_in_lesson": 41,
+     "largest_component": 24,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_physics_d0daa774:ch02:l04",
+     "nodes_in_lesson": 37,
+     "largest_component": 22,
+     "eligible": true
+    }
+   ]
+  },
+  "chemistry": {
+   "chosen": "nxbgd_g11_chemistry_8344cdf6:ch02:l06",
+   "lessons_with_items": 39,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g11_chemistry_8344cdf6:ch02:l06",
+     "nodes_in_lesson": 68,
+     "largest_component": 66,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_chemistry_95871cdd:ch01:l03",
+     "nodes_in_lesson": 72,
+     "largest_component": 52,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_chemistry_496de71d:ch02:l04",
+     "nodes_in_lesson": 51,
+     "largest_component": 49,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_chemistry_496de71d:ch04:l12",
+     "nodes_in_lesson": 57,
+     "largest_component": 49,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_chemistry_95871cdd:ch03:l12",
+     "nodes_in_lesson": 61,
+     "largest_component": 43,
+     "eligible": true
+    }
+   ]
+  },
+  "biology": {
+   "chosen": "nxbgd_g11_biology_d3489896:ch02:l12",
+   "lessons_with_items": 47,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g11_biology_d3489896:ch02:l12",
+     "nodes_in_lesson": 149,
+     "largest_component": 120,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g11_biology_d3489896:ch02:l04",
+     "nodes_in_lesson": 122,
+     "largest_component": 96,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_biology_bf61f7ef:ch03:l12",
+     "nodes_in_lesson": 111,
+     "largest_component": 89,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g11_biology_d3489896:ch02:l10",
+     "nodes_in_lesson": 86,
+     "largest_component": 65,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_biology_bf61f7ef:ch02:l02",
+     "nodes_in_lesson": 88,
+     "largest_component": 62,
+     "eligible": true
+    }
+   ]
+  },
+  "history": {
+   "chosen": "nxbgd_g10_history_80debfdd:ch03:l04",
+   "lessons_with_items": 25,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g10_history_80debfdd:ch03:l04",
+     "nodes_in_lesson": 234,
+     "largest_component": 140,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g11_history_a69620a3:ch00:l04",
+     "nodes_in_lesson": 199,
+     "largest_component": 90,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_history_80debfdd:ch04:l07",
+     "nodes_in_lesson": 91,
+     "largest_component": 75,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_history_b44d76bd:ch00:l08",
+     "nodes_in_lesson": 117,
+     "largest_component": 62,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g11_history_a69620a3:ch00:l02",
+     "nodes_in_lesson": 58,
+     "largest_component": 57,
+     "eligible": true
+    }
+   ]
+  },
+  "geography": {
+   "chosen": "nxbgd_g12_geography_d7554213:ch01:l01",
+   "lessons_with_items": 36,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g12_geography_d7554213:ch01:l01",
+     "nodes_in_lesson": 72,
+     "largest_component": 70,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_geography_d7554213:ch03:l14",
+     "nodes_in_lesson": 56,
+     "largest_component": 54,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_geography_d7554213:ch03:l12",
+     "nodes_in_lesson": 91,
+     "largest_component": 32,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_geography_d7554213:ch02:l07",
+     "nodes_in_lesson": 40,
+     "largest_component": 26,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g10_geography_f7f9d596:ch00:l01",
+     "nodes_in_lesson": 25,
+     "largest_component": 25,
+     "eligible": true
+    }
+   ]
+  },
+  "literature": {
+   "chosen": "nxbgd_g10_literature_e9966e8f:ch00:l01",
+   "lessons_with_items": 13,
+   "top_candidates": [
+    {
+     "lesson_id": "nxbgd_g11_literature_9d747e6a:ch00:l01",
+     "nodes_in_lesson": 259,
+     "largest_component": 154,
+     "eligible": false
+    },
+    {
+     "lesson_id": "nxbgd_g10_literature_e9966e8f:ch00:l01",
+     "nodes_in_lesson": 288,
+     "largest_component": 125,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_literature_2594fbd3:ch01:l03",
+     "nodes_in_lesson": 263,
+     "largest_component": 122,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g11_literature_9d747e6a:ch00:l02",
+     "nodes_in_lesson": 256,
+     "largest_component": 73,
+     "eligible": true
+    },
+    {
+     "lesson_id": "nxbgd_g12_literature_2594fbd3:ch01:l04",
+     "nodes_in_lesson": 344,
+     "largest_component": 67,
+     "eligible": true
+    }
+   ]
+  }
+ }
+}

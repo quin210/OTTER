@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTTER Ontology Explorer</title>
+<style>
+:root{
+  --bg:#f7f7f5; --panel:#ffffff; --ink:#1b1f23; --muted:#5b6570; --line:#d5d9de; --accent:#0072B2;
+  --concept:#0072B2; --fact:#E69F00; --rule:#009E73; --obj:#CC79A7;
+  --e-rel:#4a5560; --e-men:#8a949e; --e-teach:#b0569a; --sel:#d55e00; --halo:#ffffff;
+  --code:#f0f1f3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14171a; --panel:#1e2327; --ink:#e8eaec; --muted:#a2acb5; --line:#38414a; --accent:#56B4E9;
+    --concept:#56B4E9; --fact:#E69F00; --rule:#2fcf9f; --obj:#e49bc3;
+    --e-rel:#aab4be; --e-men:#7b8791; --e-teach:#d58bbd; --sel:#f0a05a; --halo:#14171a; --code:#272d33;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14171a; --panel:#1e2327; --ink:#e8eaec; --muted:#a2acb5; --line:#38414a; --accent:#56B4E9;
+  --concept:#56B4E9; --fact:#E69F00; --rule:#2fcf9f; --obj:#e49bc3;
+  --e-rel:#aab4be; --e-men:#7b8791; --e-teach:#d58bbd; --sel:#f0a05a; --halo:#14171a; --code:#272d33;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","DejaVu Sans",sans-serif}
+header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:18px;margin:0}
+header .sub{color:var(--muted);font-size:13px}
+button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+button{cursor:pointer}
+button:hover{border-color:var(--accent)}
+button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+nav{display:flex;gap:6px;padding:10px 16px 0;flex-wrap:wrap}
+main{padding:12px 16px 32px;max-width:1400px;margin:0 auto}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.controls select{max-width:100%;flex:1 1 280px}
+.controls input[type=search]{flex:1 1 160px;min-width:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)} #svg{height:min(125vw,78vh);min-height:360px}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+#graphwrap{padding:0;overflow:hidden;position:relative}
+#svg{width:100%;height:min(68vh,640px);min-height:340px;display:block;touch-action:none;cursor:grab;background:var(--panel)}
+#svg:active{cursor:grabbing}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:8px 0}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend svg{width:18px;height:14px}
+.zoomb{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:4px}
+.zoomb button{padding:2px 9px;font-size:17px;line-height:1.2}
+h2{font-size:16px;margin:0 0 6px}
+h3{font-size:14px;margin:12px 0 4px}
+.muted{color:var(--muted)}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:12px;margin-right:4px;background:var(--code)}
+.ptr{border-left:3px solid var(--accent);padding:2px 8px;margin:6px 0;background:var(--code);border-radius:0 6px 6px 0;font-size:13px;word-break:break-word}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,"DejaVu Sans Mono",monospace;font-size:12px;word-break:break-all}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--accent);border-radius:4px;min-width:1px}
+.hidden{display:none}
+.node text.lbl{paint-order:stroke;stroke:var(--halo);stroke-width:3px;fill:var(--ink);pointer-events:none}
+.sel{stroke:var(--sel)!important;stroke-width:3px!important}
+.dim{opacity:.18}
+.rulecard{border:1px solid var(--line);border-radius:8px;padding:10px;margin:10px 0;background:var(--panel)}
+.rulecard .atoms div{margin:2px 0}
+.warn{border-left:3px solid var(--fact);padding:4px 10px;background:var(--code);margin:8px 0;font-size:13px}
+.ok{color:var(--rule)}
+.no{color:var(--sel)}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>OTTER Ontology Explorer <span class="muted" style="font-weight:400">/ <span lang="vi">Trình khám phá ontology</span> (ontology explorer)</span></h1>
+    <div class="sub">Real lesson graphs from the frozen OTTER ontology. Every item points to a source span in a textbook. Research prototype.</div>
+  </div>
+  <button id="theme" title="toggle light/dark">Theme</button>
+</header>
+<nav role="tablist" id="tabs">
+  <button role="tab" data-tab="graph" aria-selected="true">Lesson graph</button>
+  <button role="tab" data-tab="rules" aria-selected="false">Rule view</button>
+  <button role="tab" data-tab="stats" aria-selected="false">Ontology stats</button>
+  <button role="tab" data-tab="about" aria-selected="false">Legend &amp; notes</button>
+</nav>
+<main>
+<section id="tab-graph">
+  <div class="controls">
+    <select id="lesson" aria-label="Subject and lesson"></select>
+    <input id="q" type="search" placeholder="find a node (label or id)" aria-label="find a node">
+    <label><input id="lbl" type="checkbox" checked> labels</label>
+    <button id="fit">Reset view</button>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="grid">
+    <div class="card" id="graphwrap">
+      <svg id="svg" viewBox="0 0 1000 700" role="img" aria-label="lesson graph"><g id="vp"></g></svg>
+      <div class="zoomb"><button id="zin" aria-label="zoom in">+</button><button id="zout" aria-label="zoom out">&minus;</button></div>
+    </div>
+    <div class="card" id="detail"><h2>Details</h2><p class="muted">Tap or click a node (or an edge) to see its type, id, support label and source pointers. Drag to pan, wheel or pinch to zoom, drag a node to move it. On a narrow screen, labels appear after you zoom in.</p></div>
+  </div>
+  <div class="card" id="lessoninfo" style="margin-top:12px"></div>
+</section>
+
+<section id="tab-rules" class="hidden">
+  <div class="card">
+    <h2>How an executable rule is stored</h2>
+    <p>A rule is stored as one row in table <code>rules</code> (id, subject, grade, <code>rule_type</code>, <code>status</code>, optional <code>formula</code>, support label, <code>strict_executable</code> flag)
+    plus ordered atoms in <code>rule_premises</code>, <code>rule_guards</code> (applicability conditions), <code>rule_conclusions</code> and <code>rule_exceptions</code>. Each atom is
+    <code>(predicate, args, text, negated)</code>; <code>args</code> are concept ids. A rule is marked <code>strict_executable = 1</code> only if it is supported, explicit, has premises and conclusions and no suspected missing guard.
+    <span class="muted">(<span lang="vi">quy tắc thực thi chặt</span>: strict-executable rule)</span></p>
+    <p class="muted">Atom texts, formulas and variable descriptions are shown only if they pass the verbatim check (at most 25 words, no run of 8 words shared with the evidence spans); otherwise only the stored structure and ids are shown.</p>
+  </div>
+  <div class="controls" style="margin-top:10px"><label>Show rules from: <select id="rulesrc"><option value="lesson">current lesson graph</option><option value="gallery" selected>gallery (2 strict-executable rules per subject)</option></select></label></div>
+  <div id="rulelist"></div>
+</section>
+
+<section id="tab-stats" class="hidden"><div id="statsbody"></div></section>
+
+<section id="tab-about" class="hidden"><div id="aboutbody"></div></section>
+</main>
+<script id="appdata" type="application/json">/*__DATA__*/null</script>
+<script>
+"use strict";
+const APP = JSON.parse(document.getElementById('appdata').textContent.replace(/^\/\*__DATA__\*\//,''));
+const $ = s => document.querySelector(s);
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, kids){ const e=document.createElement(tag); if(attrs) for(const k in attrs){ if(k==='text') e.textContent=attrs[k]; else e.setAttribute(k,attrs[k]); } (kids||[]).forEach(c=>e.appendChild(c)); return e; }
+function sv(tag, attrs){ const e=document.createElementNS(NS,tag); if(attrs) for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
+const fmt = n => (n===null||n===undefined)?'-':Number(n).toLocaleString('en-US');
+const KCOL = {concept:'var(--concept)', fact:'var(--fact)', rule:'var(--rule)', objective:'var(--obj)'};
+const KNAME = {concept:'concept', fact:'fact', rule:'rule', objective:'learning objective'};
+
+// theme
+(function(){ let t=null; try{ t=localStorage.getItem('otter_theme'); }catch(e){}
+  if(t) document.documentElement.setAttribute('data-theme',t);
+  $('#theme').onclick=()=>{ const cur=document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    const nx=cur==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme',nx); try{localStorage.setItem('otter_theme',nx);}catch(e){} }; })();
+
+// tabs
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected', x===b));
+  ['graph','rules','stats','about'].forEach(t=>$('#tab-'+t).classList.toggle('hidden', t!==b.dataset.tab));
+  if(b.dataset.tab==='rules') renderRules();
+});
+
+// ---------- lesson graph ----------
+let cur=null, view={k:1,x:0,y:0}, selId=null, byId={}, VW=1000, VH=700, S=7, curIdx=0;
+const vp=$('#vp'), svgEl=$('#svg');
+const sel=$('#lesson');
+APP.lessons.forEach((l,i)=>{ const o=el('option',{value:i,text:l.subject_vi+' ('+l.subject_en+') grade '+l.grade+' · '+l.heading+(l.heading_en?' ['+l.heading_en+']':'')+(l.role==='demo'?' · demo lesson of the video':'')}); sel.appendChild(o); });
+sel.onchange=()=>loadLesson(+sel.value);
+
+function shapePath(k,x,y,s){
+  if(k==='fact') return 'M'+(x-s)+' '+(y-s)+'h'+2*s+'v'+2*s+'h'+(-2*s)+'z';
+  if(k==='rule') return 'M'+x+' '+(y-s*1.35)+'L'+(x+s*1.35)+' '+y+'L'+x+' '+(y+s*1.35)+'L'+(x-s*1.35)+' '+y+'z';
+  if(k==='objective') return 'M'+x+' '+(y-s*1.3)+'L'+(x+s*1.25)+' '+(y+s)+'L'+(x-s*1.25)+' '+(y+s)+'z';
+  return null;
+}
+function nodeLabel(n){ if(n.k==='concept') return n.label || n.id.split(':').pop().replace(/_/g,' '); return null; }
+
+function loadLesson(i){
+  curIdx=i; cur=APP.lessons[i]; byId={}; cur.nodes.forEach(n=>byId[n.id]=n); selId=null;
+  VW=svgEl.clientWidth||1000; VH=svgEl.clientHeight||700; svgEl.setAttribute('viewBox','0 0 '+VW+' '+VH); S=VW<520?5:7;
+  const portrait=VW<VH*0.85, bw=portrait?700:1000, bh=portrait?1000:700, bs=Math.min(VW/bw,VH/bh)*0.97, ox=(VW-bw*bs)/2, oy=(VH-bh*bs)/2;
+  cur.nodes.forEach(n=>{ if(n.x0===undefined){n.x0=n.x;n.y0=n.y;} const a=portrait?n.y0:n.x0, b=portrait?n.x0:n.y0; n.x=ox+a*bs; n.y=oy+b*bs; });
+  vp.innerHTML=''; view={k:1,x:0,y:0}; applyView();
+  const gE=sv('g',{id:'edges'}), gN=sv('g',{id:'nodes'});
+  vp.appendChild(gE); vp.appendChild(gN);
+  cur.edges.forEach((e,j)=>{
+    const a=byId[e.s], b=byId[e.t]; if(!a||!b) return;
+    const g=sv('g',{'data-e':j});
+    const st = e.k==='relation' ? {stroke:'var(--e-rel)','stroke-width':1.6} : e.k==='teaches' ? {stroke:'var(--e-teach)','stroke-width':1.4,'stroke-dasharray':'2 3'} : {stroke:'var(--e-men)','stroke-width':1,'stroke-dasharray':'5 3'};
+    const ln=sv('line',Object.assign({x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge'},st)); g.appendChild(ln);
+    if(e.k==='relation'){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*9, ty=b.y-uy*9;
+      g.appendChild(sv('path',{d:'M'+tx+' '+ty+'l'+(-ux*7-uy*3.5)+' '+(-uy*7+ux*3.5)+'l'+(uy*7)+' '+(-ux*7)+'z',fill:'var(--e-rel)',class:'arrow'})); }
+    const hit=sv('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'transparent','stroke-width':10,'data-hit':1}); g.appendChild(hit);
+    hit.addEventListener('click',ev=>{ev.stopPropagation(); showEdge(j);});
+    e._g=g; e._a=a; e._b=b; gE.appendChild(g);
+  });
+  cur.nodes.forEach(n=>{
+    const g=sv('g',{class:'node','data-id':n.id,tabindex:0,role:'button','aria-label':KNAME[n.k]+' '+(nodeLabel(n)||n.id)});
+    let sh; const s=S;
+    if(n.k==='concept') sh=sv('circle',{cx:n.x,cy:n.y,r:S,fill:KCOL.concept,stroke:'var(--halo)','stroke-width':1.5});
+    else sh=sv('path',{d:shapePath(n.k,n.x,n.y,s),fill:KCOL[n.k],stroke:(n.k==='rule'&&n.rule.strict)?'var(--ink)':'var(--halo)','stroke-width':(n.k==='rule'&&n.rule.strict)?2:1.5});
+    sh.setAttribute('class','shape'); g.appendChild(sh);
+    const hit=sv('circle',{cx:n.x,cy:n.y,r:S+8,fill:'transparent'}); g.appendChild(hit);
+    const lb=nodeLabel(n);
+    if(lb){ const t=sv('text',{x:n.x+S+3,y:n.y+4,class:'lbl','font-size':11}); t.textContent=lb.length>26?lb.slice(0,25)+'…':lb; g.appendChild(t); }
+    n._g=g; n._sh=sh; gN.appendChild(g);
+    enableNodeDrag(g,n);
+  });
+  updateLabels(); renderLegend(); renderInfo(); resetDetail();
+}
+
+function applyView(){ vp.setAttribute('transform','translate('+view.x+' '+view.y+') scale('+view.k+')'); updateLabels(); }
+function updateLabels(){ const on=$('#lbl').checked && (VW>=600 || view.k>=2.2); document.querySelectorAll('#nodes .lbl').forEach(t=>{ t.style.display=on?'':'none'; t.setAttribute('font-size',(11/Math.max(view.k,.6)).toFixed(2)); t.setAttribute('stroke-width',(3/Math.max(view.k,.6)).toFixed(2)); }); }
+$('#lbl').onchange=updateLabels;
+function pt(ev){ const m=svgEl.getScreenCTM().inverse(); const p=svgEl.createSVGPoint(); p.x=ev.clientX; p.y=ev.clientY; return p.matrixTransform(m); }
+function zoomAt(px,py,f){ const k2=Math.min(8,Math.max(.4,view.k*f)); f=k2/view.k; view.x=px-(px-view.x)*f; view.y=py-(py-view.y)*f; view.k=k2; applyView(); }
+svgEl.addEventListener('wheel',ev=>{ev.preventDefault(); const p=pt(ev); zoomAt(p.x,p.y,ev.deltaY<0?1.15:1/1.15);},{passive:false});
+$('#zin').onclick=()=>zoomAt(VW/2,VH/2,1.3); $('#zout').onclick=()=>zoomAt(VW/2,VH/2,1/1.3);
+let rz=null; addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(Math.abs((svgEl.clientWidth||0)-VW)>40||Math.abs((svgEl.clientHeight||0)-VH)>40) loadLesson(curIdx); },250); });
+$('#fit').onclick=()=>{view={k:1,x:0,y:0}; applyView();};
+const ptrs=new Map(); let pan=null, pinch=null, nodeDrag=null;
+svgEl.addEventListener('pointerdown',ev=>{ ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY}); svgEl.setPointerCapture&&svgEl.setPointerCapture(ev.pointerId);
+  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)}; pan=null; nodeDrag=null; }
+  else if(ptrs.size===1 && !nodeDrag){ const p=pt(ev); pan={sx:p.x,sy:p.y,vx:view.x,vy:view.y,moved:false}; } });
+svgEl.addEventListener('pointermove',ev=>{ if(!ptrs.has(ev.pointerId)) return; ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+  if(pinch && ptrs.size===2){ const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); const c=pt({clientX:(a.x+b.x)/2,clientY:(a.y+b.y)/2}); if(pinch.d>0) zoomAt(c.x,c.y,d/pinch.d); pinch.d=d; return; }
+  if(nodeDrag){ const p=pt(ev); const dx=(p.x-nodeDrag.sx), dy=(p.y-nodeDrag.sy); if(Math.hypot(dx,dy)>3) nodeDrag.moved=true;
+    if(nodeDrag.moved){ moveNode(nodeDrag.n, nodeDrag.nx+dx/view.k, nodeDrag.ny+dy/view.k);} return; }
+  if(pan){ const p=pt(ev); const dx=p.x-pan.sx, dy=p.y-pan.sy; if(Math.hypot(dx,dy)>3) pan.moved=true; view.x=pan.vx+dx; view.y=pan.vy+dy; applyView(); } });
+function endPtr(ev){ ptrs.delete(ev.pointerId); if(ptrs.size<2) pinch=null;
+  if(nodeDrag && ptrs.size===0){ if(!nodeDrag.moved) selectNode(nodeDrag.n.id); nodeDrag=null; }
+  else if(pan && ptrs.size===0){ if(!pan.moved) clearSel(); pan=null; } }
+svgEl.addEventListener('pointerup',endPtr); svgEl.addEventListener('pointercancel',endPtr);
+function enableNodeDrag(g,n){ g.addEventListener('pointerdown',ev=>{ if(ptrs.size>0) return; ev.stopPropagation(); ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY}); svgEl.setPointerCapture&&svgEl.setPointerCapture(ev.pointerId); const p=pt(ev); nodeDrag={n:n,sx:p.x,sy:p.y,nx:n.x,ny:n.y,moved:false}; pan=null; });
+  g.addEventListener('keydown',ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault(); selectNode(n.id);} }); }
+function moveNode(n,x,y){ n.x=x; n.y=y; const sh=n._sh;
+  if(n.k==='concept'){ sh.setAttribute('cx',x); sh.setAttribute('cy',y);} else sh.setAttribute('d',shapePath(n.k,x,y,S));
+  n._g.querySelectorAll('circle:not(.shape)').forEach(c=>{c.setAttribute('cx',x);c.setAttribute('cy',y);});
+  const t=n._g.querySelector('text'); if(t){t.setAttribute('x',x+S+3); t.setAttribute('y',y+4);}
+  cur.edges.forEach(e=>{ if(e._a===n||e._b===n){ const a=e._a,b=e._b; e._g.querySelectorAll('line').forEach(l=>{l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y);});
+      const ar=e._g.querySelector('.arrow'); if(ar){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*9, ty=b.y-uy*9; ar.setAttribute('d','M'+tx+' '+ty+'l'+(-ux*7-uy*3.5)+' '+(-uy*7+ux*3.5)+'l'+(uy*7)+' '+(-ux*7)+'z'); } } }); }
+
+function renderLegend(){
+  const lg=$('#legend'); lg.innerHTML='';
+  const mk=(inner,txt)=>{ const s=el('span'); const v=sv('svg',{viewBox:'0 0 18 14'}); v.innerHTML=inner; s.appendChild(v); s.appendChild(document.createTextNode(txt)); lg.appendChild(s); };
+  mk('<circle cx="9" cy="7" r="5" fill="var(--concept)"/>','concept (khái niệm)');
+  mk('<rect x="4" y="2" width="10" height="10" fill="var(--fact)"/>','fact (sự kiện)');
+  mk('<path d="M9 0L17 7L9 14L1 7z" fill="var(--rule)" stroke="var(--ink)" stroke-width="1.5"/>','rule (quy tắc); dark outline = strict-executable');
+  mk('<path d="M9 1L17 12L1 12z" fill="var(--obj)"/>','learning objective (mục tiêu)');
+  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-rel)" stroke-width="2"/>','typed relation');
+  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-men)" stroke-width="1.5" stroke-dasharray="4 2"/>','mentions concept');
+  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-teach)" stroke-width="2" stroke-dasharray="2 2"/>','teaches');
+}
+function renderInfo(){
+  const l=cur, d=$('#lessoninfo'); d.innerHTML='';
+  d.appendChild(el('h2',{text:l.subject_vi+' ('+l.subject_en+') · '+l.book+' · '+l.heading+(l.heading_en?'  ['+l.heading_en+']':'')}));
+  const t=l.n_by_type;
+  d.appendChild(el('p',{text:fmt(l.n_nodes)+' nodes drawn ('+['concept','fact','rule','objective'].map(k=>(t[k]||0)+' '+k+(k==='concept'||k==='fact'||k==='rule'?'s':'s')).join(', ')+'), '+fmt(l.n_edges)+' edges; '+l.n_strict_rules+' strict-executable rule(s). '+
+    'This lesson has '+fmt(l.nodes_in_lesson)+' supported/not-labelled items with evidence in it; the drawn graph is its largest connected component ('+fmt(l.largest_component)+' nodes; '+l.n_components+' components in total, five largest: '+l.components_sizes_top5.join(', ')+').'+
+    (l.role==='demo'?' This is the demo lesson used in the video; it was not chosen by the selection rule.':' Selected by the rule: largest connected component of at most 150 nodes among the lessons of this subject.')}));
+  const tc=l.text_check, parts=Object.keys(tc).map(k=>k+': '+tc[k].passed+' shown / '+tc[k].failed+' withheld');
+  d.appendChild(el('p',{class:'muted',text:'Verbatim check in this graph: '+parts.join('; ')+'. Withheld = id and pointers only.'}));
+}
+function ptrNode(p){
+  const d=el('div',{class:'ptr'});
+  if(!p.book){ d.appendChild(el('div',{class:'mono',text:p.span})); return d; }
+  d.appendChild(el('div',{text:p.book+(p.lesson?' · '+p.lesson:'')}));
+  d.appendChild(el('div',{text:'printed page '+(p.page||'?')+(p.page?(p.page_verified?' (verified)':' (not verified)'):'')+' · span kind: '+p.kind}));
+  d.appendChild(el('div',{class:'mono',text:p.span})); return d;
+}
+function support(s){ return s==='supported'?'supported (DB label, automatic)':s==='not_labelled'?'not labelled (no support label for this item type in the DB)':s; }
+function resetDetail(){ $('#detail').innerHTML='<h2>Details</h2><p class="muted">Tap or click a node (or an edge) to see its type, id, support label and source pointers.</p>'; }
+function clearSel(){ selId=null; document.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); document.querySelectorAll('.dim').forEach(x=>x.classList.remove('dim')); resetDetail(); }
+function selectNode(id){
+  const n=byId[id]; if(!n) return; selId=id;
+  document.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); n._sh.classList.add('sel');
+  const nb=new Set([id]); cur.edges.forEach(e=>{ if(e.s===id) nb.add(e.t); if(e.t===id) nb.add(e.s); });
+  cur.nodes.forEach(m=>m._g.classList.toggle('dim',!nb.has(m.id))); cur.edges.forEach(e=>e._g&&e._g.classList.toggle('dim',!(e.s===id||e.t===id)));
+  const d=$('#detail'); d.innerHTML='';
+  d.appendChild(el('h2',{text:(n.k==='concept'?(n.label||'(label withheld)'):KNAME[n.k])}));
+  const tg=el('div'); tg.appendChild(el('span',{class:'tag',text:KNAME[n.k]})); if(n.ctype) tg.appendChild(el('span',{class:'tag',text:n.ctype})); if(n.status) tg.appendChild(el('span',{class:'tag',text:n.status}));
+  if(n.k==='rule'){ tg.appendChild(el('span',{class:'tag',text:n.rule.rule_type})); if(n.rule.strict) tg.appendChild(el('span',{class:'tag',text:'strict-executable'})); }
+  d.appendChild(tg);
+  d.appendChild(el('p',{},[el('b',{text:'id '}),el('code',{text:n.id})]));
+  d.appendChild(el('p',{text:'Support: '+support(n.support)+(n.score!==undefined?' · score '+n.score:'')}));
+  if(n.gloss){ d.appendChild(el('p',{class:'muted',text:'EN gloss (machine, unchecked): '+n.gloss})); }
+  if(n.k!=='concept'){
+    if(n.text) d.appendChild(el('p',{text:'Statement: '+n.text}));
+    else d.appendChild(el('div',{class:'warn',text:'Statement text withheld: it is longer than 25 words or shares a run of 8 or more words with its source span (copyright guard). Only id and pointers are shown.'}));
+  } else if(!n.label) d.appendChild(el('div',{class:'warn',text:'Label withheld by the verbatim check; shown by id.'}));
+  if(n.k==='rule'){ d.appendChild(el('p',{},[el('a',{href:'#',text:'open in rule view'})])); d.lastChild.firstChild.onclick=ev=>{ev.preventDefault(); showRuleView(n.id);}; }
+  // neighbours
+  const nbs=[]; cur.edges.forEach(e=>{ if(e.s===id) nbs.push(['→',e,byId[e.t]]); else if(e.t===id) nbs.push(['←',e,byId[e.s]]); });
+  if(nbs.length){ d.appendChild(el('h3',{text:'Links ('+nbs.length+')'})); const ul=el('div');
+    nbs.slice(0,30).forEach(([dir,e,m])=>{ const a=el('div',{class:'muted'}); a.appendChild(document.createTextNode(dir+' '+(e.rt||e.k)+' · ')); const b=el('a',{href:'#',text:(nodeLabel(m)||KNAME[m.k]+' '+m.id.split(':').pop())}); b.onclick=ev=>{ev.preventDefault(); selectNode(m.id);}; a.appendChild(b); ul.appendChild(a); }); d.appendChild(ul); }
+  d.appendChild(el('h3',{text:'Source pointers ('+n.n_spans+' span'+(n.n_spans===1?'':'s')+(n.n_spans>n.spans.length?', first '+n.spans.length+' shown':'')+')'}));
+  n.spans.forEach(s=>d.appendChild(ptrNode(cur.pointers[s]||{span:s})));
+  if(window.matchMedia('(max-width:900px)').matches) d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function showEdge(j){
+  const e=cur.edges[j]; const d=$('#detail'); d.innerHTML='';
+  d.appendChild(el('h2',{text:e.k==='relation'?'relation: '+e.rt:(e.k==='teaches'?'teaches link':(e.k==='mentions'?'fact mentions concept':'rule uses concept'))}));
+  d.appendChild(el('p',{},[el('b',{text:'id '}),el('code',{text:e.id})]));
+  const a=byId[e.s], b=byId[e.t];
+  d.appendChild(el('p',{text:(nodeLabel(a)||KNAME[a.k]+' '+a.id.split(':').pop())+'  →  '+(nodeLabel(b)||KNAME[b.k]+' '+b.id.split(':').pop())}));
+  if(e.support) d.appendChild(el('p',{text:'Support: '+support(e.support)}));
+  else d.appendChild(el('p',{class:'muted',text:'Derived link between two items of this graph (no item of its own).'}));
+  if(e.spans){ d.appendChild(el('h3',{text:'Source pointers ('+e.n_spans+')'})); e.spans.forEach(s=>d.appendChild(ptrNode(cur.pointers[s]||{span:s}))); }
+}
+$('#q').oninput=ev=>{ const v=ev.target.value.trim().toLowerCase(); if(!cur) return;
+  cur.nodes.forEach(n=>{ const hit=!v||((nodeLabel(n)||'').toLowerCase().includes(v)||n.id.toLowerCase().includes(v)); n._g.classList.toggle('dim',!hit); });
+  cur.edges.forEach(e=>e._g&&e._g.classList.toggle('dim',!!v)); if(!v){ document.querySelectorAll('.dim').forEach(x=>x.classList.remove('dim')); } };
+
+// ---------- rule view ----------
+function atomRows(title,arr){
+  const w=el('div'); w.appendChild(el('h3',{text:title+' ('+arr.length+')'})); const box=el('div',{class:'atoms'});
+  if(!arr.length) box.appendChild(el('div',{class:'muted',text:'(none)'}));
+  arr.forEach((a,i)=>{ const r=el('div'); r.appendChild(el('code',{text:(a.neg?'NOT ':'')+a.pred+'('+a.args.map(x=>x===null?'(arg withheld)':x).join(', ')+')'}));
+    r.appendChild(el('div',{class:'muted',text:a.text?'text: '+a.text:'text withheld (verbatim check)'})); box.appendChild(r); });
+  w.appendChild(box); return w; }
+function ruleCard(r, ptrs, label){
+  const c=el('div',{class:'rulecard'});
+  c.appendChild(el('h2',{text:label}));
+  const tg=el('div'); tg.appendChild(el('span',{class:'tag',text:'rule_type: '+r.rule_type})); tg.appendChild(el('span',{class:'tag',text:'status: '+r.status})); tg.appendChild(el('span',{class:'tag',text:'strict_executable: '+(r.strict?'1':'0')})); c.appendChild(tg);
+  c.appendChild(atomRows('premises (rule_premises)',r.premises)); c.appendChild(atomRows('guards (rule_guards)',r.guards));
+  c.appendChild(atomRows('conclusions (rule_conclusions)',r.conclusions)); c.appendChild(atomRows('exceptions (rule_exceptions)',r.exceptions));
+  c.appendChild(el('h3',{text:'formula'})); c.appendChild(el('div',{},[el('code',{text:r.formula?r.formula:(r.has_formula?'(formula withheld by the verbatim check)':'(none stored)')})]));
+  const vk=Object.keys(r.variables||{}); c.appendChild(el('h3',{text:'variables ('+vk.length+')'}));
+  if(vk.length){ const t=el('div'); vk.forEach(k=>{ const v=r.variables[k]; t.appendChild(el('div',{},[el('code',{text:k+' → '+(v===null?'(description withheld)':v)})])); }); c.appendChild(t); } else c.appendChild(el('div',{class:'muted',text:'(none)'}));
+  return c; }
+function renderRules(){
+  const box=$('#rulelist'); box.innerHTML='';
+  if($('#rulesrc').value==='lesson'){
+    const rs=cur.nodes.filter(n=>n.k==='rule').sort((a,b)=>(b.rule.strict-a.rule.strict)||(a.id<b.id?-1:1));
+    box.appendChild(el('p',{class:'muted',text:cur.subject_vi+' ('+cur.subject_en+'): '+rs.length+' supported rule(s) in this graph, '+cur.n_strict_rules+' strict-executable.'}));
+    rs.forEach(n=>{ const c=ruleCard(n.rule,cur.pointers,n.id); c.id='rv-'+n.id.replace(/[^a-z0-9]/gi,'_'); c.appendChild(el('h3',{text:'evidence spans ('+n.n_spans+')'})); n.spans.forEach(s=>c.appendChild(ptrNode(cur.pointers[s]||{span:s}))); box.appendChild(c); });
+  } else {
+    APP.gallery.forEach(r=>{ const c=ruleCard(r,r.pointers,r.subject+' · '+r.id); c.appendChild(el('h3',{text:'evidence spans ('+r.n_spans+')'})); r.spans.forEach(s=>c.appendChild(ptrNode(r.pointers[s]||{span:s}))); box.appendChild(c); });
+    box.insertBefore(el('p',{class:'muted',text:'Gallery rule: for each subject, the first two strict-executable, supported rules in order (rules with a formula first, then by id).'}),box.firstChild);
+  }
+}
+$('#rulesrc').onchange=renderRules;
+function showRuleView(id){ $('#rulesrc').value='lesson'; document.querySelector('[data-tab=rules]').click(); const c=document.getElementById('rv-'+id.replace(/[^a-z0-9]/gi,'_')); if(c) c.scrollIntoView({behavior:'smooth'}); }
+
+// ---------- stats ----------
+function table(head,rows,cls){ const t=el('table'); const th=el('tr'); head.forEach((h,i)=>th.appendChild(el('th',{class:(cls&&cls[i])||'',text:h}))); t.appendChild(th); rows.forEach(r=>{ const tr=el('tr'); r.forEach((c,i)=>{ const td=el('td',{class:(cls&&cls[i])||''}); if(c instanceof Node) td.appendChild(c); else td.textContent=c; tr.appendChild(td); }); t.appendChild(tr); }); return t; }
+function renderStats(){
+  const S=APP.stats, b=$('#statsbody'); b.innerHTML='';
+  let c=el('div',{class:'card'}); c.appendChild(el('h2',{text:'Whole ontology (frozen v1 database)'}));
+  c.appendChild(el('p',{class:'muted',text:'Read from '+S.db+' with a read-only connection; build id '+S.build_id+'. '+fmt(S.counts.books)+' books, '+fmt(S.counts.spans_in_parsed_books)+' source spans.'}));
+  const rows=S.comparison.map(r=>[r.item.replace(/_/g,' '),fmt(r.paper),fmt(r.db),el('span',{class:r.equal?'ok':'no',text:r.equal?'equal':'DIFFERENT'})]);
+  c.appendChild(table(['item','paper (method.tex)','this DB','check'],rows,['','n','n','']));
+  const allEq=S.comparison.every(r=>r.equal);
+  c.appendChild(el('p',{text:allEq?'All eight counts quoted in the paper equal the counts in the database.':'Some counts differ from the paper; the DB numbers are shown.'}));
+  c.appendChild(el('p',{class:'muted',text:'Additional: '+fmt(S.counts.pedagogical_links)+' pedagogical (teaches) links.'}));
+  b.appendChild(c);
+  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Support labels (automatic; Qwen3-8B plus lexical overlap; not human verification)'}));
+  const lab=['supported','partially_supported','unsupported'];
+  c.appendChild(table(['item type','supported','partially','unsupported'],[['concepts','concepts'],['relations','semantic_relations'],['facts','facts'],['rules','rules']].map(([n,k])=>[n,fmt(S.support[k].supported||0),fmt(S.support[k].partially_supported||0),fmt(S.support[k].unsupported||0)]),['','n','n','n']));
+  c.appendChild(el('p',{class:'muted',text:'The explorer draws supported items only. Strict-executable rules by label: '+Object.keys(S.strict_executable_support).map(k=>k+' '+S.strict_executable_support[k]).join(', ')+'.'}));
+  b.appendChild(c);
+  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Evidence links and rejected items'}));
+  const mx=Math.max(...Object.values(S.evidence_by_kind));
+  c.appendChild(table(['evidence links to spans, by item kind','n',''],Object.entries(S.evidence_by_kind).map(([k,v])=>[k,fmt(v),el('div',{class:'bar',style:'width:'+(v/mx*100)+'%'})]),['','n','']));
+  const mr=Math.max(...Object.values(S.rejected_by_reason));
+  c.appendChild(el('h3',{text:'Rejected items ('+fmt(S.counts.rejected)+') by reason'}));
+  c.appendChild(table(['reason','n',''],Object.entries(S.rejected_by_reason).map(([k,v])=>[k,fmt(v),el('div',{class:'bar',style:'width:'+(v/mr*100)+'%'})]),['','n','']));
+  c.appendChild(el('p',{class:'muted',text:'By item kind: '+Object.entries(S.rejected_by_kind).map(([k,v])=>k+' '+fmt(v)).join(', ')+'.'}));
+  b.appendChild(c);
+  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'By subject (all labels)'}));
+  c.appendChild(table(['subject','concepts','facts','rules','objectives'],Object.entries(S.by_subject).map(([k,v])=>[k,fmt(v.concepts),fmt(v.facts),fmt(v.rules),fmt(v.objectives)]),['','n','n','n','n']));
+  c.appendChild(el('h3',{text:'Rules by type'})); c.appendChild(table(['rule_type','rules','strict-executable'],S.rules_by_type.map(r=>[r.rule_type,fmt(r.n),fmt(r.strict_executable)]),['','n','n']));
+  b.appendChild(c);
+  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Copyright guard: statements shown vs withheld'}));
+  c.appendChild(el('p',{class:'muted',text:'A statement is shown only if it has at most 25 words and shares no run of 8 consecutive words with any evidence span.'}));
+  const sh=S.verbatim_check_shipped; c.appendChild(table(['in the 7 lesson graphs','shown','withheld'],Object.entries(sh).map(([k,v])=>[k,fmt(v.passed),fmt(v.failed)]),['','n','n']));
+  const wh=S.verbatim_check_whole_supported; c.appendChild(el('h3',{text:'All supported items of the whole ontology (reference)'})); c.appendChild(table(['kind','pass','fail'],Object.entries(wh).map(([k,v])=>[k,fmt(v.passed),fmt(v.failed)]),['','n','n']));
+  b.appendChild(c);
+}
+function renderAbout(){
+  const b=$('#aboutbody'); b.innerHTML=''; const c=el('div',{class:'card'});
+  c.appendChild(el('h2',{text:'Legend and English glosses'}));
+  c.appendChild(table(['Vietnamese','English gloss'],[['Vật lí / Hóa học / Sinh học','Physics / Chemistry / Biology'],['Lịch sử / Địa lí / Ngữ văn','History / Geography / Literature'],['Bài','lesson'],['Chương','chapter'],['khái niệm','concept'],['sự kiện','fact'],['quy tắc','rule'],['mục tiêu / yêu cầu cần đạt','learning objective / required outcome'],['Không đủ căn cứ trong sách','not enough evidence in the book']]));
+  c.appendChild(el('h3',{text:'Lessons shown'}));
+  c.appendChild(table(['subject','lesson (book heading)','English gloss of heading'],APP.lessons.map(l=>[l.subject_vi+' ('+l.subject_en+')',l.book+' · '+l.heading,l.heading_en||'(none)'])));
+  c.appendChild(el('p',{class:'muted',text:'Heading glosses are written by the authors of this page and are not stored in the database. Concept names are the textbook\'s Vietnamese terms and are shown untranslated'+(APP.gloss_on?'; an English gloss that appears in the details panel is machine-generated and unchecked.':'.')}));
+  c.appendChild(el('h3',{text:'What the page shows'}));
+  const ul=el('ul'); ['Only items labelled supported by the database are drawn; partially supported and unsupported items are excluded. The label is automatic (a second model plus lexical overlap), not a human check.',
+   'Learning objectives and teaches links have no support label in the database and are marked not labelled.',
+   'Lessons are chosen by a fixed rule: the lesson with the largest connected component of at most 150 nodes in each subject (plus one demo lesson).',
+   'No textbook passage is published. Statements are shown only if short and not copied (25 words or fewer, no 8-word run shared with the source). Source pointers give book, lesson heading, printed page and span id so that the passage can be opened in the book.',
+   'Node positions are precomputed with a force-directed layout (Fruchterman-Reingold, fixed seed); you can drag nodes.','Research prototype. This page illustrates the structure of the ontology; it makes no claim about accuracy (see the paper).'].forEach(t=>ul.appendChild(el('li',{text:t}))); c.appendChild(ul);
+  c.appendChild(el('p',{class:'muted',text:'Selection rule detail and the numbers behind the page: viz/README.md, viz/data/selection.json.'}));
+  b.appendChild(c); }
+renderStats(); renderAbout(); loadLesson(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+{
+ "meta": {
+  "generator": "scripts/release/viz_build_explorer.py",
+  "ontology": "data/ontology/ontology.sqlite3 (v1, frozen)",
+  "build_id": "onto-20261026T023553-main",
+  "support_policy": "Only items labelled 'supported' by the DB are drawn. partially_supported / unsupported items are excluded. Objectives and 'teaches' links have no support label in the DB and are marked not_labelled.",
+  "copyright_policy": "No textbook passage is published; statements are kept only if <= 25 words and no run of 8 words shared with an evidence span, otherwise only ids and pointers are kept."
+ },
+ "rules": [
+  {
+   "id": "physics:rule:0189c276d438",
+   "subject": "physics",
+   "rule_type": "conditional",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.7854,
+   "n_spans": 3,
+   "spans": [
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u006",
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u007",
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u008"
+   ],
+   "premises": [
+    {
+     "pred": "standing_wave_condition_fixed_ends",
+     "args": [
+      "physics:c:day_co_hai_dau_co_dinh"
+     ],
+     "neg": false,
+     "text": "dây có hai đầu cố định"
+    }
+   ],
+   "guards": [
+    {
+     "pred": "standing_wave_condition_fixed_ends",
+     "args": [
+      "physics:c:day_co_hai_dau_co_dinh"
+     ],
+     "neg": false,
+     "text": "dây có hai đầu cố định"
+    }
+   ],
+   "conclusions": [
+    {
+     "pred": "standing_wave_condition_fixed_ends",
+     "args": [
+      "physics:c:chieu_dai_day"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "formula": "L = n * λ / 2",
+   "has_formula": true,
+   "variables": {
+    "L": "physics:c:chieu_dai_day",
+    "λ": "physics:c:buoc_song",
+    "n": "physics:c:so_nguyen"
+   },
+   "pointers": {
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u006": {
+     "span": "nxbgd_g11_physics_ce4cc7d0:p0054:u006",
+     "book": "Vật lí 11",
+     "book_id": "nxbgd_g11_physics_ce4cc7d0",
+     "lesson": "Bài 13 SÓNG DỪNG",
+     "page": "53",
+     "page_verified": true,
+     "kind": "paragraph"
+    },
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u007": {
+     "span": "nxbgd_g11_physics_ce4cc7d0:p0054:u007",
+     "book": "Vật lí 11",
+     "book_id": "nxbgd_g11_physics_ce4cc7d0",
+     "lesson": "Bài 13 SÓNG DỪNG",
+     "page": "53",
+     "page_verified": true,
+     "kind": "formula"
+    },
+    "nxbgd_g11_physics_ce4cc7d0:p0054:u008": {
+     "span": "nxbgd_g11_physics_ce4cc7d0:p0054:u008",
+     "book": "Vật lí 11",
+     "book_id": "nxbgd_g11_physics_ce4cc7d0",
+     "lesson": "Bài 13 SÓNG DỪNG",
+     "page": "53",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "physics:rule:06fedeac74b0",
+   "subject": "physics",
+   "rule_type": "formula",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.6186,
+   "n_spans": 2,
+   "spans": [
+    "nxbgd_g11_physics_ce4cc7d0:p0008:u008",
+    "nxbgd_g11_physics_ce4cc7d0:p0008:u009"
+   ],
+   "premises": [
+    {
+     "pred": "object_undergoes_simple_harmonic_oscillation",
+     "args": [
+      "physics:c:vat"
+     ],
+     "neg": false,
+     "text": "vật dao động điều hoà"
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "displacement_follows_sinusoidal_function",
+     "args": [
+      "physics:c:li_do"
+     ],
+     "neg": false,
+     "text": "li độ x = A cos(ωt + φ)"
+    }
+   ],
+   "exceptions": [],
+   "formula": "x = A*cos(ωt + φ)",
+   "has_formula": true,
+   "variables": {
+    "x": "physics:c:li_do",
+    "A": "physics:c:bien_do",
+    "ω": "physics:c:tan_so_goc",
+    "t": "physics:c:thoi_gian",
+    "φ": "physics:c:pha_ban_dau"
+   },
+   "pointers": {
+    "nxbgd_g11_physics_ce4cc7d0:p0008:u008": {
+     "span": "nxbgd_g11_physics_ce4cc7d0:p0008:u008",
+     "book": "Vật lí 11",
+     "book_id": "nxbgd_g11_physics_ce4cc7d0",
+     "lesson": "Bài 1 DAO ĐỘNG ĐIỀU HOÀ",
+     "page": "7",
+     "page_verified": true,
+     "kind": "formula"
+    },
+    "nxbgd_g11_physics_ce4cc7d0:p0008:u009": {
+     "span": "nxbgd_g11_physics_ce4cc7d0:p0008:u009",
+     "book": "Vật lí 11",
+     "book_id": "nxbgd_g11_physics_ce4cc7d0",
+     "lesson": "Bài 1 DAO ĐỘNG ĐIỀU HOÀ",
+     "page": "7",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "chemistry:rule:0817b41c52e0",
+   "subject": "chemistry",
+   "rule_type": "formula",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.6856,
+   "n_spans": 2,
+   "spans": [
+    "nxbgd_g12_chemistry_496de71d:p0016:u008",
+    "nxbgd_g12_chemistry_496de71d:p0016:u009"
+   ],
+   "premises": [
+    {
+     "pred": "fatty_acid_triglyceride_reacts_with_sodium_hydroxide",
+     "args": [
+      "chemistry:c:chat_beo",
+      "chemistry:c:naoh"
+     ],
+     "neg": false,
+     "text": "chất béo + NaOH (đặc) → glycerol + muối sodium của acid béo"
+    }
+   ],
+   "guards": [
+    {
+     "pred": "high_temperature",
+     "args": [],
+     "neg": false,
+     "text": "đun nóng"
+    }
+   ],
+   "conclusions": [
+    {
+     "pred": "soap_production_reaction",
+     "args": [
+      "chemistry:c:xa_phong"
+     ],
+     "neg": false,
+     "text": "muối sodium của acid béo được tạo thành"
+    }
+   ],
+   "exceptions": [],
+   "formula": "Chất béo + NaOH → Glycerol + Muối sodium của acid béo",
+   "has_formula": true,
+   "variables": {
+    "Chất béo": "chemistry:c:chat_beo",
+    "NaOH": "chemistry:c:dung_dich_naoh",
+    "Glycerol": "glycerol",
+    "Muối sodium của acid béo": "chemistry:c:muoi_sodium_cua_acid_beo"
+   },
+   "pointers": {
+    "nxbgd_g12_chemistry_496de71d:p0016:u008": {
+     "span": "nxbgd_g12_chemistry_496de71d:p0016:u008",
+     "book": "Hóa học 12",
+     "book_id": "nxbgd_g12_chemistry_496de71d",
+     "lesson": "BÀI 2 XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+     "page": "15",
+     "page_verified": true,
+     "kind": "paragraph"
+    },
+    "nxbgd_g12_chemistry_496de71d:p0016:u009": {
+     "span": "nxbgd_g12_chemistry_496de71d:p0016:u009",
+     "book": "Hóa học 12",
+     "book_id": "nxbgd_g12_chemistry_496de71d",
+     "lesson": "BÀI 2 XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+     "page": "15",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "chemistry:rule:131eb2397986",
+   "subject": "chemistry",
+   "rule_type": "formula",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.6734,
+   "n_spans": 1,
+   "spans": [
+    "nxbgd_g12_chemistry_496de71d:p0017:u005"
+   ],
+   "premises": [
+    {
+     "pred": "alkane_processed_into_fatty_acid",
+     "args": [
+      "alkane"
+     ],
+     "neg": false,
+     "text": "alkane (lấy từ dầu mỏ) → acid béo"
+    },
+    {
+     "pred": "fatty_acid_processed_into_sodium_salt",
+     "args": [
+      "chemistry:c:acid_beo"
+     ],
+     "neg": false,
+     "text": "acid béo → muối sodium của acid béo"
+    }
+   ],
+   "guards": [
+    {
+     "pred": "soap_production_from_petroleum",
+     "args": [],
+     "neg": false,
+     "text": "xà phòng được sản xuất từ dầu mỏ"
+    }
+   ],
+   "conclusions": [
+    {
+     "pred": "soap_production_from_petroleum",
+     "args": [
+      "chemistry:c:xa_phong"
+     ],
+     "neg": false,
+     "text": "xà phòng được sản xuất từ dầu mỏ"
+    }
+   ],
+   "exceptions": [],
+   "formula": "Alkane → Acid béo → Muối sodium của acid béo",
+   "has_formula": true,
+   "variables": {
+    "Alkane": "alkane",
+    "Acid béo": "chemistry:c:acid_beo",
+    "Muối sodium của acid béo": "chemistry:c:muoi_sodium_cua_acid_beo"
+   },
+   "pointers": {
+    "nxbgd_g12_chemistry_496de71d:p0017:u005": {
+     "span": "nxbgd_g12_chemistry_496de71d:p0017:u005",
+     "book": "Hóa học 12",
+     "book_id": "nxbgd_g12_chemistry_496de71d",
+     "lesson": "BÀI 2 XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+     "page": "16",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "biology:rule:a4f58b75cf83",
+   "subject": "biology",
+   "rule_type": "formula",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.9495,
+   "n_spans": 3,
+   "spans": [
+    "nxbgd_g12_biology_bf61f7ef:p0093:u008",
+    "nxbgd_g12_biology_bf61f7ef:p0094:u001",
+    "nxbgd_g12_biology_bf61f7ef:p0094:u002"
+   ],
+   "premises": [
+    {
+     "pred": "random_mating",
+     "args": [
+      "biology:c:quan_the"
+     ],
+     "neg": false,
+     "text": "quần thể là ngẫu phối"
+    },
+    {
+     "pred": "large_population",
+     "args": [
+      "biology:c:quan_the"
+     ],
+     "neg": false,
+     "text": "quần thể có kích thước lớn"
+    },
+    {
+     "pred": "no_mutation",
+     "args": [
+      "biology:c:quan_the"
+     ],
+     "neg": false,
+     "text": "đột biến không xảy ra"
+    },
+    {
+     "pred": "equal_reproductive_success",
+     "args": [
+      "các cá thể"
+     ],
+     "neg": false,
+     "text": null
+    },
+    {
+     "pred": "genetic_isolation",
+     "args": [
+      "biology:c:quan_the"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "hardy_weinberg_equilibrium",
+     "args": [
+      "biology:c:quan_the"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "formula": null,
+   "has_formula": true,
+   "variables": {
+    "p": "tần số allele A",
+    "q": "tần số allele a"
+   },
+   "pointers": {
+    "nxbgd_g12_biology_bf61f7ef:p0093:u008": {
+     "span": "nxbgd_g12_biology_bf61f7ef:p0093:u008",
+     "book": "Sinh học 12",
+     "book_id": "nxbgd_g12_biology_bf61f7ef",
+     "lesson": "BÀI 18 DI TRUYỀN HỌC QUẦN THỂ",
+     "page": "92",
+     "page_verified": true,
+     "kind": "paragraph"
+    },
+    "nxbgd_g12_biology_bf61f7ef:p0094:u001": {
+     "span": "nxbgd_g12_biology_bf61f7ef:p0094:u001",
+     "book": "Sinh học 12",
+     "book_id": "nxbgd_g12_biology_bf61f7ef",
+     "lesson": "BÀI 18 DI TRUYỀN HỌC QUẦN THỂ",
+     "page": "93",
+     "page_verified": true,
+     "kind": "formula"
+    },
+    "nxbgd_g12_biology_bf61f7ef:p0094:u002": {
+     "span": "nxbgd_g12_biology_bf61f7ef:p0094:u002",
+     "book": "Sinh học 12",
+     "book_id": "nxbgd_g12_biology_bf61f7ef",
+     "lesson": "BÀI 18 DI TRUYỀN HỌC QUẦN THỂ",
+     "page": "93",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "biology:rule:fc9335551f77",
+   "subject": "biology",
+   "rule_type": "formula",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.8094,
+   "n_spans": 2,
+   "spans": [
+    "nxbgd_g11_biology_d3489896:p0027:u006",
+    "nxbgd_g11_biology_d3489896:p0027:u008"
+   ],
+   "premises": [
+    {
+     "pred": "light_absorbed_by_chloroplasts",
+     "args": [
+      "biology:c:luc_lap"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "conversion_of_co2_and_water_to_glucose_and_oxygen",
+     "args": [
+      "biology:c:co2",
+      "biology:c:nuoc"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "formula": "6 CO₂ + 12 H₂O → C₆H₁₂O₆ + 6 O₂ + 6 H₂O",
+   "has_formula": true,
+   "variables": {
+    "CO₂": "carbon dioxide",
+    "H₂O": "biology:c:nuoc",
+    "C₆H₁₂O₆": "biology:c:glucose",
+    "O₂": "biology:c:oxygen"
+   },
+   "pointers": {
+    "nxbgd_g11_biology_d3489896:p0027:u006": {
+     "span": "nxbgd_g11_biology_d3489896:p0027:u006",
+     "book": "Sinh học 11",
+     "book_id": "nxbgd_g11_biology_d3489896",
+     "lesson": "BÀI 4 QUANG HỢP Ở THỰC VẬT",
+     "page": "26",
+     "page_verified": true,
+     "kind": "paragraph"
+    },
+    "nxbgd_g11_biology_d3489896:p0027:u008": {
+     "span": "nxbgd_g11_biology_d3489896:p0027:u008",
+     "book": "Sinh học 11",
+     "book_id": "nxbgd_g11_biology_d3489896",
+     "lesson": "BÀI 4 QUANG HỢP Ở THỰC VẬT",
+     "page": "26",
+     "page_verified": true,
+     "kind": "formula"
+    }
+   }
+  },
+  {
+   "id": "geography:rule:0252299c4ca6",
+   "subject": "geography",
+   "rule_type": "conditional",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.9643,
+   "n_spans": 1,
+   "spans": [
+    "nxbgd_g10_geography_f7f9d596:p0042:u009"
+   ],
+   "premises": [
+    {
+     "pred": "earth_sun_moon_aligned",
+     "args": [
+      "Mặt Trời",
+      "Mặt Trăng",
+      "geography:c:trai_dat"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "tidal_amplitude_maximizes",
+     "args": [
+      "geography:c:thuy_trieu"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "variables": {},
+   "pointers": {
+    "nxbgd_g10_geography_f7f9d596:p0042:u009": {
+     "span": "nxbgd_g10_geography_f7f9d596:p0042:u009",
+     "book": "Địa lí 10",
+     "book_id": "nxbgd_g10_geography_f7f9d596",
+     "lesson": "BÀI 12 NƯỚC BIỂN VÀ ĐẠI DƯƠNG",
+     "page": "42",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "geography:rule:04250e364633",
+   "subject": "geography",
+   "rule_type": "conditional",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.95,
+   "n_spans": 1,
+   "spans": [
+    "nxbgd_g12_geography_d7554213:p0081:u001"
+   ],
+   "premises": [
+    {
+     "pred": "location_has_local_ingredients",
+     "args": [
+      "geography:c:thanh_pho_ho_chi_minh",
+      "geography:c:ha_noi",
+      "geography:c:dong_nai",
+      "geography:c:hai_phong",
+      "geography:c:da_nang",
+      "geography:c:can_tho"
+     ],
+     "neg": false,
+     "text": "các địa phương có nguồn nguyên liệu tại chỗ"
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "food_processing_industry_is_widely_distributed",
+     "args": [
+      null
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "variables": {},
+   "pointers": {
+    "nxbgd_g12_geography_d7554213:p0081:u001": {
+     "span": "nxbgd_g12_geography_d7554213:p0081:u001",
+     "book": "Địa lí 12",
+     "book_id": "nxbgd_g12_geography_d7554213",
+     "lesson": "BÀI 17 MỘT SỐ NGÀNH CÔNG NGHIỆP",
+     "page": "80",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "literature:rule:01d45ea92392",
+   "subject": "literature",
+   "rule_type": "definitional",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.8336,
+   "n_spans": 1,
+   "spans": [
+    "nxbgd_g12_literature_2594fbd3:p0058:u008"
+   ],
+   "premises": [
+    {
+     "pred": "structure_comparison",
+     "args": [
+      "literature:c:hai_bai_tho"
+     ],
+     "neg": false,
+     "text": "triển khai nội dung so sánh, đánh giá theo nhiều cách trình bày"
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "comparison_methods",
+     "args": [
+      "literature:c:hai_bai_tho"
+     ],
+     "neg": false,
+     "text": "có thể triển khai theo cách 1, 2 hoặc 3"
+    }
+   ],
+   "exceptions": [],
+   "variables": {},
+   "pointers": {
+    "nxbgd_g12_literature_2594fbd3:p0058:u008": {
+     "span": "nxbgd_g12_literature_2594fbd3:p0058:u008",
+     "book": "Ngữ văn 12, tập một",
+     "book_id": "nxbgd_g12_literature_2594fbd3",
+     "lesson": "Bài 2 NHỮNG THẾ GIỚI THƠ",
+     "page": "57",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  },
+  {
+   "id": "literature:rule:0830c2065d9d",
+   "subject": "literature",
+   "rule_type": "definitional",
+   "status": "explicit_rule",
+   "strict": true,
+   "support": "supported",
+   "score": 0.9688,
+   "n_spans": 1,
+   "spans": [
+    "nxbgd_g12_literature_2594fbd3:p0058:u003"
+   ],
+   "premises": [
+    {
+     "pred": "evaluate_poems",
+     "args": [
+      "literature:c:hai_bai_tho"
+     ],
+     "neg": false,
+     "text": "đánh giá giá trị của mỗi bài thơ"
+    }
+   ],
+   "guards": [],
+   "conclusions": [
+    {
+     "pred": "poems_value_and_appeal",
+     "args": [
+      "literature:c:hai_bai_tho"
+     ],
+     "neg": false,
+     "text": null
+    }
+   ],
+   "exceptions": [],
+   "variables": {},
+   "pointers": {
+    "nxbgd_g12_literature_2594fbd3:p0058:u003": {
+     "span": "nxbgd_g12_literature_2594fbd3:p0058:u003",
+     "book": "Ngữ văn 12, tập một",
+     "book_id": "nxbgd_g12_literature_2594fbd3",
+     "lesson": "Bài 2 NHỮNG THẾ GIỚI THƠ",
+     "page": "57",
+     "page_verified": true,
+     "kind": "paragraph"
+    }
+   }
+  }
+ ]
+}

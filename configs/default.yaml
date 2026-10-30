@@ -1,0 +1,30 @@
+# Local OpenAI-compatible vLLM endpoints (served from conda env `vl`, vLLM 0.11.2).
+# Phase B layout; adapt ports and GPU placement to your machine.
+llm:
+  main:        # builder extraction + OTTER agents (primary backbone)
+    base_url: http://127.0.0.1:8004/v1
+    model: Qwen/Qwen3-32B
+    enable_thinking: false
+  small:       # second backbone (scaling / weaker-model study)
+    base_url: http://127.0.0.1:8001/v1
+    model: Qwen/Qwen3-8B
+    enable_thinking: false
+  index:       # 2nd Qwen3-32B-FP8 replica (GPU2, TP=1) optional second replica for parallel runs
+    base_url: http://127.0.0.1:8005/v1
+    model: Qwen/Qwen3-32B
+    enable_thinking: false
+embedding:
+  base_url: http://127.0.0.1:8002/v1
+  model: BAAI/bge-m3
+paths:
+  db: data/textbooks/ontology.sqlite3
+  ontology_db: data/ontology/ontology.sqlite3   # WS2 ontology tables (provenance stays in `db`)
+  parsed: data/textbooks/parsed
+  registry: data/textbooks/registry
+  benchmark: benchmarks/vieduhop_v2/vieduhop_all.jsonl
+  runs: runs
+budgets:
+  max_subagents: 4
+  max_depth: 3
+  max_replan_rounds: 2
+  max_tool_calls_per_subagent: 8

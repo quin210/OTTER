@@ -1,0 +1,14 @@
+# Frozen OTTER v2 configuration (dev-selected; see docs/OTTER_V2_DESIGN.md). Passed as get_system("otter_v2", **flags)
+# or  scripts/eval/run.py --system otter_v2 [--flag abstention=true --flag abstain_below=3]
+system: otter_v2
+backbone: main            # Qwen3-32B (FP8) generator
+verifier_role: small      # Qwen3-8B, a different model checks every claim against its cited spans
+retrieval: {top_k_question: 6, top_k_option: 3, max_spans: 10, span_chars: 700, hint_facts: 4, ontology_spans: 2}
+router: {cascade: true, gap_level: 2, verify_trigger: true}   # gap round if generator level < gap_level, or (v2.1, see design changelog) >=2 options entailed / verifier rejects the answer
+claims: {max_claims: 3}
+calc_delegate: true       # calculation items -> otter_full (deterministic calculator)
+operating_points:
+  answer_always: {abstention: false}                    # MCQ accuracy table; grounding level is reported per answer
+  calibrated_abstain: {abstention: true, abstain_below: 3}   # OTTER-Abstain; tau=2 is the high-precision/low-recall point
+ablation_flags: [no_option_queries, no_option_obligations, no_router, no_gap_round, no_verified_citation,
+                 no_abstention, no_ontology_hints, no_calc_delegate]

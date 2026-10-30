@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTTER: Verifiable Multihop Reasoning over Educational Ontology for Vietnamese Education</title>
+<meta name="description" content="OTTER answers Vietnamese school-textbook questions and points to the book page that supports the answer, or says the book does not say. Code, demo video, ontology explorer and the ViEduHop benchmark.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<meta property="og:title" content="OTTER: Verifiable Multihop Reasoning over Educational Ontology for Vietnamese Education">
+<meta property="og:description" content="Verifiable multihop reasoning over an Educational Ontology for Vietnamese education.">
+<meta property="og:image" content="assets/otter.png">
+<style>
+:root{
+  --bg:#f4fbff; --bg2:#fff8ec; --card:#ffffff; --ink:#4a3426; --muted:#6f5a4b;
+  --brown:#7b5b45; --cream:#fdd9a5; --sun:#ffd25e; --coral:#ff8f6b; --teal:#25b5a1; --teal-d:#0f766f;
+  --sky:#dff3ff; --mint:#d7f5e9; --peach:#ffe7d6; --line:#ead9c6;
+  --radius:22px; --shadow:0 10px 30px rgba(123,91,69,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:linear-gradient(180deg,var(--sky) 0,var(--bg) 340px,var(--bg2) 100%);
+  font:17px/1.65 "Nunito","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--teal-d);text-underline-offset:3px}
+a:hover{color:#0a5651}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.15;color:var(--brown);margin:0 0 .5em}
+h2{font-size:clamp(1.6rem,3.4vw,2.1rem);display:flex;align-items:center;gap:.5em}
+h2 .dot{width:14px;height:14px;border-radius:50%;background:var(--coral);box-shadow:20px 0 0 var(--sun),40px 0 0 var(--teal);margin-right:44px;flex:none}
+h3{font-size:1.15rem}
+p{margin:.4em 0 1em}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.nav{position:sticky;top:0;z-index:20;background:rgba(244,251,255,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:56px;overflow-x:auto;white-space:nowrap}
+.nav a{text-decoration:none;font-weight:700;color:var(--brown);font-size:.95rem}
+.nav a:hover{color:var(--teal-d)}
+.nav .brand{display:flex;align-items:center;gap:8px;font-size:1.15rem;margin-right:auto}
+.nav .brand img{width:32px;height:32px}
+.hero{position:relative;overflow:hidden;padding:46px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,7vw,4.4rem);letter-spacing:-.02em;margin-bottom:.15em}
+.hero h1 span{color:var(--teal-d)}
+.subtitle{font-size:clamp(1.25rem,2.8vw,1.75rem);font-weight:800;color:var(--brown);line-height:1.25;margin:0 0 .6em;max-width:24em}
+.tag{font-size:clamp(1.1rem,2.2vw,1.4rem);color:var(--muted);max-width:34em}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:800;text-decoration:none;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn.p{background:var(--teal);color:#06302c}
+.btn.s{background:var(--sun);color:#4a3426}
+.btn.o{background:#fff;border-color:var(--line);color:var(--brown)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:.92rem;color:var(--brown)}
+.mascot{position:relative;display:grid;place-items:center}
+.mascot .blob{position:absolute;width:88%;aspect-ratio:1;border-radius:46% 54% 58% 42%/48% 44% 56% 52%;background:linear-gradient(135deg,var(--mint),var(--peach));box-shadow:var(--shadow)}
+.mascot img{position:relative;width:min(78%,300px);animation:bob 4.5s ease-in-out infinite;filter:drop-shadow(0 12px 12px rgba(123,91,69,.25))}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1.5deg)}}
+.bub{position:absolute;border-radius:50%;background:rgba(255,255,255,.75);border:2px solid #bfe7f7;animation:rise 7s ease-in infinite}
+.bub:nth-child(1){left:6%;bottom:-20px;width:26px;height:26px}
+.bub:nth-child(2){left:18%;bottom:-20px;width:14px;height:14px;animation-delay:2s}
+.bub:nth-child(3){right:10%;bottom:-20px;width:30px;height:30px;animation-delay:1s}
+.bub:nth-child(4){right:24%;bottom:-20px;width:16px;height:16px;animation-delay:3.5s}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-360px);opacity:0}}
+.wave{position:absolute;left:0;right:0;bottom:-1px;height:70px;width:100%}
+section{padding:54px 0}
+section.alt{background:linear-gradient(180deg,#fff 0,var(--bg2) 100%)}
+.grid{display:grid;gap:18px}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.card .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.5rem;margin-bottom:10px}
+.i1{background:var(--sky)}.i2{background:var(--peach)}.i3{background:var(--mint)}.i4{background:#fff1c2}
+.num{font-size:2rem;font-weight:900;color:var(--teal-d);line-height:1}
+.lab{color:var(--muted);font-weight:700;font-size:.92rem}
+.video{border-radius:var(--radius);overflow:hidden;border:6px solid #fff;box-shadow:var(--shadow);background:#101820}
+.video video{display:block;width:100%;height:auto}
+.steps{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin:18px 0}
+.step{flex:1 1 140px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px;text-align:center;position:relative}
+.step b{display:block;color:var(--brown)}
+.step small{color:var(--muted)}
+.step.llm{border-color:var(--teal)}
+.callout{background:var(--mint);border-left:8px solid var(--teal);border-radius:16px;padding:14px 18px;margin:16px 0}
+.callout.warn{background:var(--peach);border-color:var(--coral)}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:.97rem}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{background:var(--sky);color:var(--brown)}
+tr:last-child td{border-bottom:0}
+tr.hl td{background:#fff8de;font-weight:800}
+pre{background:#2d2218;color:#ffeccf;border-radius:16px;padding:16px;overflow:auto;font-size:.88rem;line-height:1.5}
+.ex{background:#fff;border:1px dashed #d8c2a8;border-radius:14px;padding:10px 14px;margin:10px 0;font-size:.95rem}
+.ex em{color:var(--muted)}
+.pill{display:inline-block;background:var(--sun);color:#4a3426;border-radius:999px;padding:2px 10px;font-weight:800;font-size:.8rem}
+footer{padding:34px 0 50px;text-align:center;color:var(--muted);background:linear-gradient(180deg,var(--bg2),#ffe9d2)}
+footer img{width:64px;margin-bottom:8px}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.mascot{order:-1;max-width:260px;margin:0 auto}.g3,.g4,.g2{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.g3,.g4,.g2{grid-template-columns:1fr}body{font-size:16px}.hero{padding-top:26px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="#top"><img src="assets/otter.png" alt="">OTTER</a>
+  <a href="#demo">Demonstration</a><a href="#method">Method</a><a href="#ontology">Educational Ontology</a><a href="#benchmark">ViEduHop Benchmark</a><a href="#findings">Key Findings</a><a href="#start">Getting Started</a>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="bub"></div><div class="bub"></div><div class="bub"></div><div class="bub"></div>
+  <div class="wrap">
+    <div>
+      <p class="pill">Research code &amp; benchmark</p>
+      <h1><span>OTTER</span></h1>
+      <p class="subtitle">Verifiable Multihop Reasoning over Educational Ontology for Vietnamese Education</p>
+      <p class="tag">Every answer comes with a <b>source pointer</b> (book, lesson, page) that a teacher can open, or with an honest &ldquo;the book does not say&rdquo;.</p>
+      <div class="btns">
+        <a class="btn p" href="#demo">&#9654; Watch the demo video</a>
+        <a class="btn s" href="viz/ontology_explorer.html">&#128302; Explore the ontology</a>
+        <a class="btn o" href="https://github.com/quin210/OTTER">&#128187; Source code</a>
+        <a class="btn o" href="https://huggingface.co/datasets/quin210/vieduhop">&#129303; ViEduHop dataset</a>
+      </div>
+    </div>
+    <div class="mascot"><div class="blob"></div><img src="assets/otter.png" alt="The OTTER mascot: a friendly brown otter sitting up"></div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C240 90 480 0 720 40 C960 80 1200 10 1440 45 L1440 80 L0 80Z" fill="#ffffff"/></svg>
+</header>
+
+<section id="demo" style="background:#fff;padding-top:30px">
+  <div class="wrap">
+    <h2><i class="dot"></i>Demonstration</h2>
+    <p>A 68-second tour: textbook pages become source spans, one real lesson becomes a graph of concepts and facts, and a real question is answered step by step with its source pointers. Captions only, no sound.</p>
+    <div class="video"><video controls preload="metadata" poster="assets/demo_poster.jpg" playsinline><source src="media/otter_demo.mp4" type="video/mp4">Your browser does not play this video. <a href="media/otter_demo.mp4">Download the MP4</a>.</video></div>
+    <p style="margin-top:12px"><small>Everything shown is checked against the run files (25 checks in <a href="media/otter_demo_verification.json">otter_demo_verification.json</a>). It is one example, not an accuracy result.</small></p>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <h2><i class="dot"></i>The OTTER Method</h2>
+    <div class="grid g3">
+      <div class="card"><div class="ico i1">&#128214;</div><h3>1. Knowledge construction</h3><p>Scanned textbook pages are transcribed and cut into paragraph-level <b>source spans</b>. A span-grounded <b>Educational Ontology</b> links every concept, fact and rule to the spans that state it.</p></div>
+      <div class="card"><div class="ico i2">&#128269;</div><h3>2. Evidence-grounded answering</h3><p>For each question, OTTER searches the spans (BM25 + embeddings), asks a language model to label every option <i>entailed</i>, <i>refuted</i> or <i>unsupported</i>, and checks every quote.</p></div>
+      <div class="card"><div class="ico i3">&#128204;</div><h3>3. Provenance and abstention</h3><p>The answer carries a <b>source pointer</b> a teacher can open. If the book does not support an answer, OTTER can say so: <span lang="vi">&ldquo;Kh&ocirc;ng &#273;&#7911; c&#259;n c&#7913; trong s&aacute;ch&rdquo;</span> (&ldquo;not enough evidence in the book&rdquo;).</p></div>
+    </div>
+    <div class="steps" aria-label="The six roles of the answering pipeline">
+      <div class="step"><b>Composer</b><small>reads the question</small></div>
+      <div class="step"><b>Router</b><small>builds queries</small></div>
+      <div class="step"><b>Retriever</b><small>hybrid search + ontology hints</small></div>
+      <div class="step llm"><b>Judge</b><small>Qwen3-32B, per-option verdicts</small></div>
+      <div class="step llm"><b>Verifier</b><small>exact quote check + Qwen3-8B</small></div>
+      <div class="step"><b>Composer</b><small>grounding level, pointer</small></div>
+    </div>
+    <div class="callout"><b>Design principle:</b> source spans are the evidence of record; the ontology is only a navigation index. Hints from it may be wrong, so they are never cited and never counted as proof. About 2.5 LLM calls per question; no external API is used.</div>
+  </div>
+</section>
+
+<section id="ontology" class="alt">
+  <div class="wrap">
+    <h2><i class="dot"></i>Educational Ontology</h2>
+    <p>Built automatically from 18 textbooks, then checked item by item against its sources. <a href="viz/ontology_explorer.html">Open the explorer</a> to wander through real lessons: click a node to see its type, its support label and the book page behind it. The page works offline and shows no textbook passages.</p>
+    <div class="grid g4">
+      <div class="card"><div class="num">5,939</div><div class="lab">concepts</div></div>
+      <div class="card"><div class="num">2,929</div><div class="lab">typed relations</div></div>
+      <div class="card"><div class="num">3,830</div><div class="lab">facts</div></div>
+      <div class="card"><div class="num">787</div><div class="lab">rules (650 strict-executable)</div></div>
+      <div class="card"><div class="num">720</div><div class="lab">learning objectives</div></div>
+      <div class="card"><div class="num">18,111</div><div class="lab">links to source spans</div></div>
+      <div class="card"><div class="num">1,371</div><div class="lab">rejected items, logged with a reason</div></div>
+      <div class="card"><div class="num">26%</div><div class="lab">of all spans covered (46% of content spans)</div></div>
+    </div>
+    <div class="callout warn" style="margin-top:20px"><b>Honest note:</b> the ontology is noisy (a manual spot-check found roughly 50&ndash;80% precision) and uneven: History has no rules and Physics has only two objectives.</div>
+  </div>
+</section>
+
+<section id="benchmark">
+  <div class="wrap">
+    <h2><i class="dot"></i>The ViEduHop Benchmark</h2>
+    <p>3,015 questions with gold source spans, in four subcategories. Scores are never averaged across subcategories.</p>
+    <div class="grid g4">
+      <div class="card"><div class="ico i1">&#128218;</div><h3>S1 Textbook QA</h3><div class="num">1,646</div><p class="lab">1&ndash;3 passages, one subject or several</p></div>
+      <div class="card"><div class="ico i2">&#129517;</div><h3>S2 Multi-hop Reasoning</h3><div class="num">175</div><p class="lab">3&ndash;5 passages, many lessons</p></div>
+      <div class="card"><div class="ico i3">&#129335;</div><h3>S3 Abstention</h3><div class="num">330</div><p class="lab">answerable or &ldquo;the book does not say&rdquo;</p></div>
+      <div class="card"><div class="ico i4">&#128170;</div><h3>S4 Robustness and Formats</h3><div class="num">864</div><p class="lab">paraphrases, traps, true/false, fill-in</p></div>
+    </div>
+    <div class="ex" lang="vi"><b>S1</b> &middot; <span>Kho&#7843;ng c&aacute;ch th&#7901;i gian gi&#7919;a giai &#273;o&#7841;n kh&aacute;ng chi&#7871;n to&agrave;n d&acirc;n ch&#7889;ng Ph&aacute;p (1951&ndash;1953) v&agrave; chi&#7871;n th&#7855;ng &#7844;p B&#7855;c (1963) l&agrave; bao nhi&ecirc;u n&#259;m?</span> <em lang="en">(How many years separate the nationwide resistance against the French, 1951&ndash;1953, from the Ap Bac victory, 1963? Key: 10 years.)</em></div>
+    <div class="ex" lang="en"><b>S2</b> &middot; A 70 kg body is 3% nitrogen by mass; the same atoms as N<sub>2</sub> gas at standard conditions fit in which volume of air? <em>(4 passages from Chemistry 10 and 11, Geography 10 and Physics 12; key 2.15 m&sup3;.)</em></div>
+    <p>The questions were written from the textbooks with LLM help and automatic checks, and teachers are reviewing them now: <b>no item should be called teacher-validated yet</b>. The textbooks and their text are not included; questions carry pointers (book, lesson, page) instead.</p>
+    <p><a class="btn o" style="padding:6px 16px" href="https://huggingface.co/datasets/quin210/vieduhop">&#129303; ViEduHop on Hugging Face</a> <small>CC BY-NC-SA 4.0</small></p>
+  </div>
+</section>
+
+<section id="findings" class="alt">
+  <div class="wrap">
+    <h2><i class="dot"></i>Key Findings</h2>
+    <p>Same backbone (Qwen3-32B-FP8) and embedder (bge-m3) for every system; 1,208 pre-registered test questions.</p>
+    <div class="grid g3">
+      <div class="card"><h3>Hybrid RAG leads on verified-correct</h3><p>Plain hybrid RAG beats OTTER on accuracy with correct provenance (paired difference &minus;8.9 points, 95% interval &minus;11.4 to &minus;6.4). We report it as it is.</p></div>
+      <div class="card"><h3>Best among graph and agent systems</h3><p>Against GraphRAG, LightRAG, MiniRAG, HippoRAG 2 and the tool agents, OTTER has the best verified-correct rate at about 3.6k tokens per question.</p></div>
+      <div class="card"><h3>Multi-hop evidence assembly remains open</h3><p>On questions that need 3&ndash;5 passages every system scores below chance (13&ndash;22%), although a reader that is handed all the gold passages gets 173 of 175 right. Gathering evidence is the bottleneck.</p></div>
+    </div>
+    <p style="margin-top:16px"><small>Full tables, confidence intervals, the abstention study and all caveats are in the paper (under review).</small></p>
+  </div>
+</section>
+
+<section id="start">
+  <div class="wrap">
+    <h2><i class="dot"></i>Getting Started</h2>
+    <div class="grid g2">
+      <div>
+        <h3>Evaluate your own system on ViEduHop</h3>
+        <p>No textbooks needed. Load the dataset, write one prediction per question, score it:</p>
+<pre>pip install datasets
+# predictions.jsonl: {"id": ..., "prediction": "A", "source_span_ids": [...]}
+# evaluate.py ships with the dataset on Hugging Face
+python scripts/evaluate.py --data data/all.jsonl --pred predictions.jsonl</pre>
+      </div>
+      <div>
+        <h3>Run OTTER on your own textbooks</h3>
+        <p>You need legal copies of the textbooks; the builder makes the spans and the ontology.</p>
+<pre>git clone https://github.com/quin210/OTTER.git
+cd OTTER &amp;&amp; pip install -r requirements.txt
+bash scripts/serve/qwen3_32b.sh   # local vLLM
+python -m otter.builder build --help
+# "otter_v2" is the name of OTTER in the code
+python scripts/eval/run.py --system otter_v2 --backbone main --bench &lt;benchmark.jsonl&gt;</pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<footer>
+  <img src="assets/otter.png" alt="">
+  <p><b>OTTER</b></p>
+  <p><small>Code: Apache-2.0 &middot; Data: CC BY-NC-SA 4.0 &middot; paper under review &middot; <a href="https://github.com/quin210/OTTER">github.com/quin210/OTTER</a></small></p>
+</footer>
+</body>
+</html>

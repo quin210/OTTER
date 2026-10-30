@@ -1,0 +1,234 @@
+{
+ "item": "VIEDUHOP-C2-PHY-017",
+ "files": [
+  "benchmarks/vieduhop_v2/vieduhop_all.jsonl",
+  "runs/vieduhop_unrev/otter_v2/main/answers.jsonl",
+  "runs/vieduhop_unrev/otter_v2/main/records.jsonl",
+  "runs/vieduhop_unrev/otter_v2/main/run_meta.json",
+  "paper/figures/fig_worked.tex",
+  "paper/sections/method.tex",
+  "configs/otter_v2.yaml",
+  "data/textbooks/parsed/*/spans.jsonl",
+  "release/github/OTTER/viz/data/lessons.json"
+ ],
+ "checks": [
+  {
+   "fact": "item id / domain / grade / hops",
+   "value": [
+    "VIEDUHOP-C2-PHY-017",
+    [
+     "physics"
+    ],
+    10,
+    2
+   ],
+   "source": "benchmarks/vieduhop_v2/vieduhop_all.jsonl; records.jsonl",
+   "ok": true
+  },
+  {
+   "fact": "question text + 4 options",
+   "value": "Điểm khác nhau giữa định luật I Newton và định luật II Newton khi nói về quán tính là gì?",
+   "source": "benchmarks/vieduhop_v2/vieduhop_all.jsonl",
+   "ok": true
+  },
+  {
+   "fact": "gold key B",
+   "value": "B",
+   "source": "vieduhop_all.jsonl (answer); records.jsonl (gold)",
+   "ok": true
+  },
+  {
+   "fact": "answer B, status supported",
+   "value": {
+    "answer_choice": "B",
+    "status": "supported",
+    "correct": true
+   },
+   "source": "answers.jsonl; records.jsonl",
+   "ok": true
+  },
+  {
+   "fact": "per-option verdicts",
+   "value": {
+    "A": "contradicted",
+    "B": "entailed",
+    "C": "contradicted",
+    "D": "contradicted"
+   },
+   "source": "answers.jsonl (choice_verdicts)",
+   "ok": true
+  },
+  {
+   "fact": "grounding level 3",
+   "value": 3,
+   "source": "answers.jsonl (tool_usage.v2_grounding)",
+   "ok": true
+  },
+  {
+   "fact": "2 LLM calls, 2,546 tokens",
+   "value": [
+    2,
+    2546
+   ],
+   "source": "answers.jsonl; records.jsonl",
+   "ok": true
+  },
+  {
+   "fact": "Judge: 1 call, 1,758 tokens; Verifier: 1 call, 788 tokens",
+   "value": [
+    1,
+    1758,
+    1,
+    788
+   ],
+   "source": "answers.jsonl (tool_usage)",
+   "ok": true
+  },
+  {
+   "fact": "backbone Qwen3-32B; verifier Qwen3-8B",
+   "value": "Qwen/Qwen3-32B",
+   "source": "run_meta.json; configs/otter_v2.yaml (verifier_role: small = Qwen3-8B)",
+   "ok": true
+  },
+  {
+   "fact": "7 retrieval calls, 10 spans retrieved, 1 round",
+   "value": [
+    7,
+    10,
+    1,
+    "single_round"
+   ],
+   "source": "answers.jsonl (tool_usage)",
+   "ok": true
+  },
+  {
+   "fact": "3 claims, all supported with quote found, 0 dropped",
+   "value": [
+    [
+     "supported",
+     true
+    ],
+    [
+     "supported",
+     true
+    ],
+    [
+     "supported",
+     true
+    ]
+   ],
+   "source": "answers.jsonl (tool_usage.v2_claims)",
+   "ok": true
+  },
+  {
+   "fact": "two source pointers = the two gold spans",
+   "value": [
+    "nxbgd_g10_physics_d0daa774:p0062:u007",
+    "nxbgd_g10_physics_d0daa774:p0063:u018"
+   ],
+   "source": "answers.jsonl (where_to_read); vieduhop_all.jsonl (gold_span_ids); records.jsonl (ev_recall)",
+   "ok": true
+  },
+  {
+   "fact": "pointer nxbgd_g10_physics_d0daa774:p0062:u007: book / lesson / printed page",
+   "value": {
+    "book": "Vật lí 10",
+    "lesson": "Bài 14 ĐỊNH LUẬT 1 NEWTON › III. QUÁN TÍNH › 2. Ứng dụng của quán tính trong đời sống",
+    "printed_page": "62",
+    "printed_page_verified": true
+   },
+   "source": "answers.jsonl; vieduhop_all.jsonl; spans.jsonl (printed_page_verified)",
+   "ok": true
+  },
+  {
+   "fact": "pointer nxbgd_g10_physics_d0daa774:p0063:u018: book / lesson / printed page",
+   "value": {
+    "book": "Vật lí 10",
+    "lesson": "CHƯƠNG III ĐỘNG LỰC HỌC › Bài 15 ĐỊNH LUẬT 2 NEWTON › II. KHỐI LƯỢNG VÀ QUÁN TÍNH",
+    "printed_page": "63",
+    "printed_page_verified": true
+   },
+   "source": "answers.jsonl; vieduhop_all.jsonl; spans.jsonl (printed_page_verified)",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'question_gloss' occurs in paper/figures/fig_worked.tex",
+   "value": "What is the difference between Newton's first and second laws when it comes to inertia?",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'optA' occurs in paper/figures/fig_worked.tex",
+   "value": "first law: change of velocity; second law: balance of forces",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'optB' occurs in paper/figures/fig_worked.tex",
+   "value": "first law: the property of preserving a body's state; second law: how hard it is to change a body's velocity",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'optC' occurs in paper/figures/fig_worked.tex",
+   "value": "first: acceleration; second: resting or moving",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'optD' occurs in paper/figures/fig_worked.tex",
+   "value": "first: force acting on the body; second: state of motion",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'lessonA' occurs in paper/figures/fig_worked.tex",
+   "value": "Newton's first law",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "English gloss 'lessonB' occurs in paper/figures/fig_worked.tex",
+   "value": "Newton's second law",
+   "source": "paper/figures/fig_worked.tex Panel B",
+   "ok": true
+  },
+  {
+   "fact": "role order in the paper",
+   "value": [
+    "Composer",
+    "Router",
+    "Retriever",
+    "Judge",
+    "Verifier",
+    "Composer"
+   ],
+   "source": "paper/sections/method.tex",
+   "ok": true
+  },
+  {
+   "fact": "item is auto-verified, not teacher reviewed",
+   "value": "auto_verified",
+   "source": "vieduhop_all.jsonl (review_status)",
+   "ok": true
+  },
+  {
+   "fact": "counts: 18 books, 16,716 spans",
+   "value": [
+    18,
+    16716
+   ],
+   "source": "data/textbooks/parsed/nxbgd_*/spans.jsonl",
+   "ok": true
+  },
+  {
+   "fact": "demo lesson graph",
+   "value": [
+    24,
+    30
+   ],
+   "source": "viz/data/lessons.json",
+   "ok": true
+  }
+ ]
+}
