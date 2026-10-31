@@ -9,6 +9,9 @@
 <meta property="og:title" content="OTTER: Verifiable Multihop Reasoning over Educational Ontology for Vietnamese Education">
 <meta property="og:description" content="Verifiable multihop reasoning over an Educational Ontology for Vietnamese education.">
 <meta property="og:image" content="assets/otter.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f4fbff; --bg2:#fff8ec; --card:#ffffff; --ink:#4a3426; --muted:#6f5a4b;
@@ -92,12 +95,119 @@ pre{background:#2d2218;color:#ffeccf;border-radius:16px;padding:16px;overflow:au
 .pill{display:inline-block;background:var(--sun);color:#4a3426;border-radius:999px;padding:2px 10px;font-weight:800;font-size:.8rem}
 footer{padding:34px 0 50px;text-align:center;color:var(--muted);background:linear-gradient(180deg,var(--bg2),#ffe9d2)}
 footer img{width:64px;margin-bottom:8px}
-@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.mascot{order:-1;max-width:260px;margin:0 auto}.g3,.g4,.g2{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.g3,.g4,.g2{grid-template-columns:1fr}body{font-size:16px}.hero{padding-top:26px}}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.mascot{order:-1;max-width:260px;margin:0 auto}.g3,.g4,.g2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.g3,.g4,.g2{grid-template-columns:minmax(0,1fr)}body{font-size:16px}.hero{padding-top:26px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+:root{
+  --surface:#fff; --sunk:#fff8ec; --ink2:#5d4535; --line2:#d8c2a8;
+  --accent:var(--teal-d); --accent-soft:var(--mint);
+  --concept:#0f766f; --fact:#f0a43a; --edge:#bfa993; --hi:#ff6f4a; --ok:#1f8a55; --bad:#d4523f;
+  --rule:#7a64d6; --obj:#e0779f;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+svg.i{width:1em;height:1em;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.125em}
+svg.i.f{fill:currentColor;stroke:none}
+.btn svg.i{width:19px;height:19px}
+.card .ico svg.i{width:24px;height:24px}
+.i1{color:#2a7fb0}.i2{color:#d8643f}.i3{color:var(--teal-d)}.i4{color:#b07d00}
+.step b{display:flex;align-items:center;justify-content:center;gap:6px}
+.step b svg.i{color:var(--teal-d)}
+.callout{display:flex;gap:12px;align-items:flex-start}
+.callout>svg.i{width:22px;height:22px;color:var(--teal-d);margin-top:3px}
+.callout.warn>svg.i{color:#d8643f}
+
+/* ontology layers */
+.layers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:26px 0}
+.layer{display:flex;flex-direction:column}
+.layer .glyph{height:84px;margin:0 0 10px;display:grid;place-items:center}
+.principle{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;margin:28px 0 0;padding:22px 0;border-top:2px dashed var(--line);border-bottom:2px dashed var(--line)}
+.pq{margin:0;font-size:clamp(1.1rem,2vw,1.3rem);font-weight:800;line-height:1.5;color:var(--brown)}
+.pq mark{background:linear-gradient(transparent 58%,var(--sun) 58%);color:inherit;padding:0 2px}
+.pfacts{display:flex;gap:26px;margin:0}
+.pfacts div{text-align:center}
+.pfacts dt{font-size:2rem;font-weight:900;color:var(--teal-d);line-height:1}
+.pfacts dd{margin:4px 0 0;font-size:.82rem;font-weight:700;color:var(--muted);white-space:nowrap}
+@media(max-width:700px){.principle{grid-template-columns:1fr}.pfacts{justify-content:flex-start}}
+.layer .glyph svg{height:64px;width:120px}
+.layer p{flex:1}
+.layer code{white-space:nowrap;font-size:.85em}
+.layer dl{grid-template-rows:repeat(3,auto)}
+.layer dt{white-space:nowrap}
+.layer .lt{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--coral)}
+.layer h3{margin:.1em 0 .35em}
+.layer p{font-size:.93rem;color:var(--muted);margin:0 0 12px}
+.layer dl{margin:auto 0 0;display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:.88rem;border-top:2px dashed var(--line);padding-top:10px}
+.layer dt{color:var(--muted);font-weight:700}
+.layer dd{margin:0;font-weight:900;color:var(--teal-d);text-align:right}
+@media(max-width:860px){.layers{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.layers{grid-template-columns:1fr}}
+
+.tiny{font-size:.82rem;color:var(--muted)}
+.tblwrap{overflow-x:auto}
+.bars{border-top:2px solid var(--ink)}
+.bars .key{display:flex;gap:16px;padding:10px 0 2px;font-size:.78rem;color:var(--muted)}
+.bars .key span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;background:var(--c)}
+.bars .k1{--c:var(--teal-d);background:var(--c)}.bars .k2{--c:var(--fact);background:var(--c)}.bars .k3{--c:#e3b8a8;background:var(--c)}.bars .k4{--c:var(--coral);background:var(--c)}
+.bars .key span{background:none}
+.brow{padding:12px 0 13px;border-bottom:1px solid var(--line)}
+.bl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:7px;font-size:.95rem}
+.bl b{font-weight:800}
+.bl span{font-size:.8rem;color:var(--muted);text-align:right}
+.bl em{font-style:normal;font-weight:900;font-size:.95rem;color:var(--ink)}
+.bar{display:flex;gap:2px;height:8px}
+.bar i{display:block;height:100%;border-radius:2px;min-width:3px}
+.xcta{display:block;margin:44px 0 8px;text-decoration:none;color:var(--ink)}
+.xcta .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin:0 0 22px}
+.xcta h3{font-size:clamp(1.5rem,2.4vw,1.9rem);line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}
+.xcta p{color:var(--muted);margin:0;max-width:40em}
+.xcta .side{display:flex;align-items:center;gap:26px;flex:none}
+.xcta dl{display:flex;gap:24px;margin:0}
+.xcta dl div{display:flex;flex-direction:column-reverse}
+.xcta dd{margin:0;font-size:1.45rem;font-weight:900;color:var(--teal-d);line-height:1.1}
+.xcta dt{font-size:.78rem;color:var(--muted)}
+.xcta .go{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:var(--teal-d);border-bottom:2px solid currentColor;padding-bottom:1px;white-space:nowrap}
+.xcta .go svg.i{transition:transform .15s}
+.xcta:hover .go svg.i{transform:translateX(3px)}
+.xcta .art{position:relative;aspect-ratio:2200/1330;overflow:hidden;border-radius:18px 18px 0 0;border:1px solid var(--line2);border-bottom:0;background:#f6fbff;box-shadow:0 -2px 0 #fff inset;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+.xcta .art img{position:absolute;left:-12.2%;top:0;width:124.4%;max-width:none;height:auto;transition:transform .6s;transform-origin:top center}
+.xcta:hover .art img{transform:scale(1.02)}
+@media(max-width:860px){.xcta .head,.xcta .side{flex-direction:column;align-items:flex-start}.xcta .art{aspect-ratio:1/1.1}.xcta .art img{width:260%;left:-10%}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M14 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M3 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M12.59 13.41 20 21"/><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A8 8 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></symbol>
+  </defs>
+</svg>
 <nav class="nav"><div class="wrap">
   <a class="brand" href="#top"><img src="assets/otter.png" alt="">OTTER</a>
   <a href="#demo">Demonstration</a><a href="#method">Method</a><a href="#ontology">Educational Ontology</a><a href="#benchmark">ViEduHop Benchmark</a><a href="#findings">Key Findings</a><a href="#start">Getting Started</a>
@@ -112,10 +222,10 @@ footer img{width:64px;margin-bottom:8px}
       <p class="subtitle">Verifiable Multihop Reasoning over Educational Ontology for Vietnamese Education</p>
       <p class="tag">Every answer comes with a <b>source pointer</b> (book, lesson, page) that a teacher can open, or with an honest &ldquo;the book does not say&rdquo;.</p>
       <div class="btns">
-        <a class="btn p" href="#demo">&#9654; Watch the demo video</a>
-        <a class="btn s" href="viz/ontology_explorer.html">&#128302; Explore the ontology</a>
-        <a class="btn o" href="https://github.com/quin210/OTTER">&#128187; Source code</a>
-        <a class="btn o" href="https://huggingface.co/datasets/quin210/vieduhop">&#129303; ViEduHop dataset</a>
+        <a class="btn p" href="#demo"><svg class="i"><use href="#i-play"/></svg> Watch the demo video</a>
+        <a class="btn s" href="viz/ontology_explorer.html"><svg class="i"><use href="#i-network"/></svg> Explore the ontology</a>
+        <a class="btn o" href="https://github.com/quin210/OTTER"><svg class="i f"><use href="#i-github"/></svg> Source code</a>
+        <a class="btn o" href="https://huggingface.co/datasets/quin210/vieduhop"><svg class="i"><use href="#i-database"/></svg> ViEduHop dataset</a>
       </div>
     </div>
     <div class="mascot"><div class="blob"></div><img src="assets/otter.png" alt="The OTTER mascot: a friendly brown otter sitting up"></div>
@@ -136,35 +246,92 @@ footer img{width:64px;margin-bottom:8px}
   <div class="wrap">
     <h2><i class="dot"></i>The OTTER Method</h2>
     <div class="grid g3">
-      <div class="card"><div class="ico i1">&#128214;</div><h3>1. Knowledge construction</h3><p>Scanned textbook pages are transcribed and cut into paragraph-level <b>source spans</b>. A span-grounded <b>Educational Ontology</b> links every concept, fact and rule to the spans that state it.</p></div>
-      <div class="card"><div class="ico i2">&#128269;</div><h3>2. Evidence-grounded answering</h3><p>For each question, OTTER searches the spans (BM25 + embeddings), asks a language model to label every option <i>entailed</i>, <i>refuted</i> or <i>unsupported</i>, and checks every quote.</p></div>
-      <div class="card"><div class="ico i3">&#128204;</div><h3>3. Provenance and abstention</h3><p>The answer carries a <b>source pointer</b> a teacher can open. If the book does not support an answer, OTTER can say so: <span lang="vi">&ldquo;Kh&ocirc;ng &#273;&#7911; c&#259;n c&#7913; trong s&aacute;ch&rdquo;</span> (&ldquo;not enough evidence in the book&rdquo;).</p></div>
+      <div class="card"><div class="ico i1"><svg class="i"><use href="#i-book"/></svg></div><h3>1. Knowledge construction</h3><p>Scanned textbook pages are transcribed and cut into paragraph-level <b>source spans</b>. A span-grounded <b>Educational Ontology</b> links every concept, fact and rule to the spans that state it.</p></div>
+      <div class="card"><div class="ico i2"><svg class="i"><use href="#i-search"/></svg></div><h3>2. Evidence-grounded answering</h3><p>For each question, OTTER searches the spans (BM25 + embeddings), asks a language model to label every option <i>entailed</i>, <i>refuted</i> or <i>unsupported</i>, and checks every quote.</p></div>
+      <div class="card"><div class="ico i3"><svg class="i"><use href="#i-pin"/></svg></div><h3>3. Provenance and abstention</h3><p>The answer carries a <b>source pointer</b> a teacher can open. If the book does not support an answer, OTTER can say so: <span lang="vi">&ldquo;Kh&ocirc;ng &#273;&#7911; c&#259;n c&#7913; trong s&aacute;ch&rdquo;</span> (&ldquo;not enough evidence in the book&rdquo;).</p></div>
     </div>
     <div class="steps" aria-label="The six roles of the answering pipeline">
-      <div class="step"><b>Composer</b><small>reads the question</small></div>
-      <div class="step"><b>Router</b><small>builds queries</small></div>
-      <div class="step"><b>Retriever</b><small>hybrid search + ontology hints</small></div>
-      <div class="step llm"><b>Judge</b><small>Qwen3-32B, per-option verdicts</small></div>
-      <div class="step llm"><b>Verifier</b><small>exact quote check + Qwen3-8B</small></div>
-      <div class="step"><b>Composer</b><small>grounding level, pointer</small></div>
+      <div class="step"><b><svg class="i"><use href="#i-msg"/></svg>Composer</b><small>reads the question</small></div>
+      <div class="step"><b><svg class="i"><use href="#i-route"/></svg>Router</b><small>builds queries</small></div>
+      <div class="step"><b><svg class="i"><use href="#i-search"/></svg>Retriever</b><small>hybrid search + ontology hints</small></div>
+      <div class="step llm"><b><svg class="i"><use href="#i-scale"/></svg>Judge</b><small>Qwen3-32B, per-option verdicts</small></div>
+      <div class="step llm"><b><svg class="i"><use href="#i-quote"/></svg>Verifier</b><small>exact quote check + Qwen3-8B</small></div>
+      <div class="step"><b><svg class="i"><use href="#i-pin"/></svg>Composer</b><small>grounding level, pointer</small></div>
     </div>
-    <div class="callout"><b>Design principle:</b> source spans are the evidence of record; the ontology is only a navigation index. Hints from it may be wrong, so they are never cited and never counted as proof. About 2.5 LLM calls per question; no external API is used.</div>
+    <div class="principle">
+      <p class="pq">Source spans are the <mark>evidence of record</mark>. The ontology is only a navigation index: its hints may be wrong, so they are never cited and never counted as proof.</p>
+      <dl class="pfacts"><div><dt>&asymp;&thinsp;2.5</dt><dd>LLM calls per question</dd></div><div><dt>0</dt><dd>external APIs</dd></div></dl>
+    </div>
   </div>
 </section>
 
 <section id="ontology" class="alt">
   <div class="wrap">
     <h2><i class="dot"></i>Educational Ontology</h2>
-    <p>Built automatically from 18 textbooks, then checked item by item against its sources. <a href="viz/ontology_explorer.html">Open the explorer</a> to wander through real lessons: click a node to see its type, its support label and the book page behind it. The page works offline and shows no textbook passages.</p>
-    <div class="grid g4">
-      <div class="card"><div class="num">5,939</div><div class="lab">concepts</div></div>
-      <div class="card"><div class="num">2,929</div><div class="lab">typed relations</div></div>
-      <div class="card"><div class="num">3,830</div><div class="lab">facts</div></div>
-      <div class="card"><div class="num">787</div><div class="lab">rules (650 strict-executable)</div></div>
-      <div class="card"><div class="num">720</div><div class="lab">learning objectives</div></div>
-      <div class="card"><div class="num">18,111</div><div class="lab">links to source segments</div></div>
-      <div class="card"><div class="num">1,371</div><div class="lab">rejected items, logged with a reason</div></div>
-      <div class="card"><div class="num">26%</div><div class="lab">of all text segments covered (46% of content segments)</div></div>
+    <p>Built automatically from 18 textbooks, then checked item by item against its sources. It has four layers that share one provenance table, so every item can be traced back to a span in the book. The explorer below shows real lessons of it, node by node.</p>
+    <div class="layers">
+      <div class="card layer">
+        <div class="glyph"><svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 40 58 18M58 18l40 14M58 18v32M22 40l36 10" opacity=".55"/><circle cx="22" cy="40" r="7" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><circle cx="58" cy="18" r="8" fill="var(--concept)" stroke="none"/><circle cx="98" cy="32" r="7" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><circle cx="58" cy="50" r="6" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/></svg></div>
+        <span class="lt">Layer 1</span><h3>Concept graph</h3>
+        <p>Typed concepts (18 types: Law, Process, Quantity, Event, Person&hellip;) joined by 20 relation types such as <code>is_a</code>, <code>causes</code>, <code>defined_as</code>.</p>
+        <dl><dt>concepts</dt><dd>5,939</dd><dt>typed relations</dt><dd>2,929</dd><dt>facts</dt><dd>3,830</dd></dl>
+      </div>
+      <div class="card layer">
+        <div class="glyph"><svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 14 52 32M18 50l34-18M52 32h28" opacity=".55"/><circle cx="18" cy="14" r="6" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><circle cx="18" cy="50" r="6" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><path d="m52 22 10 10-10 10-10-10z" fill="var(--rule)" stroke="none"/><circle cx="96" cy="32" r="7" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><path d="m80 27 6 5-6 5" opacity=".55"/></svg></div>
+        <span class="lt">Layer 2</span><h3>Rule hypergraph</h3>
+        <p>Premises, guards, conclusions and exceptions over concepts; formulas keep their variable bindings, e.g. <code>x = A&middot;cos(&omega;t + &phi;)</code>.</p>
+        <dl><dt>rules</dt><dd>787</dd><dt>strict-executable</dt><dd>650</dd><dt>formula rules</dt><dd>106</dd></dl>
+      </div>
+      <div class="card layer">
+        <div class="glyph"><svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M30 20 70 14M30 20l40 26" stroke-dasharray="2 3" opacity=".7"/><path d="m30 10 10 17H20z" fill="var(--obj)" stroke="none"/><circle cx="76" cy="14" r="6" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><path d="m76 38 8 8-8 8-8-8z" fill="var(--rule)" stroke="none"/><rect x="94" y="22" width="12" height="12" rx="2" fill="var(--fact)" stroke="none"/><path d="M82 14h8" opacity=".55"/></svg></div>
+        <span class="lt">Layer 3</span><h3>Pedagogical graph</h3>
+        <p>Learning objectives of each lesson, tied to the concepts and rules it covers by links such as <code>teaches</code> and <code>assesses</code>.</p>
+        <dl><dt>learning objectives</dt><dd>720</dd><dt>pedagogical links</dt><dd>936</dd><dt>link types</dt><dd>4</dd></dl>
+      </div>
+      <div class="card layer">
+        <div class="glyph"><svg viewBox="0 0 120 64" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="66" y="8" width="44" height="50" rx="3" fill="var(--sunk)"/><path d="M73 18h30M73 25h30M73 32h20M73 39h30M73 46h26" opacity=".5"/><rect x="70" y="29" width="36" height="7" rx="1.5" stroke="var(--hi)" stroke-width="1.5"/><circle cx="18" cy="20" r="6" fill="var(--surface)" stroke="var(--concept)" stroke-width="2"/><rect x="12" y="38" width="12" height="12" rx="2" fill="var(--fact)" stroke="none"/><path d="M24 20c20 0 26 12 46 12M24 44c22 0 26-12 46-12" stroke="var(--hi)" stroke-dasharray="2 3"/></svg></div>
+        <span class="lt">Layer 4</span><h3>Provenance links</h3>
+        <p>Every item points to the spans it was read from. A span is one paragraph, list, formula or heading, located by book and printed page.</p>
+        <dl><dt>evidence links</dt><dd>18,111</dd><dt>source spans</dt><dd>16,716</dd><dt>rejected, with reason</dt><dd>1,371</dd></dl>
+      </div>
+    </div>
+    <a class="xcta" href="viz/ontology_explorer.html">
+      <div class="head">
+        <div>
+          <h3>Ontology Explorer</h3>
+          <p>Seven lesson graphs, one per subject, with the executable rules and the numbers behind the ontology. Click any node to see the book page it was read from.</p>
+        </div>
+        <div class="side">
+          <dl><div><dt>lessons</dt><dd>7</dd></div><div><dt>nodes</dt><dd>589</dd></div><div><dt>edges</dt><dd>675</dd></div></dl>
+          <span class="go">Open the explorer <svg class="i"><use href="#i-right"/></svg></span>
+        </div>
+      </div>
+      <div class="art"><img src="assets/explorer_preview.png" width="3584" height="2024" loading="lazy" alt="The Ontology Explorer showing the Physics 11 lesson on describing waves, with the lesson picker above the graph"></div>
+    </a>
+
+    <div class="grid g2" style="margin-top:34px;align-items:start">
+      <div>
+        <h3>Source-support labels</h3>
+        <p class="tiny" style="margin-top:-4px">Automatic labels from the support classifier, not human verification.</p>
+        <div class="bars">
+          <div class="key"><span class="k1">supported</span><span class="k2">partial</span><span class="k3">unsupported</span></div>
+          <div class="brow"><div class="bl"><b>Concepts</b><span><em>5,245</em> supported &middot; 51 partial &middot; 643 unsupported</span></div><div class="bar"><i style="flex:5245" class="k1"></i><i style="flex:51" class="k2"></i><i style="flex:643" class="k3"></i></div></div>
+          <div class="brow"><div class="bl"><b>Relations</b><span><em>2,643</em> supported &middot; 79 partial &middot; 207 unsupported</span></div><div class="bar"><i style="flex:2643" class="k1"></i><i style="flex:79" class="k2"></i><i style="flex:207" class="k3"></i></div></div>
+          <div class="brow"><div class="bl"><b>Facts</b><span><em>3,612</em> supported &middot; 51 partial &middot; 167 unsupported</span></div><div class="bar"><i style="flex:3612" class="k1"></i><i style="flex:51" class="k2"></i><i style="flex:167" class="k3"></i></div></div>
+          <div class="brow"><div class="bl"><b>Rules</b><span><em>678</em> supported &middot; 68 partial &middot; 41 unsupported</span></div><div class="bar"><i style="flex:678" class="k1"></i><i style="flex:68" class="k2"></i><i style="flex:41" class="k3"></i></div></div>
+        </div>
+      </div>
+      <div>
+        <h3>Rejected during construction</h3>
+        <p class="tiny" style="margin-top:-4px">1,371 items dropped by the validator, each logged with its reason.</p>
+        <div class="bars">
+          <div class="brow"><div class="bl"><b>Dangling concept reference</b><span><em>932</em></span></div><div class="bar"><i style="width:100.0%" class="k4"></i></div></div>
+          <div class="brow"><div class="bl"><b>Circular rule</b><span><em>248</em></span></div><div class="bar"><i style="width:26.6%" class="k4"></i></div></div>
+          <div class="brow"><div class="bl"><b>Rule without premises (kept as fact)</b><span><em>92</em></span></div><div class="bar"><i style="width:9.9%" class="k4"></i></div></div>
+          <div class="brow"><div class="bl"><b>Domain / range violation</b><span><em>52</em></span></div><div class="bar"><i style="width:5.6%" class="k4"></i></div></div>
+          <div class="brow"><div class="bl"><b>Other (schema, self-loop, truncation, cap)</b><span><em>47</em></span></div><div class="bar"><i style="width:5.0%" class="k4"></i></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -174,15 +341,15 @@ footer img{width:64px;margin-bottom:8px}
     <h2><i class="dot"></i>The ViEduHop Benchmark</h2>
     <p>3,015 questions with gold source spans, in four subcategories. Scores are never averaged across subcategories.</p>
     <div class="grid g4">
-      <div class="card"><div class="ico i1">&#128218;</div><h3>S1 Textbook QA</h3><div class="num">1,646</div><p class="lab">1&ndash;3 passages, one subject or several</p></div>
-      <div class="card"><div class="ico i2">&#129517;</div><h3>S2 Multi-hop Reasoning</h3><div class="num">175</div><p class="lab">3&ndash;5 passages, many lessons</p></div>
-      <div class="card"><div class="ico i3">&#129335;</div><h3>S3 Abstention</h3><div class="num">330</div><p class="lab">answerable or &ldquo;the book does not say&rdquo;</p></div>
-      <div class="card"><div class="ico i4">&#128170;</div><h3>S4 Robustness and Formats</h3><div class="num">864</div><p class="lab">paraphrases, traps, true/false, fill-in</p></div>
+      <div class="card"><div class="ico i1"><svg class="i"><use href="#i-book"/></svg></div><h3>S1 Textbook QA</h3><div class="num">1,646</div><p class="lab">1&ndash;3 passages, one subject or several</p></div>
+      <div class="card"><div class="ico i2"><svg class="i"><use href="#i-network"/></svg></div><h3>S2 Multi-hop Reasoning</h3><div class="num">175</div><p class="lab">3&ndash;5 passages, many lessons</p></div>
+      <div class="card"><div class="ico i3"><svg class="i"><use href="#i-help"/></svg></div><h3>S3 Abstention</h3><div class="num">330</div><p class="lab">answerable or &ldquo;the book does not say&rdquo;</p></div>
+      <div class="card"><div class="ico i4"><svg class="i"><use href="#i-shuffle"/></svg></div><h3>S4 Robustness and Formats</h3><div class="num">864</div><p class="lab">paraphrases, traps, true/false, fill-in</p></div>
     </div>
     <div class="ex" lang="vi"><b>S1</b> &middot; <span>Kho&#7843;ng c&aacute;ch th&#7901;i gian gi&#7919;a giai &#273;o&#7841;n kh&aacute;ng chi&#7871;n to&agrave;n d&acirc;n ch&#7889;ng Ph&aacute;p (1951&ndash;1953) v&agrave; chi&#7871;n th&#7855;ng &#7844;p B&#7855;c (1963) l&agrave; bao nhi&ecirc;u n&#259;m?</span> <em lang="en">(How many years separate the nationwide resistance against the French, 1951&ndash;1953, from the Ap Bac victory, 1963? Key: 10 years.)</em></div>
     <div class="ex" lang="en"><b>S2</b> &middot; A 70 kg body is 3% nitrogen by mass; the same atoms as N<sub>2</sub> gas at standard conditions fit in which volume of air? <em>(4 passages from Chemistry 10 and 11, Geography 10 and Physics 12; key 2.15 m&sup3;.)</em></div>
     <p>The questions were written from the textbooks with LLM help and automatic checks, and teachers are reviewing them now: <b>no item should be called teacher-validated yet</b>. The textbooks and their text are not included; questions carry pointers (book, lesson, page) instead.</p>
-    <p><a class="btn o" style="padding:6px 16px" href="https://huggingface.co/datasets/quin210/vieduhop">&#129303; ViEduHop on Hugging Face</a> <small>CC BY-NC-SA 4.0</small></p>
+    <p><a class="btn o" style="padding:6px 16px" href="https://huggingface.co/datasets/quin210/vieduhop"><svg class="i"><use href="#i-database"/></svg> ViEduHop on Hugging Face</a> <small>CC BY-NC-SA 4.0</small></p>
   </div>
 </section>
 

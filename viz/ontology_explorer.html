@@ -4,116 +4,426 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OTTER Ontology Explorer</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
 <style>
 :root{
-  --bg:#f7f7f5; --panel:#ffffff; --ink:#1b1f23; --muted:#5b6570; --line:#d5d9de; --accent:#0072B2;
-  --concept:#0072B2; --fact:#E69F00; --rule:#009E73; --obj:#CC79A7;
-  --e-rel:#4a5560; --e-men:#8a949e; --e-teach:#b0569a; --sel:#d55e00; --halo:#ffffff;
-  --code:#f0f1f3;
+  --bg:#f4fbff; --bg2:#fff8ec; --panel:#ffffff; --ink:#4a3426; --muted:#6f5a4b; --line:#ead9c6; --line2:#d8c2a8;
+  --brown:#7b5b45; --teal:#25b5a1; --teal-d:#0f766f; --sun:#ffd25e; --coral:#ff8f6b; --sky:#dff3ff; --mint:#d7f5e9; --peach:#ffe7d6;
+  --accent:#0f766f; --concept:#1f9a88; --fact:#f0a43a; --rule:#7a64d6; --obj:#e0779f;
+  --e-rel:#8c7461; --e-men:#c4ad96; --e-teach:#d78aac; --sel:#ff6f4a; --halo:#fffdf8;
+  --code:#fff8ec; --stage:#fffdf8; --dot:#ecdcc8; --shadow:0 10px 30px rgba(123,91,69,.12);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#14171a; --panel:#1e2327; --ink:#e8eaec; --muted:#a2acb5; --line:#38414a; --accent:#56B4E9;
-    --concept:#56B4E9; --fact:#E69F00; --rule:#2fcf9f; --obj:#e49bc3;
-    --e-rel:#aab4be; --e-men:#7b8791; --e-teach:#d58bbd; --sel:#f0a05a; --halo:#14171a; --code:#272d33;
+    --bg:#1d1814; --bg2:#231d18; --panel:#2a231d; --ink:#f3e6d8; --muted:#bfa995; --line:#43372d; --line2:#57483b;
+    --brown:#f0cfae; --teal:#3cc7b2; --teal-d:#5fd3c0; --sun:#ffd25e; --coral:#ff9c7d; --sky:#22303a; --mint:#1f3530; --peach:#3a2a22;
+    --accent:#5fd3c0; --concept:#4fc8b4; --fact:#f2b356; --rule:#a594f0; --obj:#ef9cbd;
+    --e-rel:#bca690; --e-men:#7a6858; --e-teach:#d78aac; --sel:#ff8a64; --halo:#211b16;
+    --code:#231d18; --stage:#211b16; --dot:#3a3028; --shadow:0 10px 30px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#14171a; --panel:#1e2327; --ink:#e8eaec; --muted:#a2acb5; --line:#38414a; --accent:#56B4E9;
-  --concept:#56B4E9; --fact:#E69F00; --rule:#2fcf9f; --obj:#e49bc3;
-  --e-rel:#aab4be; --e-men:#7b8791; --e-teach:#d58bbd; --sel:#f0a05a; --halo:#14171a; --code:#272d33;
+  --bg:#1d1814; --bg2:#231d18; --panel:#2a231d; --ink:#f3e6d8; --muted:#bfa995; --line:#43372d; --line2:#57483b;
+  --brown:#f0cfae; --teal:#3cc7b2; --teal-d:#5fd3c0; --sun:#ffd25e; --coral:#ff9c7d; --sky:#22303a; --mint:#1f3530; --peach:#3a2a22;
+  --accent:#5fd3c0; --concept:#4fc8b4; --fact:#f2b356; --rule:#a594f0; --obj:#ef9cbd;
+  --e-rel:#bca690; --e-men:#7a6858; --e-teach:#d78aac; --sel:#ff8a64; --halo:#211b16;
+  --code:#231d18; --stage:#211b16; --dot:#3a3028; --shadow:0 10px 30px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","DejaVu Sans",sans-serif}
-header{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
-header h1{font-size:18px;margin:0}
-header .sub{color:var(--muted);font-size:13px}
-button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
-button{cursor:pointer}
-button:hover{border-color:var(--accent)}
-button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
-nav{display:flex;gap:6px;padding:10px 16px 0;flex-wrap:wrap}
-main{padding:12px 16px 32px;max-width:1400px;margin:0 auto}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
-.controls select{max-width:100%;flex:1 1 280px}
-.controls input[type=search]{flex:1 1 160px;min-width:0}
-.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px}
+html,body{margin:0;color:var(--ink);font:15px/1.55 "Nunito",ui-rounded,"SF Pro Rounded","Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans",sans-serif}
+body{background:linear-gradient(180deg,var(--sky) 0,var(--bg) 260px,var(--bg2) 100%);min-height:100vh}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--brown);margin-right:auto;min-width:0}
+.brand img{width:38px;height:38px;flex:none}
+.brand h1{font-size:1.15rem;font-weight:900;margin:0;line-height:1.15;color:var(--brown)}
+.brand .sub{display:block;font-size:.8rem;font-weight:600;color:var(--muted)}
+.iconbtn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--brown);font-weight:800;font-size:.88rem;text-decoration:none;cursor:pointer}
+.iconbtn:hover{border-color:var(--teal)}
+@media (max-width:640px){.brand .sub,.iconbtn span{display:none}.iconbtn{padding:8px}}
+button,select,input{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:7px 14px}
+button{cursor:pointer;font-weight:800;color:var(--brown)}
+button:hover{border-color:var(--teal)}
+select,input[type=search]{font-weight:600}
+select:focus,input:focus{outline:none;border-color:var(--teal)}
+main{padding:18px 20px 40px;max-width:1400px;margin:0 auto}
+nav#tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;margin:0 0 16px;background:var(--panel);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow)}
+nav#tabs button{border:0;display:inline-flex;align-items:center;gap:7px;padding:8px 16px}
+nav#tabs button[aria-selected="true"]{background:var(--teal);color:#06302c}
+nav#tabs button{white-space:nowrap}
+nav#tabs button:focus{outline:none}
+nav#tabs button:focus-visible{outline:2px solid var(--teal-d);outline-offset:2px}
+@media (max-width:640px){
+  nav#tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:18px}
+  nav#tabs button{justify-content:center;border-radius:14px;padding:9px 8px;font-size:.88rem}
+}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.controls select{max-width:100%;flex:1 1 320px}
+.controls input[type=search]{flex:1 1 180px;min-width:0}
+.controls label{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--brown)}
+.controls input[type=checkbox]{accent-color:var(--teal);width:16px;height:16px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:16px}
 @media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)} #svg{height:min(125vw,78vh);min-height:360px}}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow)}
 #graphwrap{padding:0;overflow:hidden;position:relative}
-#svg{width:100%;height:min(68vh,640px);min-height:340px;display:block;touch-action:none;cursor:grab;background:var(--panel)}
+#svg{width:100%;height:min(70vh,660px);min-height:340px;display:block;touch-action:none;cursor:grab;background:radial-gradient(circle at 1px 1px,var(--dot) 1.2px,transparent 0) 0 0/24px 24px,var(--stage)}
 #svg:active{cursor:grabbing}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin:8px 0}
-.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.85rem;font-weight:700;color:var(--muted);margin:4px 0 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
 .legend svg{width:18px;height:14px}
-.zoomb{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:4px}
-.zoomb button{padding:2px 9px;font-size:17px;line-height:1.2}
-h2{font-size:16px;margin:0 0 6px}
-h3{font-size:14px;margin:12px 0 4px}
+.zoomb{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
+.zoomb button{width:36px;height:36px;padding:0;display:grid;place-items:center;font-size:1.1rem;border-radius:12px;border-width:1px;box-shadow:0 2px 6px rgba(123,91,69,.12)}
+h2{font-size:1.1rem;font-weight:900;color:var(--brown);margin:0 0 8px;line-height:1.3}
+h3{font-size:.8rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--coral);margin:16px 0 6px}
+p{margin:.4em 0 .8em}
 .muted{color:var(--muted)}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:0 8px;font-size:12px;margin-right:4px;background:var(--code)}
-.ptr{border-left:3px solid var(--accent);padding:2px 8px;margin:6px 0;background:var(--code);border-radius:0 6px 6px 0;font-size:13px;word-break:break-word}
-code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,"DejaVu Sans Mono",monospace;font-size:12px;word-break:break-all}
-table{border-collapse:collapse;width:100%;font-size:13px}
-th,td{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:top}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:1px 10px;font-size:.78rem;font-weight:800;margin:0 4px 4px 0;background:var(--code);color:var(--brown)}
+.ptr{border:1px solid var(--line);border-left:4px solid var(--coral);padding:6px 10px;margin:8px 0;background:var(--code);border-radius:12px;font-size:.84rem;word-break:break-word}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,"DejaVu Sans Mono",monospace;font-size:.78rem;word-break:break-all}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.88rem;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:6px 0}
+th,td{border-bottom:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--sky);color:var(--brown);font-weight:800}
+tr:last-child td{border-bottom:0}
 td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
-.bar{height:8px;background:var(--accent);border-radius:4px;min-width:1px}
+.bar{height:10px;background:var(--teal);border-radius:999px;min-width:2px}
 .hidden{display:none}
-.node text.lbl{paint-order:stroke;stroke:var(--halo);stroke-width:3px;fill:var(--ink);pointer-events:none}
+.node text.lbl{paint-order:stroke;stroke:var(--halo);stroke-width:3px;fill:var(--ink);font-weight:700;pointer-events:none}
 .sel{stroke:var(--sel)!important;stroke-width:3px!important}
-.dim{opacity:.18}
-.rulecard{border:1px solid var(--line);border-radius:8px;padding:10px;margin:10px 0;background:var(--panel)}
-.rulecard .atoms div{margin:2px 0}
-.warn{border-left:3px solid var(--fact);padding:4px 10px;background:var(--code);margin:8px 0;font-size:13px}
-.ok{color:var(--rule)}
-.no{color:var(--sel)}
-a{color:var(--accent)}
+.dim{opacity:.15}
+.rulecard{border:1px solid var(--line);border-radius:22px;padding:18px 20px;margin:14px 0;background:var(--panel);box-shadow:var(--shadow)}
+.rulecard .atoms>div{margin:4px 0;padding:6px 10px;border-radius:10px;background:var(--code)}
+.warn{border:1px solid var(--line);border-left:4px solid var(--fact);padding:8px 12px;background:var(--code);border-radius:12px;margin:10px 0;font-size:.86rem}
+.ok{color:var(--teal-d);font-weight:800}
+.no{color:var(--sel);font-weight:800}
+a{color:var(--teal-d);text-underline-offset:3px}
+#detail .links a{font-weight:700}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:0 0 22px}
+@media (max-width:640px){.lessons{grid-auto-flow:column;grid-auto-columns:150px;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;margin:0 -2px 18px;scrollbar-width:none}.lessons .lcard{scroll-snap-align:start}}
+.lcard{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:18px;background:var(--panel);border:2px solid var(--line);transition:transform .15s,border-color .15s,box-shadow .15s}
+.lcard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.lcard:focus-visible{outline:3px solid var(--sun)}
+.lcard[aria-selected="true"]{border-color:var(--teal);box-shadow:var(--shadow)}
+.lcard .sic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--sc) 80%,var(--panel));color:var(--brown)}
+.lcard .sic svg.i{width:20px;height:20px}
+.lcard .sub{font-size:.72rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--coral)}
+.lcard .demo{font-style:normal;background:var(--sun);color:#4a3426;border-radius:999px;padding:0 7px;margin-left:4px;letter-spacing:0;text-transform:none}
+.lcard .ttl{font-weight:800;color:var(--brown);font-size:.9rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lcard .meta{font-size:.74rem;color:var(--muted);font-weight:700;margin-top:auto}
+.lhead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin:0 0 14px}
+.kick{font-size:.76rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--coral)}
+.lhead h2{font-size:clamp(1.35rem,2.6vw,1.8rem);margin:2px 0 2px}
+.lhead .orig{font-size:.84rem;color:var(--muted)}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:640px){.lhead .stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;gap:6px}.lhead .stat{min-width:0;padding:6px 2px}.lhead .stat span{font-size:.66rem}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 12px;text-align:center;min-width:70px}
+.stat b{display:block;font-size:1.2rem;font-weight:900;color:var(--teal-d);line-height:1.15}
+.stat span{font-size:.72rem;font-weight:700;color:var(--muted)}
+.gtools{position:absolute;left:12px;top:12px;right:64px;display:flex;pointer-events:none}
+.search{pointer-events:auto;display:flex;align-items:center;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:0 4px 0 12px;width:min(280px,100%);box-shadow:0 2px 6px rgba(123,91,69,.1)}
+.search:focus-within{border-color:var(--teal)}
+.search input{border:0;padding:7px 8px 7px 0;background:none;flex:1;min-width:0;border-radius:0}
+.search svg.i{color:var(--muted);width:16px;height:16px}
+#graphwrap .legend{position:absolute;left:12px;bottom:12px;margin:0;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:5px 12px;max-width:calc(100% - 24px);flex-wrap:nowrap;gap:14px;font-size:.78rem;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+#graphwrap .legend span{flex:none}
+#graphwrap .legend svg{width:15px;height:12px}
+.zoomb button[aria-pressed="false"]{opacity:.45}
+.zoomb .aa{font-size:.82rem;font-weight:900}
+.note{font-size:.84rem;color:var(--muted);margin:14px 4px 0;max-width:70em}
+#detail{max-height:min(70vh,660px);overflow:auto}
+#detail .kick{display:flex;align-items:center;gap:8px;color:var(--muted)}
+#detail .kick i{width:11px;height:11px;border-radius:3px;background:var(--c)}
+#detail h2{font-size:1.3rem;margin:4px 0 8px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.84rem;margin:12px 0;padding:10px 12px;border-radius:14px;background:var(--code);border:1px solid var(--line)}
+.kv dt{color:var(--muted);font-weight:700}
+.kv dd{margin:0;word-break:break-all}
+.lrow{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.86rem}
+.lrow .rt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:var(--muted);white-space:nowrap}
+.lrow a{font-weight:700;text-decoration:none}
+.lrow a:hover{text-decoration:underline}
+.ptr{display:flex;gap:12px;align-items:flex-start;border-left:1px solid var(--line)}
+.ptr .pg{flex:none;width:50px;text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px 0}
+.ptr .pg small{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}
+.ptr .pg b{font-size:1.1rem;color:var(--brown);line-height:1.2}
+.ptr .pb{font-weight:800;color:var(--brown)}
+.ptr .pl{font-size:.8rem;margin-bottom:2px}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:36px 12px 20px;color:var(--muted)}
+.empty img{width:84px;margin-bottom:12px;filter:drop-shadow(0 8px 10px rgba(123,91,69,.2))}
+.empty b{color:var(--brown);font-size:1.05rem;margin-bottom:4px}
+ul{padding-left:1.2em}
+:root{--s1:#1f9a88;--s2:#d48a14;--s3:#c4466a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#1f9e8a;--s2:#bf8a2a;--s3:#cc5e86}}
+:root[data-theme="dark"]{--s1:#1f9e8a;--s2:#bf8a2a;--s3:#cc5e86}
+.big{font-size:clamp(1.4rem,2.6vw,1.9rem);margin:2px 0 6px}
+.phead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin:0 0 18px}
+.phead p{max-width:48em;margin:0;color:var(--muted)}
+.seg{display:inline-flex;gap:4px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:999px}
+.seg button{border:0;padding:7px 14px}
+.seg button[aria-pressed="true"]{background:var(--sun);color:#4a3426}
+details.howto{background:var(--panel);border:1px dashed var(--line2);border-radius:16px;padding:10px 16px;margin:0 0 18px;font-size:.9rem}
+details.howto summary{cursor:pointer;font-weight:800;color:var(--brown)}
+details.howto p{color:var(--ink)}
+.rpane{display:grid;grid-template-columns:300px minmax(0,1fr);gap:0;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;min-height:560px}
+@media (max-width:860px){.rpane{grid-template-columns:1fr}#rulenav{border-right:0;border-bottom:1px solid var(--line);max-height:260px}}
+#rulenav{border-right:1px solid var(--line);background:var(--code);overflow:auto;padding:8px 0}
+#rulenav h4{margin:14px 18px 4px;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+#rulenav h4 svg.i{width:14px;height:14px}
+#rulenav button{all:unset;box-sizing:border-box;display:block;width:100%;padding:8px 18px 8px 16px;border-left:3px solid transparent;cursor:pointer;font-size:.88rem;line-height:1.35;color:var(--ink)}
+#rulenav button small{display:block;font-size:.72rem;color:var(--muted)}
+#rulenav button:hover{background:color-mix(in srgb,var(--panel) 60%,transparent)}
+#rulenav button[aria-current="true"]{background:var(--panel);border-left-color:var(--teal);font-weight:800}
+#rulenav button:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+#rulenav .none{padding:8px 18px;font-size:.84rem;color:var(--muted)}
+.rdoc{padding:22px 28px 24px;min-width:0}
+@media (max-width:600px){.rdoc{padding:20px}}
+.rdoc .crumb{font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rdoc h2{font-size:1.3rem;margin:4px 0 6px;line-height:1.25}
+.rdoc .metaline{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted)}
+.rdoc .metaline code{font-size:.76rem}
+.rdoc .metaline .ok{color:var(--teal-d);font-weight:800}
+.rdoc .eq{margin:14px 0 0;padding:12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow-x:auto}
+.rdoc .eq math{font-size:1.6rem;color:var(--ink)}
+.rdoc .eq math.chem{font-size:1.1rem}
+.rdoc .eq p{margin:0;text-align:center;color:var(--muted);font-size:.9rem}
+.rdoc h3{margin:18px 0 4px;color:var(--muted);font-size:.68rem;letter-spacing:.12em}
+.logic{display:grid;grid-template-columns:60px 1fr;margin:0;border-top:1px solid var(--line)}
+.logic dt{padding:7px 0;font-size:.68rem;font-weight:900;letter-spacing:.12em;color:var(--muted);border-bottom:1px solid var(--line);line-height:1.9}
+.logic dt.then{color:var(--teal-d)}
+.logic dd{margin:0;padding:6px 0;border-bottom:1px solid var(--line);font-size:.9rem;line-height:1.45}
+.logic .pred{font-weight:700}
+.logic .args{color:var(--muted)}
+.logic .args abbr{text-decoration:none;color:var(--ink);cursor:help}
+.logic .args code{font-size:.78rem;color:var(--muted)}
+.logic .not{font-size:.68rem;font-weight:900;letter-spacing:.06em;color:var(--sel);margin-right:6px}
+.logic q{display:block;font-size:.8rem;color:var(--muted);font-style:italic;quotes:"“" "”"}
+.vtab{width:auto;min-width:50%;border:0;border-collapse:collapse;border-radius:0;margin:0;font-size:.9rem}
+.vtab th{background:none;color:var(--muted);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+.vtab td{padding:5px 18px 5px 0;border-bottom:1px solid var(--line)}
+.vtab td code{margin-left:8px}
+.vtab td:first-child{width:1%;white-space:nowrap;padding-right:28px}
+.vtab td:nth-child(2){width:40%}
+.vtab td math{font-size:1.15rem}
+.vtab code{font-size:.74rem;color:var(--muted)}
+.src{margin:0;padding:0;list-style:none;font-size:.86rem}
+.src li{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--line)}
+.src li:last-child{border-bottom:0}
+.src span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src b{color:var(--brown);font-variant-numeric:tabular-nums}
+.src span{min-width:0}
+.src span small{display:block;color:var(--muted);font-size:.76rem}
+.src code{font-size:.72rem;color:var(--muted);white-space:nowrap}
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+@media (max-width:900px){.sgrid{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:0 0 16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow)}
+.kpi b{display:block;font-size:1.6rem;font-weight:900;color:var(--teal-d);line-height:1.1}
+.kpi span{display:block;font-size:.84rem;font-weight:700;color:var(--brown)}
+.kpi small{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:.72rem;font-weight:800;color:var(--teal-d)}
+.kpi small.bad{color:var(--sel)}
+.kpi small svg.i{width:13px;height:13px}
+.card h2 svg.i{width:18px;height:18px;vertical-align:-3px;margin-right:6px;color:var(--coral)}
+.sub2{color:var(--muted);font-size:.84rem;margin:-4px 0 12px}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;font-weight:700;color:var(--muted);margin:0 0 10px}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.srow{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;margin:10px 0}
+.srow .nm{font-weight:800;color:var(--brown);font-size:.88rem}
+.sbar{display:flex;gap:2px;height:14px}
+.sbar i{display:block;height:100%;background:var(--c);min-width:3px}
+.sbar i:first-child{border-radius:4px 0 0 4px}.sbar i:last-child{border-radius:0 4px 4px 0}
+.srow .pc{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hb .r{display:grid;grid-template-columns:minmax(90px,38%) 1fr 60px;gap:10px;align-items:center;margin:7px 0;font-size:.86rem}
+.hb .r span{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .t{height:10px}
+.hb .t i{display:block;height:100%;background:var(--teal);border-radius:0 4px 4px 0;min-width:3px}
+.hb .r b{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.r:hover span,.srow:hover .nm{color:var(--teal-d)}
+td .sic,.lrow2 .sic{width:28px;height:28px;border-radius:9px;display:inline-grid;place-items:center;background:color-mix(in srgb,var(--sc) 80%,var(--panel));color:var(--brown);vertical-align:middle;margin-right:8px}
+td .sic svg.i,.lrow2 .sic svg.i{width:16px;height:16px}
+
+.sdoc{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.kstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+@media (min-width:1000px){.kstrip{grid-template-columns:repeat(8,minmax(0,1fr))}}
+.kstrip div{padding:18px 18px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:-1px}
+.kstrip div:last-child{border-right:0}
+.kstrip b{display:block;font-size:1.45rem;font-weight:900;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.kstrip span{display:block;font-size:.78rem;color:var(--muted);margin-top:3px}
+.kstrip .bad b{color:var(--sel)}
+.kcheck{display:flex;align-items:center;gap:8px;padding:10px 20px;font-size:.82rem;color:var(--muted);border-bottom:1px solid var(--line);background:var(--code)}
+.kcheck svg.i{width:15px;height:15px;color:var(--teal-d)}
+.kcheck.bad svg.i{color:var(--sel)}
+.srow2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.srow2{grid-template-columns:1fr}}
+.ssec{padding:22px 26px 24px;border-bottom:1px solid var(--line);min-width:0}
+.srow2 .ssec:first-child{border-right:1px solid var(--line)}
+@media (max-width:900px){.srow2 .ssec:first-child{border-right:0}}
+.ssec h3{margin:0 0 4px;color:var(--ink);font-size:.95rem;letter-spacing:0;text-transform:none;font-weight:900}
+.ssec .sub2{margin:0 0 14px}
+.ssec h4{margin:20px 0 6px;font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.lg{margin:0 0 6px}
+.srow{grid-template-columns:76px 1fr auto;margin:9px 0}
+.srow .nm{font-weight:700;color:var(--ink)}
+.sbar{height:10px}
+.srow .pc{min-width:96px;text-align:right}
+.hb .r{grid-template-columns:minmax(80px,42%) 1fr 52px;margin:6px 0}
+.hb .t{height:8px}
+.ptab{width:100%;border:0;border-radius:0;border-collapse:collapse;margin:4px 0 0;font-size:.86rem}
+.ptab th{background:none;color:var(--muted);font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:6px 8px 6px 0;border-bottom:1px solid var(--line)}
+.ptab td{padding:7px 8px 7px 0;border-bottom:1px solid var(--line)}
+.ptab tr:last-child td{border-bottom:0}
+.ptab .sic{width:22px;height:22px;border-radius:7px;margin-right:8px}
+.ptab .sic svg.i{width:13px;height:13px}
+details.tbl{margin-top:12px;font-size:.82rem}
+details.tbl summary{cursor:pointer;color:var(--muted);font-weight:700}
+
+.shapes{width:100%;border-collapse:collapse;border:0;border-radius:0;margin:0;font-size:.88rem}
+.shapes td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.shapes tr:last-child td{border-bottom:0}
+.shapes td:first-child{width:52px}
+.shapes td:first-child svg{width:40px;height:22px;display:block}
+.shapes td:nth-child(2){width:1%;white-space:nowrap;font-weight:800;color:var(--ink);padding-right:20px}
+.shapes td:last-child{color:var(--muted)}
+.ssec .lrow2{padding:9px 0;border-bottom:1px solid var(--line)}
+.ssec .lrow2:last-child{border-bottom:0}
+.ssec .lrow2 b{font-weight:800}
+.ssec .lrow2 small{font-size:.76rem}
+.ssec .lrow2 .sic{width:24px;height:24px;border-radius:7px;margin:0}
+.ssec .lrow2 .sic svg.i{width:14px;height:14px}
+.ssec .notes li{padding:7px 0;font-size:.88rem;border-bottom:1px solid var(--line)}
+.ssec .notes li:last-child{border-bottom:0}
+.ssec .notes li svg.i{width:16px;height:16px;color:var(--muted)}
+.gtab{width:100%;border-collapse:collapse;border:0;border-radius:0;margin:0;font-size:.88rem}
+.gtab td{padding:7px 12px 7px 0;border-bottom:1px solid var(--line)}
+.gtab tr:last-child td{border-bottom:0}
+.gtab td:first-child{font-weight:700;color:var(--ink);width:55%}
+.gtab td:last-child{color:var(--muted)}
+
+.guide{display:grid;gap:34px}
+.gfig{display:grid;grid-template-columns:5fr 6fr;gap:0 44px;border-top:2px solid var(--ink);padding-top:14px}
+@media (max-width:760px){.gfig{grid-template-columns:1fr}}
+.gfig .kind{font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.specs{list-style:none;margin:0 0 16px;padding:0}
+.spec{display:grid;grid-template-columns:var(--gw,34px) 1fr;column-gap:14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.spec:last-child{border-bottom:0}
+.spec svg{grid-row:span 2;width:var(--gw,34px);height:30px}
+.spec b{font-size:.92rem;color:var(--ink);line-height:1.2}
+.spec span{font-size:.82rem;color:var(--muted);line-height:1.35}
+.specs.n3{--gw:92px}
+.gex{grid-column:1/-1;margin:0;padding:12px 0 0;border-top:1px solid var(--line2);font-size:.86rem;color:var(--muted)}
+.gex b{color:var(--ink)}
+.gcap{font-size:.8rem;color:var(--muted);margin:6px 4px 0}
+.ghd{display:flex;align-items:baseline;gap:12px;margin:0 0 10px}
+.ghd h3{margin:0;color:var(--ink);font-size:1.05rem;letter-spacing:0;text-transform:none;font-weight:900}
+.ghd span{font-size:.84rem;color:var(--muted)}
+.ltab{width:100%;border-collapse:collapse;border:0;border-radius:0;margin:0;font-size:.9rem;background:none}
+.ltab th{background:none;text-align:left;font-size:.68rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 12px 8px 0;border-bottom:2px solid var(--line)}
+.ltab td{padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.ltab tbody tr{cursor:pointer;transition:background .15s}
+.ltab tbody tr:hover{background:color-mix(in srgb,var(--panel) 70%,transparent)}
+.ltab tbody tr:hover td.ttl{color:var(--teal-d)}
+.ltab td.ttl{font-weight:800;color:var(--brown)}
+.ltab td.sj{white-space:nowrap;color:var(--muted);font-weight:700}
+.ltab td.sj .sic{width:24px;height:24px;border-radius:7px;display:inline-grid;place-items:center;background:color-mix(in srgb,var(--sc) 80%,var(--panel));color:var(--brown);vertical-align:middle;margin-right:8px}
+.ltab td.sj .sic svg.i{width:14px;height:14px}
+.ltab td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.ltab .demo{font-size:.7rem;font-weight:800;background:var(--sun);color:#4a3426;border-radius:999px;padding:1px 7px;margin-left:6px}
+@media (max-width:640px){.ltab .hide-s{display:none}}
+.rules3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 28px;margin:0;padding:0;list-style:none;counter-reset:r}
+@media (max-width:900px){.rules3{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.rules3{grid-template-columns:1fr}}
+.rules3 li{counter-increment:r;border-top:2px solid var(--ink);padding-top:10px;font-size:.88rem;color:var(--muted)}
+.rules3 li::before{content:counter(r,decimal-leading-zero);display:block;font-size:1.5rem;font-weight:900;color:var(--coral);line-height:1;margin-bottom:6px}
+.rules3 b{display:block;color:var(--ink);font-size:.95rem;margin-bottom:3px}
+.terms{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.9rem;margin:0}
+.terms span{white-space:nowrap}
+.terms b{color:var(--ink);font-weight:800}
+.terms i{font-style:normal;color:var(--muted)}
+.terms i::before{content:"→";margin:0 6px;color:var(--line2)}
+.legcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.legcard{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--code)}
+.legcard svg.g{flex:none;width:44px;height:30px}
+.legcard b{display:block;color:var(--brown)}
+.legcard span{font-size:.84rem;color:var(--muted)}
+.lrow2{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.lrow2:last-child{border-bottom:0}
+.lrow2:hover b{color:var(--teal-d)}
+.lrow2 .tx{flex:1;min-width:0}
+.lrow2 b{display:block;color:var(--brown)}
+.lrow2 small{display:block;color:var(--muted);font-size:.8rem}
+.lrow2 .n{font-size:.8rem;font-weight:800;color:var(--muted);white-space:nowrap}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.gloss div{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:12px;background:var(--code);font-size:.86rem}
+.gloss div b{color:var(--brown)}
+.gloss div span{color:var(--muted);text-align:right}
+.notes{list-style:none;padding:0;margin:0}
+.notes li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:.9rem}
+.notes li svg.i{flex:none;color:var(--teal-d);margin-top:3px}
+li{margin:.3em 0}
 </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1>OTTER Ontology Explorer <span class="muted" style="font-weight:400">/ <span lang="vi">Trình khám phá ontology</span> (ontology explorer)</span></h1>
-    <div class="sub">Real lesson graphs from the frozen OTTER ontology. Every item points to a source span in a textbook. Research prototype.</div>
-  </div>
-  <button id="theme" title="toggle light/dark">Theme</button>
-</header>
-<nav role="tablist" id="tabs">
-  <button role="tab" data-tab="graph" aria-selected="true">Lesson graph</button>
-  <button role="tab" data-tab="rules" aria-selected="false">Rule view</button>
-  <button role="tab" data-tab="stats" aria-selected="false">Ontology stats</button>
-  <button role="tab" data-tab="about" aria-selected="false">Legend &amp; notes</button>
-</nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-graph" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></symbol>
+  <symbol id="i-rule" viewBox="0 0 24 24"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0Z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.53a2 2 0 0 1-.21.9L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.07-10.13a2 2 0 0 1-.21-.9V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="i-landmark" viewBox="0 0 24 24"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M12 2 20 7H4z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <symbol id="i-feather" viewBox="0 0 24 24"><path d="M12.67 19a2 2 0 0 0 1.42-.59l6.15-6.17a6 6 0 0 0-8.49-8.49L5.59 9.91A2 2 0 0 0 5 11.33V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+</defs></svg>
+<header><div class="in">
+  <a class="brand" href="../index.html"><img src="../assets/otter.png" alt=""><span><h1>OTTER Ontology Explorer</h1><span class="sub">Real lesson graphs from the frozen ontology; every item points to a textbook span</span></span></a>
+  <a class="iconbtn" href="../index.html"><svg class="i"><use href="#i-back"/></svg><span>Project page</span></a>
+  <button id="theme" class="iconbtn" title="Toggle light/dark" aria-label="Toggle light/dark theme"><svg class="i"><use href="#i-moon"/></svg></button>
+</div></header>
 <main>
+<nav role="tablist" id="tabs">
+  <button role="tab" data-tab="graph" aria-selected="true"><svg class="i"><use href="#i-graph"/></svg>Lesson graph</button>
+  <button role="tab" data-tab="rules" aria-selected="false"><svg class="i"><use href="#i-rule"/></svg>Rule view</button>
+  <button role="tab" data-tab="stats" aria-selected="false"><svg class="i"><use href="#i-chart"/></svg>Ontology stats</button>
+  <button role="tab" data-tab="about" aria-selected="false"><svg class="i"><use href="#i-info"/></svg>Legend &amp; notes</button>
+</nav>
 <section id="tab-graph">
-  <div class="controls">
-    <select id="lesson" aria-label="Subject and lesson"></select>
-    <input id="q" type="search" placeholder="find a node (label or id)" aria-label="find a node">
-    <label><input id="lbl" type="checkbox" checked> labels</label>
-    <button id="fit">Reset view</button>
-  </div>
-  <div class="legend" id="legend"></div>
+  <div class="lessons" id="lessonpick" role="listbox" aria-label="Lessons"></div>
+  <div class="lhead" id="lessoninfo"></div>
   <div class="grid">
     <div class="card" id="graphwrap">
       <svg id="svg" viewBox="0 0 1000 700" role="img" aria-label="lesson graph"><g id="vp"></g></svg>
-      <div class="zoomb"><button id="zin" aria-label="zoom in">+</button><button id="zout" aria-label="zoom out">&minus;</button></div>
+      <div class="gtools"><label class="search"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Find a node" aria-label="Find a node"></label></div>
+      <div class="zoomb"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">&minus;</button><button id="fit" aria-label="Fit graph to view"><svg class="i"><use href="#i-reset"/></svg></button><button id="lblbtn" class="aa" aria-pressed="true" aria-label="Show labels">Aa</button></div>
+      <div class="legend" id="legend"></div>
     </div>
-    <div class="card" id="detail"><h2>Details</h2><p class="muted">Tap or click a node (or an edge) to see its type, id, support label and source pointers. Drag to pan, wheel or pinch to zoom, drag a node to move it. On a narrow screen, labels appear after you zoom in.</p></div>
+    <div class="card" id="detail"></div>
   </div>
-  <div class="card" id="lessoninfo" style="margin-top:12px"></div>
+  <p class="note" id="lessonnote"></p>
 </section>
 
 <section id="tab-rules" class="hidden">
-  <div class="card">
-    <h2>How an executable rule is stored</h2>
-    <p>A rule is stored as one row in table <code>rules</code> (id, subject, grade, <code>rule_type</code>, <code>status</code>, optional <code>formula</code>, support label, <code>strict_executable</code> flag)
-    plus ordered atoms in <code>rule_premises</code>, <code>rule_guards</code> (applicability conditions), <code>rule_conclusions</code> and <code>rule_exceptions</code>. Each atom is
-    <code>(predicate, args, text, negated)</code>; <code>args</code> are concept ids. A rule is marked <code>strict_executable = 1</code> only if it is supported, explicit, has premises and conclusions and no suspected missing guard.
-    <span class="muted">(<span lang="vi">quy tắc thực thi chặt</span>: strict-executable rule)</span></p>
-    <p class="muted">Atom texts, formulas and variable descriptions are shown only if they pass the verbatim check (at most 25 words, no run of 8 words shared with the evidence spans); otherwise only the stored structure and ids are shown.</p>
+  <div class="phead">
+    <div><div class="kick">Layer 2 · rule hypergraph</div><h2 class="big">Executable rules</h2>
+    <p>Each rule reads as IF premises, WHEN its guards hold, THEN conclusions, UNLESS an exception applies. Arguments are concepts of the ontology; formulas keep their variable bindings.</p></div>
+    <div class="seg" id="rulesrc" role="group" aria-label="Rules to show"><button data-v="gallery" aria-pressed="true">Gallery · 2 per subject</button><button data-v="lesson" aria-pressed="false">Current lesson</button></div>
   </div>
-  <div class="controls" style="margin-top:10px"><label>Show rules from: <select id="rulesrc"><option value="lesson">current lesson graph</option><option value="gallery" selected>gallery (2 strict-executable rules per subject)</option></select></label></div>
-  <div id="rulelist"></div>
+  <details class="howto"><summary>How a rule is stored in the database</summary>
+    <p>One row in table <code>rules</code> (id, subject, grade, <code>rule_type</code>, <code>status</code>, optional <code>formula</code>, support label, <code>strict_executable</code> flag) plus ordered atoms in <code>rule_premises</code>, <code>rule_guards</code>, <code>rule_conclusions</code> and <code>rule_exceptions</code>. Each atom is <code>(predicate, args, text, negated)</code>; <code>args</code> are concept ids. A rule is <code>strict_executable = 1</code> only if it is supported, explicit, has premises and conclusions and no suspected missing guard.</p>
+    <p class="muted">Atom texts, formulas and variable descriptions are shown only if they pass the verbatim check (at most 25 words, no run of 8 words shared with the evidence spans); otherwise only the stored structure and ids are shown.</p>
+  </details>
+  <p class="muted" id="rulecap"></p>
+  <div class="rpane"><nav id="rulenav" aria-label="Rules"></nav><article id="ruledetail" class="rdoc"></article></div>
 </section>
 
 <section id="tab-stats" class="hidden"><div id="statsbody"></div></section>
@@ -148,9 +458,15 @@ document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
 // ---------- lesson graph ----------
 let cur=null, view={k:1,x:0,y:0}, selId=null, byId={}, VW=1000, VH=700, S=7, curIdx=0;
 const vp=$('#vp'), svgEl=$('#svg');
-const sel=$('#lesson');
-APP.lessons.forEach((l,i)=>{ const o=el('option',{value:i,text:l.subject_vi+' ('+l.subject_en+') grade '+l.grade+' · '+l.heading+(l.heading_en?' ['+l.heading_en+']':'')+(l.role==='demo'?' · demo lesson of the video':'')}); sel.appendChild(o); });
-sel.onchange=()=>loadLesson(+sel.value);
+const bookEn = l => l.subject_en+' '+l.grade+(/tập hai/i.test(l.book)?', vol. 2':/tập một/i.test(l.book)?', vol. 1':'');
+const title = l => (l.heading_en||l.heading).replace(/\s*\(.*\)\s*$/,'');
+const SUBJ = {physics:['#dff3ff','atom'], chemistry:['#d7f5e9','flask'], biology:['#e3f5d3','leaf'], history:['#ffe7d6','landmark'], geography:['#fff1c2','globe'], literature:['#ffe3ee','feather']};
+const pick=$('#lessonpick');
+APP.lessons.forEach((l,i)=>{ const s=SUBJ[l.subject]||['#eeeeee','graph'];
+  const b=el('button',{class:'lcard',role:'option','aria-selected':'false',style:'--sc:'+s[0]});
+  b.innerHTML='<span class="sic"><svg class="i"><use href="#i-'+s[1]+'"/></svg></span><span class="sub">'+l.subject_en+' '+l.grade+(l.role==='demo'?'<em class="demo">video demo</em>':'')+'</span><span class="ttl"></span><span class="meta">'+fmt(l.n_nodes)+' nodes · '+fmt(l.n_edges)+' edges</span>';
+  b.querySelector('.ttl').textContent=title(l); b.onclick=()=>loadLesson(i); pick.appendChild(b); });
+let labelsOn=true, fitV={k:1,x:0,y:0};
 
 function shapePath(k,x,y,s){
   if(k==='fact') return 'M'+(x-s)+' '+(y-s)+'h'+2*s+'v'+2*s+'h'+(-2*s)+'z';
@@ -162,18 +478,21 @@ function nodeLabel(n){ if(n.k==='concept') return n.label || n.id.split(':').pop
 
 function loadLesson(i){
   curIdx=i; cur=APP.lessons[i]; byId={}; cur.nodes.forEach(n=>byId[n.id]=n); selId=null;
-  VW=svgEl.clientWidth||1000; VH=svgEl.clientHeight||700; svgEl.setAttribute('viewBox','0 0 '+VW+' '+VH); S=VW<520?5:7;
+  VW=svgEl.clientWidth||1000; VH=svgEl.clientHeight||700; svgEl.setAttribute('viewBox','0 0 '+VW+' '+VH); S=VW<520?5:8;
   const portrait=VW<VH*0.85, bw=portrait?700:1000, bh=portrait?1000:700, bs=Math.min(VW/bw,VH/bh)*0.97, ox=(VW-bw*bs)/2, oy=(VH-bh*bs)/2;
   cur.nodes.forEach(n=>{ if(n.x0===undefined){n.x0=n.x;n.y0=n.y;} const a=portrait?n.y0:n.x0, b=portrait?n.x0:n.y0; n.x=ox+a*bs; n.y=oy+b*bs; });
-  vp.innerHTML=''; view={k:1,x:0,y:0}; applyView();
+  [...pick.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));
+  const deg={}; cur.edges.forEach(e=>{ deg[e.s]=(deg[e.s]||0)+1; deg[e.t]=(deg[e.t]||0)+1; });
+  cur.nodes.forEach(n=>{ n.deg=deg[n.id]||0; n.r = n.k==='concept' ? S*(0.85+Math.min(0.9,(n.deg-1)*0.1)) : S*0.8; });
+  vp.innerHTML=''; layout(); fitView();
   const gE=sv('g',{id:'edges'}), gN=sv('g',{id:'nodes'});
   vp.appendChild(gE); vp.appendChild(gN);
   cur.edges.forEach((e,j)=>{
     const a=byId[e.s], b=byId[e.t]; if(!a||!b) return;
     const g=sv('g',{'data-e':j});
-    const st = e.k==='relation' ? {stroke:'var(--e-rel)','stroke-width':1.6} : e.k==='teaches' ? {stroke:'var(--e-teach)','stroke-width':1.4,'stroke-dasharray':'2 3'} : {stroke:'var(--e-men)','stroke-width':1,'stroke-dasharray':'5 3'};
+    const st = e.k==='relation' ? {stroke:'var(--e-rel)','stroke-width':1.8} : e.k==='teaches' ? {stroke:'var(--e-teach)','stroke-width':1.4,'stroke-dasharray':'2 3'} : {stroke:'var(--e-men)','stroke-width':1,'stroke-dasharray':'5 3'};
     const ln=sv('line',Object.assign({x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'edge'},st)); g.appendChild(ln);
-    if(e.k==='relation'){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*9, ty=b.y-uy*9;
+    if(e.k==='relation'){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*(b.r+3), ty=b.y-uy*(b.r+3);
       g.appendChild(sv('path',{d:'M'+tx+' '+ty+'l'+(-ux*7-uy*3.5)+' '+(-uy*7+ux*3.5)+'l'+(uy*7)+' '+(-ux*7)+'z',fill:'var(--e-rel)',class:'arrow'})); }
     const hit=sv('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'transparent','stroke-width':10,'data-hit':1}); g.appendChild(hit);
     hit.addEventListener('click',ev=>{ev.stopPropagation(); showEdge(j);});
@@ -181,28 +500,68 @@ function loadLesson(i){
   });
   cur.nodes.forEach(n=>{
     const g=sv('g',{class:'node','data-id':n.id,tabindex:0,role:'button','aria-label':KNAME[n.k]+' '+(nodeLabel(n)||n.id)});
-    let sh; const s=S;
-    if(n.k==='concept') sh=sv('circle',{cx:n.x,cy:n.y,r:S,fill:KCOL.concept,stroke:'var(--halo)','stroke-width':1.5});
-    else sh=sv('path',{d:shapePath(n.k,n.x,n.y,s),fill:KCOL[n.k],stroke:(n.k==='rule'&&n.rule.strict)?'var(--ink)':'var(--halo)','stroke-width':(n.k==='rule'&&n.rule.strict)?2:1.5});
+    let sh;
+    if(n.k==='concept') sh=sv('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.deg>=6?KCOL.concept:'var(--panel)',stroke:KCOL.concept,'stroke-width':2.4});
+    else sh=sv('path',{d:shapePath(n.k,n.x,n.y,n.r),fill:KCOL[n.k],stroke:(n.k==='rule'&&n.rule.strict)?'var(--ink)':'var(--halo)','stroke-width':(n.k==='rule'&&n.rule.strict)?2:1.5});
     sh.setAttribute('class','shape'); g.appendChild(sh);
-    const hit=sv('circle',{cx:n.x,cy:n.y,r:S+8,fill:'transparent'}); g.appendChild(hit);
+    const hit=sv('circle',{cx:n.x,cy:n.y,r:n.r+8,fill:'transparent'}); g.appendChild(hit);
     const lb=nodeLabel(n);
-    if(lb){ const t=sv('text',{x:n.x+S+3,y:n.y+4,class:'lbl','font-size':11}); t.textContent=lb.length>26?lb.slice(0,25)+'…':lb; g.appendChild(t); }
+    if(lb){ const t=sv('text',{x:n.x+n.r+5,y:n.y+4,class:'lbl','font-size':12}); t.textContent=lb.length>26?lb.slice(0,25)+'…':lb; g.appendChild(t); }
     n._g=g; n._sh=sh; gN.appendChild(g);
     enableNodeDrag(g,n);
   });
   updateLabels(); renderLegend(); renderInfo(); resetDetail();
 }
 
+// Layout on the page: start from the precomputed positions, run a force-directed pass, then separate the
+// boxes "node + label" until none overlap. The graph is not confined to the frame: the view fits it, and
+// below 100% zoom labels shrink with the graph, so they never collide; zoom in to read.
+const measure=document.createElement('canvas').getContext('2d');
+function layout(){
+  const N=cur.nodes, L=N.length;
+  measure.font='700 12px '+getComputedStyle(document.body).fontFamily;
+  N.forEach(n=>{ const lb=nodeLabel(n); n.lw=lb?measure.measureText(lb.length>26?lb.slice(0,25)+'…':lb).width+8:0; n.hh=Math.max(n.r,9)+3; });
+  const area=N.reduce((s,n)=>s+(2*n.r+n.lw+16)*(2*n.hh+12),0)*1.5, asp=Math.max(0.8,Math.min(2,VW/VH));
+  const W=Math.sqrt(area*asp), H=area/W, cx=W/2, cy=H/2;
+  let ax=1e9,bx=-1e9,ay=1e9,by=-1e9; N.forEach(n=>{ax=Math.min(ax,n.x);bx=Math.max(bx,n.x);ay=Math.min(ay,n.y);by=Math.max(by,n.y);});
+  N.forEach(n=>{ n.x=(n.x-ax)/((bx-ax)||1)*W; n.y=(n.y-ay)/((by-ay)||1)*H; });
+  const idx={}; N.forEach((n,i)=>idx[n.id]=i);
+  const E=cur.edges.map(e=>[idx[e.s],idx[e.t]]).filter(([a,b])=>a!==undefined&&b!==undefined);
+  const C=Math.sqrt(W*H/L)*0.5, dx=new Float64Array(L), dy=new Float64Array(L);
+  for(let it=0;it<320;it++){
+    const temp=C*0.6*(1-it/320)+0.5; dx.fill(0); dy.fill(0);
+    for(let i=0;i<L;i++) for(let j=i+1;j<L;j++){ let x=N[i].x-N[j].x, y=N[i].y-N[j].y, d=Math.hypot(x,y); if(d<0.01){x=0.01*(i-j);y=0.01;d=0.015;} const f=C*C/d/d; dx[i]+=x*f; dy[i]+=y*f; dx[j]-=x*f; dy[j]-=y*f; }
+    E.forEach(([a,b])=>{ const x=N[a].x-N[b].x, y=N[a].y-N[b].y, d=Math.hypot(x,y)||0.01, f=d/C; dx[a]-=x*f; dy[a]-=y*f; dx[b]+=x*f; dy[b]+=y*f; });
+    for(let i=0;i<L;i++){ dx[i]-=(N[i].x+N[i].lw/2-cx)*0.05; dy[i]-=(N[i].y-cy)*0.05*asp; }
+    for(let i=0;i<L;i++){ const m=Math.hypot(dx[i],dy[i])||1, s=Math.min(m,temp)/m; N[i].x+=dx[i]*s; N[i].y+=dy[i]*s; }
+  }
+  const box=n=>[n.x-n.r-4, n.x+n.r+n.lw+4, n.y-n.hh-3, n.y+n.hh+3];
+  for(let it=0;it<600;it++){ let moved=false;
+    for(let i=0;i<L;i++) for(let j=i+1;j<L;j++){ const a=N[i], b=N[j], A=box(a), B=box(b);
+      const ox=Math.min(A[1],B[1])-Math.max(A[0],B[0]), oy=Math.min(A[3],B[3])-Math.max(A[2],B[2]);
+      if(ox<=0||oy<=0) continue; moved=true;
+      if(ox<oy){ const s=((A[0]+A[1])<(B[0]+B[1])?1:-1)*(ox/2+0.5); a.x-=s; b.x+=s; }
+      else { const s=(a.y<b.y||(a.y===b.y&&i<j)?1:-1)*(oy/2+0.5); a.y-=s; b.y+=s; } }
+    if(!moved) break; }
+}
+function fitView(){
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  cur.nodes.forEach(n=>{ const lw=n.lw||0;
+    x0=Math.min(x0,n.x-n.r); x1=Math.max(x1,n.x+n.r+lw); y0=Math.min(y0,n.y-n.r); y1=Math.max(y1,n.y+n.r); });
+  const pt_=60, pb=VW<600?116:88, px=16, pr=VW>=600?62:16, aw=VW-px-pr, k=Math.max(VW>=600?0.8:0.3,Math.min(1.15,aw/((x1-x0)||1),(VH-pt_-pb)/((y1-y0)||1)));
+  fitV={k:k, x:px+(aw-(x1-x0)*k)/2-x0*k, y:pt_+((VH-pt_-pb)-(y1-y0)*k)/2-y0*k};
+  view=Object.assign({},fitV); applyView();
+}
 function applyView(){ vp.setAttribute('transform','translate('+view.x+' '+view.y+') scale('+view.k+')'); updateLabels(); }
-function updateLabels(){ const on=$('#lbl').checked && (VW>=600 || view.k>=2.2); document.querySelectorAll('#nodes .lbl').forEach(t=>{ t.style.display=on?'':'none'; t.setAttribute('font-size',(11/Math.max(view.k,.6)).toFixed(2)); t.setAttribute('stroke-width',(3/Math.max(view.k,.6)).toFixed(2)); }); }
-$('#lbl').onchange=updateLabels;
+function updateLabels(){ const on=labelsOn && (VW>=600 || view.k>=1); const z=Math.max(view.k,1); document.querySelectorAll('#nodes .lbl').forEach(t=>{ t.style.display=on?'':'none'; t.setAttribute('font-size',(12/z).toFixed(2)); t.setAttribute('stroke-width',(3/z).toFixed(2)); }); }
+$('#lblbtn').onclick=()=>{ labelsOn=!labelsOn; $('#lblbtn').setAttribute('aria-pressed',labelsOn); updateLabels(); };
 function pt(ev){ const m=svgEl.getScreenCTM().inverse(); const p=svgEl.createSVGPoint(); p.x=ev.clientX; p.y=ev.clientY; return p.matrixTransform(m); }
-function zoomAt(px,py,f){ const k2=Math.min(8,Math.max(.4,view.k*f)); f=k2/view.k; view.x=px-(px-view.x)*f; view.y=py-(py-view.y)*f; view.k=k2; applyView(); }
-svgEl.addEventListener('wheel',ev=>{ev.preventDefault(); const p=pt(ev); zoomAt(p.x,p.y,ev.deltaY<0?1.15:1/1.15);},{passive:false});
+function zoomAt(px,py,f){ const k2=Math.min(8,Math.max(.15,view.k*f)); f=k2/view.k; view.x=px-(px-view.x)*f; view.y=py-(py-view.y)*f; view.k=k2; applyView(); }
+// zoom in proportion to the scroll distance (trackpads send many small events; pinch arrives as ctrl+wheel)
+svgEl.addEventListener('wheel',ev=>{ev.preventDefault(); const p=pt(ev); const dy=ev.deltaY*(ev.deltaMode===1?16:ev.deltaMode===2?400:1); zoomAt(p.x,p.y,Math.min(1.2,Math.max(1/1.2,Math.exp(-dy*(ev.ctrlKey?0.008:0.0012)))));},{passive:false});
 $('#zin').onclick=()=>zoomAt(VW/2,VH/2,1.3); $('#zout').onclick=()=>zoomAt(VW/2,VH/2,1/1.3);
 let rz=null; addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(Math.abs((svgEl.clientWidth||0)-VW)>40||Math.abs((svgEl.clientHeight||0)-VH)>40) loadLesson(curIdx); },250); });
-$('#fit').onclick=()=>{view={k:1,x:0,y:0}; applyView();};
+$('#fit').onclick=()=>{view=Object.assign({},fitV); applyView();};
 const ptrs=new Map(); let pan=null, pinch=null, nodeDrag=null;
 svgEl.addEventListener('pointerdown',ev=>{ ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY}); svgEl.setPointerCapture&&svgEl.setPointerCapture(ev.pointerId);
   if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y)}; pan=null; nodeDrag=null; }
@@ -219,42 +578,49 @@ svgEl.addEventListener('pointerup',endPtr); svgEl.addEventListener('pointercance
 function enableNodeDrag(g,n){ g.addEventListener('pointerdown',ev=>{ if(ptrs.size>0) return; ev.stopPropagation(); ptrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY}); svgEl.setPointerCapture&&svgEl.setPointerCapture(ev.pointerId); const p=pt(ev); nodeDrag={n:n,sx:p.x,sy:p.y,nx:n.x,ny:n.y,moved:false}; pan=null; });
   g.addEventListener('keydown',ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault(); selectNode(n.id);} }); }
 function moveNode(n,x,y){ n.x=x; n.y=y; const sh=n._sh;
-  if(n.k==='concept'){ sh.setAttribute('cx',x); sh.setAttribute('cy',y);} else sh.setAttribute('d',shapePath(n.k,x,y,S));
+  if(n.k==='concept'){ sh.setAttribute('cx',x); sh.setAttribute('cy',y);} else sh.setAttribute('d',shapePath(n.k,x,y,n.r));
   n._g.querySelectorAll('circle:not(.shape)').forEach(c=>{c.setAttribute('cx',x);c.setAttribute('cy',y);});
-  const t=n._g.querySelector('text'); if(t){t.setAttribute('x',x+S+3); t.setAttribute('y',y+4);}
+  const t=n._g.querySelector('text'); if(t){t.setAttribute('x',x+n.r+5); t.setAttribute('y',y+4);}
   cur.edges.forEach(e=>{ if(e._a===n||e._b===n){ const a=e._a,b=e._b; e._g.querySelectorAll('line').forEach(l=>{l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y);});
-      const ar=e._g.querySelector('.arrow'); if(ar){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*9, ty=b.y-uy*9; ar.setAttribute('d','M'+tx+' '+ty+'l'+(-ux*7-uy*3.5)+' '+(-uy*7+ux*3.5)+'l'+(uy*7)+' '+(-ux*7)+'z'); } } }); }
+      const ar=e._g.querySelector('.arrow'); if(ar){ const dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy)||1, ux=dx/d, uy=dy/d, tx=b.x-ux*(b.r+3), ty=b.y-uy*(b.r+3); ar.setAttribute('d','M'+tx+' '+ty+'l'+(-ux*7-uy*3.5)+' '+(-uy*7+ux*3.5)+'l'+(uy*7)+' '+(-ux*7)+'z'); } } }); }
 
 function renderLegend(){
   const lg=$('#legend'); lg.innerHTML='';
   const mk=(inner,txt)=>{ const s=el('span'); const v=sv('svg',{viewBox:'0 0 18 14'}); v.innerHTML=inner; s.appendChild(v); s.appendChild(document.createTextNode(txt)); lg.appendChild(s); };
-  mk('<circle cx="9" cy="7" r="5" fill="var(--concept)"/>','concept (khái niệm)');
-  mk('<rect x="4" y="2" width="10" height="10" fill="var(--fact)"/>','fact (sự kiện)');
-  mk('<path d="M9 0L17 7L9 14L1 7z" fill="var(--rule)" stroke="var(--ink)" stroke-width="1.5"/>','rule (quy tắc); dark outline = strict-executable');
-  mk('<path d="M9 1L17 12L1 12z" fill="var(--obj)"/>','learning objective (mục tiêu)');
-  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-rel)" stroke-width="2"/>','typed relation');
-  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-men)" stroke-width="1.5" stroke-dasharray="4 2"/>','mentions concept');
+  mk('<circle cx="9" cy="7" r="4.5" fill="var(--panel)" stroke="var(--concept)" stroke-width="2"/>','concept');
+  mk('<rect x="4" y="2" width="10" height="10" rx="2" fill="var(--fact)"/>','fact');
+  mk('<path d="M9 0L17 7L9 14L1 7z" fill="var(--rule)" stroke="var(--ink)" stroke-width="1.5"/>','rule');
+  mk('<path d="M9 1L17 12L1 12z" fill="var(--obj)"/>','objective');
+  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-rel)" stroke-width="2"/>','relation');
+  mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-men)" stroke-width="1.5" stroke-dasharray="4 2"/>','mentions');
   mk('<line x1="1" y1="7" x2="17" y2="7" stroke="var(--e-teach)" stroke-width="2" stroke-dasharray="2 2"/>','teaches');
 }
 function renderInfo(){
-  const l=cur, d=$('#lessoninfo'); d.innerHTML='';
-  d.appendChild(el('h2',{text:l.subject_vi+' ('+l.subject_en+') · '+l.book+' · '+l.heading+(l.heading_en?'  ['+l.heading_en+']':'')}));
-  const t=l.n_by_type;
-  d.appendChild(el('p',{text:fmt(l.n_nodes)+' nodes drawn ('+['concept','fact','rule','objective'].map(k=>(t[k]||0)+' '+k+(k==='concept'||k==='fact'||k==='rule'?'s':'s')).join(', ')+'), '+fmt(l.n_edges)+' edges; '+l.n_strict_rules+' strict-executable rule(s). '+
-    'This lesson has '+fmt(l.nodes_in_lesson)+' supported/not-labelled items with evidence in it; the drawn graph is its largest connected component ('+fmt(l.largest_component)+' nodes; '+l.n_components+' components in total, five largest: '+l.components_sizes_top5.join(', ')+').'+
-    (l.role==='demo'?' This is the demo lesson used in the video; it was not chosen by the selection rule.':' Selected by the rule: largest connected component of at most 150 nodes among the lessons of this subject.')}));
-  const tc=l.text_check, parts=Object.keys(tc).map(k=>k+': '+tc[k].passed+' shown / '+tc[k].failed+' withheld');
-  d.appendChild(el('p',{class:'muted',text:'Verbatim check in this graph: '+parts.join('; ')+'. Withheld = id and pointers only.'}));
+  const l=cur, d=$('#lessoninfo'), t=l.n_by_type; d.innerHTML='';
+  const left=el('div');
+  left.appendChild(el('div',{class:'kick',text:bookEn(l)+(l.role==='demo'?' · demo lesson of the video':' · selected by rule')}));
+  left.appendChild(el('h2',{text:title(l)}));
+  left.appendChild(el('div',{class:'orig',text:'In the book: '+l.heading}));
+  d.appendChild(left);
+  const st=el('div',{class:'stats'});
+  [['concepts',t.concept],['facts',t.fact],['rules',t.rule],['objectives',t.objective],['edges',l.n_edges]].forEach(([k,v])=>{ const s=el('div',{class:'stat'}); s.appendChild(el('b',{text:fmt(v||0)})); s.appendChild(el('span',{text:k})); st.appendChild(s); });
+  d.appendChild(st);
+  const tc=l.text_check, parts=Object.keys(tc).map(k=>k.replace(/_/g,' ')+' '+tc[k].passed+' shown / '+tc[k].failed+' withheld');
+  $('#lessonnote').textContent='The lesson has '+fmt(l.nodes_in_lesson)+' supported or not-labelled items with evidence; the graph is its largest connected component ('+fmt(l.largest_component)+' nodes of '+l.n_components+' components; five largest: '+l.components_sizes_top5.join(', ')+'). '+
+    (l.role==='demo'?'This is the demo lesson of the video, not chosen by the selection rule. ':'Chosen by a fixed rule: the largest component of at most 150 nodes among the lessons of this subject. ')+
+    'Verbatim check: '+parts.join('; ')+' (withheld = id and pointers only).';
 }
 function ptrNode(p){
   const d=el('div',{class:'ptr'});
-  if(!p.book){ d.appendChild(el('div',{class:'mono',text:p.span})); return d; }
-  d.appendChild(el('div',{text:p.book+(p.lesson?' · '+p.lesson:'')}));
-  d.appendChild(el('div',{text:'printed page '+(p.page||'?')+(p.page?(p.page_verified?' (verified)':' (not verified)'):'')+' · span kind: '+p.kind}));
-  d.appendChild(el('div',{class:'mono',text:p.span})); return d;
+  const pg=el('div',{class:'pg'}); pg.appendChild(el('small',{text:'page'})); pg.appendChild(el('b',{text:p.page||'?'})); d.appendChild(pg);
+  const t=el('div');
+  if(p.book){ t.appendChild(el('div',{class:'pb',text:p.book})); if(p.lesson) t.appendChild(el('div',{class:'pl',text:p.lesson}));
+    t.appendChild(el('div',{class:'mono muted',text:p.kind+' · '+p.span.split(':').slice(-2).join(':')+(p.page?(p.page_verified?' · page verified':' · page not verified'):'')})); }
+  else t.appendChild(el('div',{class:'mono',text:p.span}));
+  d.appendChild(t); return d;
 }
 function support(s){ return s==='supported'?'supported (DB label, automatic)':s==='not_labelled'?'not labelled (no support label for this item type in the DB)':s; }
-function resetDetail(){ $('#detail').innerHTML='<h2>Details</h2><p class="muted">Tap or click a node (or an edge) to see its type, id, support label and source pointers.</p>'; }
+function resetDetail(){ $('#detail').innerHTML='<div class="empty"><img src="../assets/otter.png" alt=""><b>Pick a node</b><span>Click a concept, fact, rule or edge to see its type, support label and the book pages it was read from. Drag nodes to move them, drag the background to pan, scroll or pinch to zoom in on any part.</span></div>'; }
 function clearSel(){ selId=null; document.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); document.querySelectorAll('.dim').forEach(x=>x.classList.remove('dim')); resetDetail(); }
 function selectNode(id){
   const n=byId[id]; if(!n) return; selId=id;
@@ -262,12 +628,12 @@ function selectNode(id){
   const nb=new Set([id]); cur.edges.forEach(e=>{ if(e.s===id) nb.add(e.t); if(e.t===id) nb.add(e.s); });
   cur.nodes.forEach(m=>m._g.classList.toggle('dim',!nb.has(m.id))); cur.edges.forEach(e=>e._g&&e._g.classList.toggle('dim',!(e.s===id||e.t===id)));
   const d=$('#detail'); d.innerHTML='';
-  d.appendChild(el('h2',{text:(n.k==='concept'?(n.label||'(label withheld)'):KNAME[n.k])}));
-  const tg=el('div'); tg.appendChild(el('span',{class:'tag',text:KNAME[n.k]})); if(n.ctype) tg.appendChild(el('span',{class:'tag',text:n.ctype})); if(n.status) tg.appendChild(el('span',{class:'tag',text:n.status}));
+  const kk=el('div',{class:'kick'}); const dot=el('i',{style:'--c:'+KCOL[n.k]}); kk.appendChild(dot); kk.appendChild(document.createTextNode(KNAME[n.k]+(n.ctype&&n.ctype.toLowerCase()!==n.k?' · '+n.ctype:''))); d.appendChild(kk);
+  d.appendChild(el('h2',{text:(n.k==='concept'?(n.label||'(label withheld)'):KNAME[n.k]+' '+n.id.split(':').pop())}));
+  const tg=el('div'); if(n.status) tg.appendChild(el('span',{class:'tag',text:n.status.replace(/_/g,' ')}));
   if(n.k==='rule'){ tg.appendChild(el('span',{class:'tag',text:n.rule.rule_type})); if(n.rule.strict) tg.appendChild(el('span',{class:'tag',text:'strict-executable'})); }
   d.appendChild(tg);
-  d.appendChild(el('p',{},[el('b',{text:'id '}),el('code',{text:n.id})]));
-  d.appendChild(el('p',{text:'Support: '+support(n.support)+(n.score!==undefined?' · score '+n.score:'')}));
+  const kv=el('dl',{class:'kv'}); [['id',n.id],['support',support(n.support)],['score',n.score!==undefined?String(n.score):null],['links',String(n.deg)]].forEach(([k,v])=>{ if(v===null) return; kv.appendChild(el('dt',{text:k})); kv.appendChild(el('dd',{class:k==='id'?'mono':'',text:v})); }); d.appendChild(kv);
   if(n.gloss){ d.appendChild(el('p',{class:'muted',text:'EN gloss (machine, unchecked): '+n.gloss})); }
   if(n.k!=='concept'){
     if(n.text) d.appendChild(el('p',{text:'Statement: '+n.text}));
@@ -277,8 +643,8 @@ function selectNode(id){
   // neighbours
   const nbs=[]; cur.edges.forEach(e=>{ if(e.s===id) nbs.push(['→',e,byId[e.t]]); else if(e.t===id) nbs.push(['←',e,byId[e.s]]); });
   if(nbs.length){ d.appendChild(el('h3',{text:'Links ('+nbs.length+')'})); const ul=el('div');
-    nbs.slice(0,30).forEach(([dir,e,m])=>{ const a=el('div',{class:'muted'}); a.appendChild(document.createTextNode(dir+' '+(e.rt||e.k)+' · ')); const b=el('a',{href:'#',text:(nodeLabel(m)||KNAME[m.k]+' '+m.id.split(':').pop())}); b.onclick=ev=>{ev.preventDefault(); selectNode(m.id);}; a.appendChild(b); ul.appendChild(a); }); d.appendChild(ul); }
-  d.appendChild(el('h3',{text:'Source pointers ('+n.n_spans+' span'+(n.n_spans===1?'':'s')+(n.n_spans>n.spans.length?', first '+n.spans.length+' shown':'')+')'}));
+    nbs.slice(0,30).forEach(([dir,e,m])=>{ const a=el('div',{class:'lrow'}); a.appendChild(el('span',{class:'rt',text:dir+' '+(e.rt||e.k).replace(/_/g,' ')})); const b=el('a',{href:'#',text:(nodeLabel(m)||KNAME[m.k]+' '+m.id.split(':').pop())}); b.onclick=ev=>{ev.preventDefault(); selectNode(m.id);}; a.appendChild(b); ul.appendChild(a); }); d.appendChild(ul); }
+  d.appendChild(el('h3',{text:'Read from ('+n.n_spans+' span'+(n.n_spans===1?'':'s')+(n.n_spans>n.spans.length?', first '+n.spans.length+' shown':'')+')'}));
   n.spans.forEach(s=>d.appendChild(ptrNode(cur.pointers[s]||{span:s})));
   if(window.matchMedia('(max-width:900px)').matches) d.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -297,86 +663,231 @@ $('#q').oninput=ev=>{ const v=ev.target.value.trim().toLowerCase(); if(!cur) ret
   cur.edges.forEach(e=>e._g&&e._g.classList.toggle('dim',!!v)); if(!v){ document.querySelectorAll('.dim').forEach(x=>x.classList.remove('dim')); } };
 
 // ---------- rule view ----------
-function atomRows(title,arr){
-  const w=el('div'); w.appendChild(el('h3',{text:title+' ('+arr.length+')'})); const box=el('div',{class:'atoms'});
-  if(!arr.length) box.appendChild(el('div',{class:'muted',text:'(none)'}));
-  arr.forEach((a,i)=>{ const r=el('div'); r.appendChild(el('code',{text:(a.neg?'NOT ':'')+a.pred+'('+a.args.map(x=>x===null?'(arg withheld)':x).join(', ')+')'}));
-    r.appendChild(el('div',{class:'muted',text:a.text?'text: '+a.text:'text withheld (verbatim check)'})); box.appendChild(r); });
-  w.appendChild(box); return w; }
-function ruleCard(r, ptrs, label){
-  const c=el('div',{class:'rulecard'});
-  c.appendChild(el('h2',{text:label}));
-  const tg=el('div'); tg.appendChild(el('span',{class:'tag',text:'rule_type: '+r.rule_type})); tg.appendChild(el('span',{class:'tag',text:'status: '+r.status})); tg.appendChild(el('span',{class:'tag',text:'strict_executable: '+(r.strict?'1':'0')})); c.appendChild(tg);
-  c.appendChild(atomRows('premises (rule_premises)',r.premises)); c.appendChild(atomRows('guards (rule_guards)',r.guards));
-  c.appendChild(atomRows('conclusions (rule_conclusions)',r.conclusions)); c.appendChild(atomRows('exceptions (rule_exceptions)',r.exceptions));
-  c.appendChild(el('h3',{text:'formula'})); c.appendChild(el('div',{},[el('code',{text:r.formula?r.formula:(r.has_formula?'(formula withheld by the verbatim check)':'(none stored)')})]));
-  const vk=Object.keys(r.variables||{}); c.appendChild(el('h3',{text:'variables ('+vk.length+')'}));
-  if(vk.length){ const t=el('div'); vk.forEach(k=>{ const v=r.variables[k]; t.appendChild(el('div',{},[el('code',{text:k+' → '+(v===null?'(description withheld)':v)})])); }); c.appendChild(t); } else c.appendChild(el('div',{class:'muted',text:'(none)'}));
-  return c; }
-function renderRules(){
-  const box=$('#rulelist'); box.innerHTML='';
-  if($('#rulesrc').value==='lesson'){
-    const rs=cur.nodes.filter(n=>n.k==='rule').sort((a,b)=>(b.rule.strict-a.rule.strict)||(a.id<b.id?-1:1));
-    box.appendChild(el('p',{class:'muted',text:cur.subject_vi+' ('+cur.subject_en+'): '+rs.length+' supported rule(s) in this graph, '+cur.n_strict_rules+' strict-executable.'}));
-    rs.forEach(n=>{ const c=ruleCard(n.rule,cur.pointers,n.id); c.id='rv-'+n.id.replace(/[^a-z0-9]/gi,'_'); c.appendChild(el('h3',{text:'evidence spans ('+n.n_spans+')'})); n.spans.forEach(s=>c.appendChild(ptrNode(cur.pointers[s]||{span:s}))); box.appendChild(c); });
-  } else {
-    APP.gallery.forEach(r=>{ const c=ruleCard(r,r.pointers,r.subject+' · '+r.id); c.appendChild(el('h3',{text:'evidence spans ('+r.n_spans+')'})); r.spans.forEach(s=>c.appendChild(ptrNode(r.pointers[s]||{span:s}))); box.appendChild(c); });
-    box.insertBefore(el('p',{class:'muted',text:'Gallery rule: for each subject, the first two strict-executable, supported rules in order (rules with a formula first, then by id).'}),box.firstChild);
-  }
+const CL={}; APP.lessons.forEach(l=>l.nodes.forEach(n=>{ if(n.k==='concept'&&n.label) CL[n.id]=n.label; }));
+const conceptName=id=>id===null?'(withheld)':(CL[id]||id.split(':').pop().replace(/_/g,' '));
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function conceptNode(id){ if(id===null) return el('span',{text:'(withheld)'}); if(CL[id]) return el('abbr',{title:id,text:CL[id]}); return el('code',{title:'no label stored for this concept',text:id.split(':').pop()}); }
+const pretty=s=>s.replace(/_/g,' ');
+let ruleSrc='gallery';
+function svgUse(id){ return '<svg class="i"><use href="#i-'+id+'"/></svg>'; }
+// Render a stored formula as MathML (native in current browsers, no library, works offline).
+// Chemical equations (with →) keep words upright; algebra gets italic variables, upright functions and real fractions.
+const FUN=new Set(['sin','cos','tan','cot','log','ln','exp','sqrt']);
+function mesc(s){ return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function chemML(f){
+  return f.split(/\s*(→|\+)\s*/).map(t=>{
+    if(t==='→') return '<mo stretchy="false">→</mo>';
+    if(t==='+') return '<mo>+</mo>';
+    const m=t.match(/^(\d+)\s+(.*)$/); const coef=m?'<mn>'+m[1]+'</mn><mspace width="0.2em"/>':'';
+    return coef+'<mtext>'+mesc(m?m[2]:t)+'</mtext>';
+  }).join('');
 }
-$('#rulesrc').onchange=renderRules;
-function showRuleView(id){ $('#rulesrc').value='lesson'; document.querySelector('[data-tab=rules]').click(); const c=document.getElementById('rv-'+id.replace(/[^a-z0-9]/gi,'_')); if(c) c.scrollIntoView({behavior:'smooth'}); }
+function algML(f){
+  const toks=[]; let i=0; const s=f.replace(/\s+/g,'');
+  while(i<s.length){ const c=s[i];
+    if(/[0-9.]/.test(c)){ let j=i; while(j<s.length&&/[0-9.]/.test(s[j])) j++; toks.push(['n',s.slice(i,j)]); i=j; continue; }
+    if(/\p{L}/u.test(c)){ const fn=[...FUN].find(w=>s.startsWith(w,i)&&s[i+w.length]==='('); if(fn){ toks.push(['f',fn]); i+=fn.length; continue; } toks.push(['v',c]); i++; continue; }
+    toks.push(['o',c]); i++; }
+  let k=0; const peek=()=>toks[k], take=()=>toks[k++];
+  const isStart=t=>t&&(t[0]==='n'||t[0]==='v'||t[0]==='f'||(t[0]==='o'&&t[1]==='('));
+  function primary(){ const t=take(); if(!t) throw 0;
+    if(t[0]==='n') return '<mn>'+t[1]+'</mn>';
+    if(t[0]==='v') return '<mi>'+mesc(t[1])+'</mi>';
+    if(t[0]==='f'){ take(); const e=expr(); if(!peek()||peek()[1]!==')') throw 0; take(); return '<mrow><mspace width="0.17em"/><mi>'+t[1]+'</mi><mo>&#x2061;</mo><mo>(</mo>'+e+'<mo>)</mo></mrow>'; }
+    if(t[1]==='('){ const e=expr(); if(!peek()||peek()[1]!==')') throw 0; take(); return '<mrow><mo>(</mo>'+e+'<mo>)</mo></mrow>'; }
+    if(t[1]==='-') return '<mrow><mo>−</mo>'+primary()+'</mrow>';
+    throw 0; }
+  function power(){ let b=primary(); if(peek()&&peek()[1]==='^'){ take(); b='<msup>'+b+power()+'</msup>'; } return b; }
+  function term(){ let acc=[power()];
+    while(peek()){ const t=peek();
+      if(t[0]==='o'&&t[1]==='*'){ take(); acc.push(power()); continue; }
+      if(t[0]==='o'&&t[1]==='/'){ take(); acc=['<mfrac><mrow>'+acc.join('')+'</mrow>'+power()+'</mfrac>']; continue; }
+      if(isStart(t)){ acc.push(power()); continue; }
+      break; }
+    return '<mrow>'+acc.join('')+'</mrow>'; }
+  function expr(){ let out=term(); while(peek()&&(peek()[1]==='+'||peek()[1]==='-')){ const o=take()[1]; out+='<mo>'+(o==='-'?'−':'+')+'</mo>'+term(); } return out; }
+  let out=expr(); while(peek()&&peek()[1]==='='){ take(); out+='<mo>=</mo>'+expr(); }
+  if(k<toks.length) throw 0; return out;
+}
+function mathEl(f,block){
+  const chem=/→/.test(f); let inner; try{ inner=chem?chemML(f):algML(f); }catch(e){ return null; }
+  const w=document.createElement('div'); w.innerHTML='<math'+(block?' display="block"':'')+(chem?' class="chem"':'')+'>'+inner+'</math>'; return w.firstChild;
+}
+function atomDD(a){
+  const d=el('dd');
+  if(a.neg) d.appendChild(el('span',{class:'not',text:'NOT'}));
+  d.appendChild(el('span',{class:'pred',text:pretty(a.pred)}));
+  if(a.args.length){ const ar=el('span',{class:'args'}); ar.appendChild(document.createTextNode(' · '));
+    a.args.forEach((x,i)=>{ if(i) ar.appendChild(document.createTextNode(', ')); ar.appendChild(conceptNode(x)); }); d.appendChild(ar); }
+  const names=a.args.map(conceptName).join(' ').toLowerCase();
+  if(a.text&&a.text.toLowerCase()!==names) d.appendChild(el('q',{text:a.text}));
+  else if(!a.text) d.appendChild(el('q',{text:'text withheld (verbatim check)'}));
+  return d;
+}
+const subjEn=s=>(APP.lessons.find(l=>l.subject===s)||{subject_en:cap(s)}).subject_en;
+function ruleTitle(r){ const c=r.conclusions[0]||r.premises[0]; return cap(pretty(c?c.pred:'rule')); }
+function ruleDoc(r, ptrs, subject){
+  const c=el('div'); const p0=ptrs[r.spans[0]]||{}; const g=(p0.book||'').match(/\d+/);
+  c.appendChild(el('div',{class:'crumb',text:subjEn(subject)+(g?' · grade '+g[0]:'')+' · '+r.rule_type+' rule'}));
+  c.appendChild(el('h2',{text:ruleTitle(r)}));
+  const m=el('div',{class:'metaline'}); m.appendChild(el('code',{text:r.id})); m.appendChild(el('span',{text:pretty(r.status)}));
+  if(r.strict) m.appendChild(el('span',{class:'ok',text:'✓ strict-executable'})); if(r.score!==undefined) m.appendChild(el('span',{text:'support score '+r.score}));
+  c.appendChild(m);
+  if(r.formula||r.has_formula){ const eq=el('div',{class:'eq'}); const mm=r.formula?mathEl(r.formula,true):null; eq.appendChild(mm||el('p',{text:r.formula||'Formula withheld by the verbatim check.'})); c.appendChild(eq); }
+  c.appendChild(el('h3',{text:'Logic'}));
+  const dl=el('dl',{class:'logic'});
+  [['if','IF',r.premises],['when','WHEN',r.guards],['then','THEN',r.conclusions],['unless','UNLESS',r.exceptions]].forEach(([cls,kw,arr])=>arr.forEach((a,i)=>{ dl.appendChild(el('dt',{class:cls,text:i?'':kw})); dl.appendChild(atomDD(a)); }));
+  c.appendChild(dl);
+  const vk=Object.keys(r.variables||{});
+  if(vk.length){ c.appendChild(el('h3',{text:'Variables'})); const t=el('table',{class:'vtab'});
+    vk.forEach(k=>{ const tr=el('tr'); const s=el('td'); const mm=/^\S{1,3}$/.test(k)?mathEl(k,false):null; s.appendChild(mm||el('b',{text:k})); tr.appendChild(s);
+      const v=r.variables[k], isC=v&&/^\w+:c:/.test(v), td=el('td');
+      if(v===null) td.appendChild(document.createTextNode('(withheld)'));
+      else if(isC){ if(CL[v]) td.appendChild(document.createTextNode(CL[v])); td.appendChild(el('code',{text:v,style:CL[v]?'':'margin-left:0'})); }
+      else td.appendChild(document.createTextNode(v));
+      tr.appendChild(td); t.appendChild(tr); });
+    c.appendChild(t); }
+  const books=[...new Set(r.spans.map(sp=>(ptrs[sp]||{}).book).filter(Boolean))];
+  c.appendChild(el('h3',{text:'Read from '+(books.length===1?books[0]+' · ':'')+r.n_spans+' span'+(r.n_spans===1?'':'s')}));
+  const ul=el('ul',{class:'src'});
+  r.spans.forEach(sp=>{ const p=ptrs[sp]||{span:sp}; const li=el('li'); li.appendChild(el('b',{text:p.page?'p. '+p.page:'p. ?'}));
+    li.appendChild(el('span',{title:(p.book||'')+' · '+(p.lesson||''),text:(books.length===1?'':(p.book?p.book+' · ':''))+(p.lesson||sp)+(p.kind?' · '+p.kind:'')}));
+    li.appendChild(el('code',{text:sp.split(':').slice(-2).join(':')})); ul.appendChild(li); });
+  c.appendChild(ul);
+  return c;
+}
+let ruleSel=null;
+function renderRules(){
+  const nav=$('#rulenav'), doc=$('#ruledetail'); nav.innerHTML='';
+  document.querySelectorAll('#rulesrc button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===ruleSrc));
+  let items;
+  if(ruleSrc==='lesson'){
+    items=cur.nodes.filter(n=>n.k==='rule').sort((a,b)=>(b.rule.strict-a.rule.strict)||(a.id<b.id?-1:1)).map(n=>({r:Object.assign({id:n.id,spans:n.spans,n_spans:n.n_spans,score:n.score},n.rule),ptrs:cur.pointers,subject:cur.subject}));
+    $('#rulecap').textContent=bookEn(cur)+' · '+title(cur)+': '+items.length+' supported rule(s), '+cur.n_strict_rules+' strict-executable.'+(items.length?'':' Choose Chemistry or Biology on the Lesson graph tab to see lesson rules.');
+  } else {
+    items=APP.gallery.map(r=>({r:r,ptrs:r.pointers,subject:r.subject}));
+    $('#rulecap').textContent='For each subject, the first two strict-executable, supported rules (formulas first, then by id). History has none.';
+  }
+  let last=null;
+  items.forEach(it=>{ if(it.subject!==last){ last=it.subject; const s=SUBJ[it.subject]||['#eee','graph']; const h4=el('h4'); h4.innerHTML=svgUse(s[1]); h4.appendChild(document.createTextNode(subjEn(it.subject))); nav.appendChild(h4); }
+    const b=el('button',{'data-id':it.r.id}); b.appendChild(document.createTextNode(ruleTitle(it.r))); b.appendChild(el('small',{text:it.r.rule_type+(it.r.formula?' · formula':'')+(it.r.strict?' · strict':'')}));
+    b.onclick=()=>pickRule(it.r.id); nav.appendChild(b); });
+  if(!items.length){ nav.appendChild(el('div',{class:'none',text:'No rules in this lesson graph.'})); doc.innerHTML=''; doc.appendChild(el('p',{class:'muted',text:'Nothing to show.'})); return; }
+  const want=items.find(it=>it.r.id===ruleSel)||items[0];
+  pickRule(want.r.id);
+  function pickRule(id){ ruleSel=id; const it=items.find(x=>x.r.id===id); nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-current',b.dataset.id===id)); doc.innerHTML=''; doc.appendChild(ruleDoc(it.r,it.ptrs,it.subject)); }
+}
+document.querySelectorAll('#rulesrc button').forEach(b=>b.onclick=()=>{ ruleSrc=b.dataset.v; renderRules(); });
+function showRuleView(id){ ruleSrc='lesson'; ruleSel=id; document.querySelector('[data-tab=rules]').click(); }
 
 // ---------- stats ----------
 function table(head,rows,cls){ const t=el('table'); const th=el('tr'); head.forEach((h,i)=>th.appendChild(el('th',{class:(cls&&cls[i])||'',text:h}))); t.appendChild(th); rows.forEach(r=>{ const tr=el('tr'); r.forEach((c,i)=>{ const td=el('td',{class:(cls&&cls[i])||''}); if(c instanceof Node) td.appendChild(c); else td.textContent=c; tr.appendChild(td); }); t.appendChild(tr); }); return t; }
+function cardH(icon,t,sub){ const c=el('div',{class:'card'}); const h=el('h2'); h.innerHTML=svgUse(icon); h.appendChild(document.createTextNode(t)); c.appendChild(h); if(sub) c.appendChild(el('p',{class:'sub2',text:sub})); return c; }
+function hbars(rows){ const mx=Math.max(...rows.map(r=>r[1])); const w=el('div',{class:'hb'});
+  rows.forEach(([k,v])=>{ const r=el('div',{class:'r',title:k+': '+fmt(v)}); r.appendChild(el('span',{text:k})); const t=el('div',{class:'t'}); t.appendChild(el('i',{style:'width:'+(v/mx*100)+'%'})); r.appendChild(t); r.appendChild(el('b',{text:fmt(v)})); w.appendChild(r); }); return w; }
+function ptab(head,rows,cls){ const t=table(head,rows,cls); t.className='ptab'; return t; }
+function sec(title,sub){ const s=el('section',{class:'ssec'}); s.appendChild(el('h3',{text:title})); if(sub) s.appendChild(el('p',{class:'sub2',text:sub})); return s; }
 function renderStats(){
   const S=APP.stats, b=$('#statsbody'); b.innerHTML='';
-  let c=el('div',{class:'card'}); c.appendChild(el('h2',{text:'Whole ontology (frozen v1 database)'}));
-  c.appendChild(el('p',{class:'muted',text:'Read from '+S.db+' with a read-only connection; build id '+S.build_id+'. '+fmt(S.counts.books)+' books, '+fmt(S.counts.spans_in_parsed_books)+' source spans.'}));
-  const rows=S.comparison.map(r=>[r.item.replace(/_/g,' '),fmt(r.paper),fmt(r.db),el('span',{class:r.equal?'ok':'no',text:r.equal?'equal':'DIFFERENT'})]);
-  c.appendChild(table(['item','paper (method.tex)','this DB','check'],rows,['','n','n','']));
-  const allEq=S.comparison.every(r=>r.equal);
-  c.appendChild(el('p',{text:allEq?'All eight counts quoted in the paper equal the counts in the database.':'Some counts differ from the paper; the DB numbers are shown.'}));
-  c.appendChild(el('p',{class:'muted',text:'Additional: '+fmt(S.counts.pedagogical_links)+' pedagogical (teaches) links.'}));
-  b.appendChild(c);
-  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Support labels (automatic; Qwen3-8B plus lexical overlap; not human verification)'}));
-  const lab=['supported','partially_supported','unsupported'];
-  c.appendChild(table(['item type','supported','partially','unsupported'],[['concepts','concepts'],['relations','semantic_relations'],['facts','facts'],['rules','rules']].map(([n,k])=>[n,fmt(S.support[k].supported||0),fmt(S.support[k].partially_supported||0),fmt(S.support[k].unsupported||0)]),['','n','n','n']));
-  c.appendChild(el('p',{class:'muted',text:'The explorer draws supported items only. Strict-executable rules by label: '+Object.keys(S.strict_executable_support).map(k=>k+' '+S.strict_executable_support[k]).join(', ')+'.'}));
-  b.appendChild(c);
-  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Evidence links and rejected items'}));
-  const mx=Math.max(...Object.values(S.evidence_by_kind));
-  c.appendChild(table(['evidence links to spans, by item kind','n',''],Object.entries(S.evidence_by_kind).map(([k,v])=>[k,fmt(v),el('div',{class:'bar',style:'width:'+(v/mx*100)+'%'})]),['','n','']));
-  const mr=Math.max(...Object.values(S.rejected_by_reason));
-  c.appendChild(el('h3',{text:'Rejected items ('+fmt(S.counts.rejected)+') by reason'}));
-  c.appendChild(table(['reason','n',''],Object.entries(S.rejected_by_reason).map(([k,v])=>[k,fmt(v),el('div',{class:'bar',style:'width:'+(v/mr*100)+'%'})]),['','n','']));
-  c.appendChild(el('p',{class:'muted',text:'By item kind: '+Object.entries(S.rejected_by_kind).map(([k,v])=>k+' '+fmt(v)).join(', ')+'.'}));
-  b.appendChild(c);
-  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'By subject (all labels)'}));
-  c.appendChild(table(['subject','concepts','facts','rules','objectives'],Object.entries(S.by_subject).map(([k,v])=>[k,fmt(v.concepts),fmt(v.facts),fmt(v.rules),fmt(v.objectives)]),['','n','n','n','n']));
-  c.appendChild(el('h3',{text:'Rules by type'})); c.appendChild(table(['rule_type','rules','strict-executable'],S.rules_by_type.map(r=>[r.rule_type,fmt(r.n),fmt(r.strict_executable)]),['','n','n']));
-  b.appendChild(c);
-  c=el('div',{class:'card',style:'margin-top:12px'}); c.appendChild(el('h2',{text:'Copyright guard: statements shown vs withheld'}));
-  c.appendChild(el('p',{class:'muted',text:'A statement is shown only if it has at most 25 words and shares no run of 8 consecutive words with any evidence span.'}));
-  const sh=S.verbatim_check_shipped; c.appendChild(table(['in the 7 lesson graphs','shown','withheld'],Object.entries(sh).map(([k,v])=>[k,fmt(v.passed),fmt(v.failed)]),['','n','n']));
-  const wh=S.verbatim_check_whole_supported; c.appendChild(el('h3',{text:'All supported items of the whole ontology (reference)'})); c.appendChild(table(['kind','pass','fail'],Object.entries(wh).map(([k,v])=>[k,fmt(v.passed),fmt(v.failed)]),['','n','n']));
-  b.appendChild(c);
+  const hd=el('div',{class:'phead'}); const l=el('div'); l.appendChild(el('div',{class:'kick',text:'Frozen v1 database'}));
+  l.appendChild(el('h2',{class:'big',text:'The ontology at a glance'}));
+  l.appendChild(el('p',{text:fmt(S.counts.books)+' textbooks and '+fmt(S.counts.spans_in_parsed_books)+' source spans, read with a read-only connection (build '+S.build_id+').'}));
+  hd.appendChild(l); b.appendChild(hd);
+  const doc=el('div',{class:'sdoc'});
+  const ks=el('div',{class:'kstrip'});
+  S.comparison.forEach(r=>{ const d=el('div',{class:r.equal?'':'bad',title:'paper: '+fmt(r.paper)+' · database: '+fmt(r.db)}); d.appendChild(el('b',{text:fmt(r.db)})); d.appendChild(el('span',{text:pretty(r.item)})); ks.appendChild(d); });
+  doc.appendChild(ks);
+  const allEq=S.comparison.every(r=>r.equal), kc=el('div',{class:'kcheck'+(allEq?'':' bad')});
+  kc.innerHTML=svgUse(allEq?'check':'alert'); kc.appendChild(document.createTextNode(allEq?'All eight counts equal the numbers quoted in the paper (method.tex).':'Some counts differ from the paper; the database value is shown and the cell is marked.'));
+  doc.appendChild(kc);
+
+  let row=el('div',{class:'srow2'});
+  let s=sec('Source-support labels','Automatic labels (Qwen3-8B plus lexical overlap), not human verification. The explorer draws supported items only.');
+  const lg=el('div',{class:'lg'}); [['supported','--s1'],['partially supported','--s2'],['unsupported','--s3']].forEach(([n,v])=>{ const x=el('span'); x.appendChild(el('i',{style:'--c:var('+v+')'})); x.appendChild(document.createTextNode(n)); lg.appendChild(x); }); s.appendChild(lg);
+  const SK=[['concepts','concepts'],['relations','semantic_relations'],['facts','facts'],['rules','rules']];
+  SK.forEach(([n,key])=>{ const x=S.support[key], a=x.supported||0, p=x.partially_supported||0, u=x.unsupported||0, T=a+p+u;
+    const r=el('div',{class:'srow',title:n+': '+fmt(a)+' supported, '+fmt(p)+' partially, '+fmt(u)+' unsupported'}); r.appendChild(el('span',{class:'nm',text:n}));
+    const bar=el('div',{class:'sbar'}); [[a,'--s1'],[p,'--s2'],[u,'--s3']].forEach(([v,c2])=>{ if(v) bar.appendChild(el('i',{style:'width:'+(v/T*100)+'%;--c:var('+c2+')'})); }); r.appendChild(bar);
+    r.appendChild(el('span',{class:'pc',text:Math.round(a/T*100)+'% of '+fmt(T)})); s.appendChild(r); });
+  const dt=el('details',{class:'tbl'}); dt.appendChild(el('summary',{text:'Show as table'}));
+  dt.appendChild(ptab(['item','supported','partially','unsupported'],SK.map(([n,key])=>[n,fmt(S.support[key].supported||0),fmt(S.support[key].partially_supported||0),fmt(S.support[key].unsupported||0)]),['','n','n','n'])); s.appendChild(dt);
+  row.appendChild(s);
+  s=sec('Evidence links',fmt(S.counts.evidence_links)+' links from ontology items to the spans they were read from, by item kind.');
+  s.appendChild(hbars(Object.entries(S.evidence_by_kind).sort((a,b)=>b[1]-a[1])));
+  row.appendChild(s); doc.appendChild(row);
+
+  row=el('div',{class:'srow2'});
+  s=sec('Rejected during construction',fmt(S.counts.rejected)+' items dropped by the validator, each logged with its reason.');
+  s.appendChild(hbars(Object.entries(S.rejected_by_reason).map(([k2,v])=>[cap(pretty(k2)),v])));
+  s.appendChild(el('p',{class:'sub2',style:'margin:12px 0 0',text:'By item kind: '+Object.entries(S.rejected_by_kind).map(([k2,v])=>k2+' '+fmt(v)).join(', ')+'.'}));
+  row.appendChild(s);
+  s=sec('By subject','All support labels included.');
+  s.appendChild(ptab(['subject','concepts','facts','rules','objectives'],Object.entries(S.by_subject).map(([k2,v])=>{ const sj=SUBJ[k2]||['#eee','graph']; const n=el('span'); n.innerHTML='<span class="sic" style="--sc:'+sj[0]+'">'+svgUse(sj[1])+'</span>'; n.appendChild(document.createTextNode(subjEn(k2))); return [n,fmt(v.concepts),fmt(v.facts),fmt(v.rules),fmt(v.objectives)]; }),['','n','n','n','n']));
+  s.appendChild(el('h4',{text:'Rules by type'}));
+  s.appendChild(ptab(['type','rules','strict-executable'],S.rules_by_type.map(r=>[r.rule_type,fmt(r.n),fmt(r.strict_executable)]),['','n','n']));
+  row.appendChild(s); doc.appendChild(row);
+
+  s=sec('Copyright guard','A statement is shown only if it has at most 25 words and shares no run of 8 consecutive words with any evidence span; otherwise only its id and pointers are kept.');
+  row=el('div',{class:'srow2',style:'gap:0 40px'});
+  const sh=S.verbatim_check_shipped, wh=S.verbatim_check_whole_supported;
+  const c1=el('div'); c1.appendChild(el('h4',{text:'In the 7 lesson graphs',style:'margin-top:4px'})); c1.appendChild(ptab(['statement','shown','withheld'],Object.entries(sh).map(([k2,v])=>[pretty(k2),fmt(v.passed),fmt(v.failed)]),['','n','n']));
+  const c2=el('div'); c2.appendChild(el('h4',{text:'All supported items of the ontology',style:'margin-top:4px'})); c2.appendChild(ptab(['kind','pass','fail'],Object.entries(wh).map(([k2,v])=>[k2,fmt(v.passed),fmt(v.failed)]),['','n','n']));
+  row.appendChild(c1); row.appendChild(c2); s.appendChild(row); s.style.borderBottom='0'; doc.appendChild(s);
+  b.appendChild(doc);
 }
 function renderAbout(){
-  const b=$('#aboutbody'); b.innerHTML=''; const c=el('div',{class:'card'});
-  c.appendChild(el('h2',{text:'Legend and English glosses'}));
-  c.appendChild(table(['Vietnamese','English gloss'],[['Vật lí / Hóa học / Sinh học','Physics / Chemistry / Biology'],['Lịch sử / Địa lí / Ngữ văn','History / Geography / Literature'],['Bài','lesson'],['Chương','chapter'],['khái niệm','concept'],['sự kiện','fact'],['quy tắc','rule'],['mục tiêu / yêu cầu cần đạt','learning objective / required outcome'],['Không đủ căn cứ trong sách','not enough evidence in the book']]));
-  c.appendChild(el('h3',{text:'Lessons shown'}));
-  c.appendChild(table(['subject','lesson (book heading)','English gloss of heading'],APP.lessons.map(l=>[l.subject_vi+' ('+l.subject_en+')',l.book+' · '+l.heading,l.heading_en||'(none)'])));
-  c.appendChild(el('p',{class:'muted',text:'Heading glosses are written by the authors of this page and are not stored in the database. Concept names are the textbook\'s Vietnamese terms and are shown untranslated'+(APP.gloss_on?'; an English gloss that appears in the details panel is machine-generated and unchecked.':'.')}));
-  c.appendChild(el('h3',{text:'What the page shows'}));
-  const ul=el('ul'); ['Only items labelled supported by the database are drawn; partially supported and unsupported items are excluded. The label is automatic (a second model plus lexical overlap), not a human check.',
-   'Learning objectives and teaches links have no support label in the database and are marked not labelled.',
-   'Lessons are chosen by a fixed rule: the lesson with the largest connected component of at most 150 nodes in each subject (plus one demo lesson).',
-   'No textbook passage is published. Statements are shown only if short and not copied (25 words or fewer, no 8-word run shared with the source). Source pointers give book, lesson heading, printed page and span id so that the passage can be opened in the book.',
-   'Node positions are precomputed with a force-directed layout (Fruchterman-Reingold, fixed seed); you can drag nodes.','Research prototype. This page illustrates the structure of the ontology; it makes no claim about accuracy (see the paper).'].forEach(t=>ul.appendChild(el('li',{text:t}))); c.appendChild(ul);
-  c.appendChild(el('p',{class:'muted',text:'Selection rule detail and the numbers behind the page: viz/README.md, viz/data/selection.json.'}));
-  b.appendChild(c); }
+  const b=$('#aboutbody'); b.innerHTML='';
+  const hd=el('div',{class:'phead'}); const l=el('div'); l.appendChild(el('div',{class:'kick',text:'Reading guide'})); l.appendChild(el('h2',{class:'big',text:'How to read the explorer'}));
+  l.appendChild(el('p',{text:'The shapes and lines of a lesson graph, the seven lessons it shows, and the rules the page follows.'})); hd.appendChild(l); b.appendChild(hd);
+  const g=el('div',{class:'guide'});
+  // 1. annotated figure
+  const f=el('section'); const fh=el('div',{class:'ghd'}); fh.appendChild(el('h3',{text:'Anatomy of a lesson graph'})); fh.appendChild(el('span',{text:'Five kinds of node, three kinds of edge'})); f.appendChild(fh);
+  const fig=el('div',{class:'gfig'});
+  const spec=(svg,name,desc,vb)=>'<li class="spec"><svg viewBox="'+(vb||'40 2 40 36')+'" aria-hidden="true">'+svg+'</svg><b>'+name+'</b><span>'+desc+'</span></li>';
+  fig.innerHTML='<div><div class="kind">Nodes</div><ul class="specs n5">'+
+    spec('<circle cx="60" cy="20" r="10" fill="var(--panel)" stroke="var(--concept)" stroke-width="2.6"/>','Concept','a term from the textbook')+
+    spec('<circle cx="60" cy="20" r="14" fill="var(--concept)"/>','Hub concept','filled when it has many links')+
+    spec('<rect x="52" y="12" width="16" height="16" rx="3" fill="var(--fact)"/>','Fact','an atomic statement')+
+    spec('<path d="M60 5 75 20 60 35 45 20z" fill="var(--rule)" stroke="var(--ink)" stroke-width="2"/>','Rule','dark outline = strict-executable')+
+    spec('<path d="M60 6 75 32H45z" fill="var(--obj)"/>','Objective','what students should be able to do')+
+    '</ul></div><div><div class="kind">Edges</div><ul class="specs n3">'+
+    spec('<circle cx="14" cy="20" r="7" fill="var(--panel)" stroke="var(--concept)" stroke-width="2.2"/><path d="M22 20H96" stroke="var(--e-rel)" stroke-width="2"/><path d="m98 20-8-4.5v9z" fill="var(--e-rel)"/><circle cx="106" cy="20" r="7" fill="var(--concept)"/>','Relation','concept → concept, typed (is_a, causes, defined_as …)','0 2 120 36')+
+    spec('<rect x="8" y="13" width="14" height="14" rx="3" fill="var(--fact)"/><path d="M24 20H98" stroke="var(--e-men)" stroke-width="1.8" stroke-dasharray="5 3"/><circle cx="106" cy="20" r="7" fill="var(--panel)" stroke="var(--concept)" stroke-width="2.2"/>','Mentions','fact or rule → the concepts it is about','0 2 120 36')+
+    spec('<path d="M15 12 23 27H7z" fill="var(--obj)"/><path d="M26 20H98" stroke="var(--e-teach)" stroke-width="2" stroke-dasharray="2 4"/><circle cx="106" cy="20" r="7" fill="var(--panel)" stroke="var(--concept)" stroke-width="2.2"/>','Teaches','objective → concept or rule it covers','0 2 120 36')+
+    '</ul></div><p class="gex">Example from the Newton’s first law lesson: <b lang="vi">định luật 1 Newton</b> <code>defined_as</code> <b lang="vi">quán tính</b>, and nine facts mention <b lang="vi">quán tính</b>, which makes it a hub.</p>';
+  f.appendChild(fig); f.appendChild(el('p',{class:'gcap',text:'Only items labelled supported by the database are drawn. Click any node in the graph to see the book pages it was read from.'})); g.appendChild(f);
+  // 2. lessons table
+  const s2=el('section'); const h2=el('div',{class:'ghd'}); h2.appendChild(el('h3',{text:'The seven lessons'})); h2.appendChild(el('span',{text:'Largest connected component of at most 150 nodes, one per subject'})); s2.appendChild(h2);
+  const t=el('table',{class:'ltab'}); const th=el('thead'); const tr0=el('tr'); [['Subject',''],['Lesson',''],['Book','hide-s'],['Nodes','n'],['Edges','n hide-s']].forEach(([x,c])=>tr0.appendChild(el('th',{class:c,text:x}))); th.appendChild(tr0); t.appendChild(th);
+  const tb=el('tbody');
+  APP.lessons.forEach((L2,i)=>{ const sj=SUBJ[L2.subject]||['#eee','graph']; const tr=el('tr',{tabindex:'0',title:'Open this lesson graph'});
+    const c1=el('td',{class:'sj'}); c1.innerHTML='<span class="sic" style="--sc:'+sj[0]+'">'+svgUse(sj[1])+'</span>'; c1.appendChild(document.createTextNode(L2.subject_en)); tr.appendChild(c1);
+    const c2=el('td',{class:'ttl',text:title(L2)}); if(L2.role==='demo') c2.appendChild(el('span',{class:'demo',text:'video demo'})); tr.appendChild(c2);
+    tr.appendChild(el('td',{class:'hide-s muted',text:bookEn(L2)}));
+    tr.appendChild(el('td',{class:'n',text:fmt(L2.n_nodes)})); tr.appendChild(el('td',{class:'n hide-s',text:fmt(L2.n_edges)}));
+    const go=()=>{ document.querySelector('[data-tab=graph]').click(); loadLesson(i); window.scrollTo({top:0,behavior:'smooth'}); }; tr.onclick=go; tr.onkeydown=ev=>{ if(ev.key==='Enter') go(); };
+    tb.appendChild(tr); });
+  t.appendChild(tb); s2.appendChild(t); g.appendChild(s2);
+  // 3. ground rules
+  const s3=el('section'); const h3=el('div',{class:'ghd'}); h3.appendChild(el('h3',{text:'Ground rules'})); h3.appendChild(el('span',{text:'What the page does, and deliberately does not'})); s3.appendChild(h3);
+  const ol=el('ol',{class:'rules3'});
+  [['Supported items only','Partially supported and unsupported items are left out. The label is automatic (a second model plus lexical overlap), not a human check.'],
+   ['Objectives are unlabelled','Learning objectives and teaches links carry no support label in the database; they are shown and marked not labelled.'],
+   ['No textbook passages','A statement appears only if it has 25 words or fewer and shares no 8-word run with its source; otherwise you see its id and page.'],
+   ['Every item has a pointer','Book, lesson heading, printed page and span id, so the passage can be opened in the printed book.'],
+   ['Layout is recomputed','Positions start from a fixed-seed force layout; the page re-runs it and separates nodes and labels so none overlap.'],
+   ['Structure, not accuracy','A research prototype: it shows how the ontology is organised and makes no claim about its accuracy (see the paper).']
+  ].forEach(([a,d])=>{ const li=el('li'); li.appendChild(el('b',{text:a})); li.appendChild(document.createTextNode(d)); ol.appendChild(li); });
+  s3.appendChild(ol); g.appendChild(s3);
+  // 4. glossary
+  const s4=el('section'); const h4=el('div',{class:'ghd'}); h4.appendChild(el('h3',{text:'Vietnamese terms'})); h4.appendChild(el('span',{text:'Concept names are the textbook’s own terms; the database stores no English.'})); s4.appendChild(h4);
+  const tm=el('p',{class:'terms'});
+  [['Vật lí','Physics'],['Hóa học','Chemistry'],['Sinh học','Biology'],['Lịch sử','History'],['Địa lí','Geography'],['Ngữ văn','Literature'],['Bài','lesson'],['Chương','chapter'],['tập một / hai','volume 1 / 2'],['khái niệm','concept'],['sự kiện','fact'],['quy tắc','rule'],['yêu cầu cần đạt','learning objective'],['Không đủ căn cứ trong sách','not enough evidence in the book']].forEach(([v,e])=>{ const sp=el('span'); sp.appendChild(el('b',{lang:'vi',text:v})); sp.appendChild(el('i',{text:e})); tm.appendChild(sp); });
+  s4.appendChild(tm);
+  s4.appendChild(el('p',{class:'gcap',style:'margin-top:14px',text:'Selection rule and the numbers behind this page: viz/README.md, viz/data/selection.json.'}));
+  g.appendChild(s4);
+  b.appendChild(g);
+}
 renderStats(); renderAbout(); loadLesson(0);
 </script>
 </body>
