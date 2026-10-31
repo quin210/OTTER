@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -444,8 +444,8 @@ const KNAME = {concept:'concept', fact:'fact', rule:'rule', objective:'learning 
 
 // theme
 (function(){ let t=null; try{ t=localStorage.getItem('otter_theme'); }catch(e){}
-  if(t) document.documentElement.setAttribute('data-theme',t);
-  $('#theme').onclick=()=>{ const cur=document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  document.documentElement.setAttribute('data-theme',t==='dark'?'dark':'light');
+  $('#theme').onclick=()=>{ const cur=document.documentElement.getAttribute('data-theme')||'light';
     const nx=cur==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme',nx); try{localStorage.setItem('otter_theme',nx);}catch(e){} }; })();
 
 // tabs
