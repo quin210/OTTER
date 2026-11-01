@@ -247,7 +247,7 @@ svg.i.f{fill:currentColor;stroke:none}
     <h2><i class="dot"></i>The OTTER Method</h2>
     <div class="grid g3">
       <div class="card"><div class="ico i1"><svg class="i"><use href="#i-book"/></svg></div><h3>1. Knowledge construction</h3><p>Scanned textbook pages are transcribed and cut into paragraph-level <b>source spans</b>. A span-grounded <b>Educational Ontology</b> links every concept, fact and rule to the spans that state it.</p></div>
-      <div class="card"><div class="ico i2"><svg class="i"><use href="#i-search"/></svg></div><h3>2. Evidence-grounded answering</h3><p>For each question, OTTER searches the spans (BM25 + embeddings), asks a language model to label every option <i>entailed</i>, <i>refuted</i> or <i>unsupported</i>, and checks every quote.</p></div>
+      <div class="card"><div class="ico i2"><svg class="i"><use href="#i-search"/></svg></div><h3>2. Proof-aware ontology retrieval</h3><p>Relevant passages do not always hold all the evidence an answer needs. OTTER follows executable ontology rules, applying a rule only when all its prerequisites are available, to find the shortest valid derivation, and uses the sources along that path to guide retrieval. A Judge then labels every option <i>entailed</i>, <i>refuted</i> or <i>unsupported</i>, and a Verifier checks every quote.</p></div>
       <div class="card"><div class="ico i3"><svg class="i"><use href="#i-pin"/></svg></div><h3>3. Provenance and abstention</h3><p>The answer carries a <b>source pointer</b> a teacher can open. If the book does not support an answer, OTTER can say so: <span lang="vi">&ldquo;Kh&ocirc;ng &#273;&#7911; c&#259;n c&#7913; trong s&aacute;ch&rdquo;</span> (&ldquo;not enough evidence in the book&rdquo;).</p></div>
     </div>
     <div class="steps" aria-label="The six roles of the answering pipeline">
@@ -356,7 +356,7 @@ svg.i.f{fill:currentColor;stroke:none}
 <section id="findings" class="alt">
   <div class="wrap">
     <h2><i class="dot"></i>Key Findings</h2>
-    <p>Same backbone (Qwen3-32B-FP8) and embedder (bge-m3) for every system; 1,208 pre-registered test questions.</p>
+    <p>Same backbone (Qwen3-32B-FP8) and embedder (bge-m3) for every system.</p>
     <div class="grid g3">
       <div class="card"><h3>Hybrid RAG leads on verified-correct</h3><p>Plain hybrid RAG beats OTTER on accuracy with correct provenance (paired difference &minus;8.9 points, 95% interval &minus;11.4 to &minus;6.4). We report it as it is.</p></div>
       <div class="card"><h3>Best among graph and agent systems</h3><p>Against GraphRAG, LightRAG, MiniRAG, HippoRAG 2 and the tool agents, OTTER has the best verified-correct rate at about 3.6k tokens per question.</p></div>
